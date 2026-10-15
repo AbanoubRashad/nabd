@@ -1,0 +1,22 @@
+{
+  "v": 3,
+  "createdOnFiles": {"v": 1, "at": "2026-10-14T16:40:00Z"},
+  "title": "Nabd IoT Platform",
+  "launch": {"view": "canvas"},
+  "pages": [],
+  "boards": {
+    "Main.dc.html": {"x": 0, "y": 0, "w": 1440, "h": 5660, "title": "Landing page v3", "expand": "fill", "is_interactive": true},
+    "Products.dc.html": {"x": 1520, "y": 0, "w": 1440, "h": 2700, "title": "Products catalogue", "expand": "fill", "is_interactive": true},
+    "Fleet.dc.html": {"x": 3040, "y": 0, "w": 1440, "h": 1180, "title": "Fleet overview (live)", "expand": "fill", "is_interactive": true},
+    "Map.dc.html": {"x": 4560, "y": 0, "w": 1440, "h": 1000, "title": "Sites map (live)", "expand": "fill", "is_interactive": true},
+    "Device.dc.html": {"x": 6080, "y": 0, "w": 1440, "h": 1260, "title": "Device detail + remote control", "expand": "fill", "is_interactive": true},
+    "Alerts.dc.html": {"x": 7600, "y": 0, "w": 1440, "h": 1120, "title": "Alert rules + WhatsApp", "expand": "fill"},
+    "MobileAr.dc.html": {"x": 9120, "y": 0, "w": 390, "h": 844, "title": "Mobile, Arabic RTL"},
+    "Architecture.dc.html": {"x": 9590, "y": 0, "w": 1440, "h": 960, "title": "System architecture"}
+  },
+  "order": ["Main.dc.html", "Products.dc.html", "Fleet.dc.html", "Map.dc.html", "Device.dc.html", "Alerts.dc.html", "MobileAr.dc.html", "Architecture.dc.html"],
+  "notes": {
+    "title": {"x": 0, "y": -300, "text": "Nabd · real-time IoT monitoring with real hardware", "kind": "title1", "maxW": 11030}
+  },
+  "designSystems": []
+}

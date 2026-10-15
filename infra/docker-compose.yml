@@ -1,0 +1,80 @@
+# Local development: `pnpm infra:up` starts only EMQX and TimescaleDB; the Node services run on the host
+# with `pnpm dev`. The `stack` profile runs everything in containers (used on the VPS, see docs/DEPLOY.md).
+name: nabd
+
+services:
+  timescaledb:
+    image: timescale/timescaledb:2.30.2-pg16
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: nabd
+      POSTGRES_USER: ${POSTGRES_USER:-nabd}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+    ports:
+      - '127.0.0.1:5432:5432'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U $${POSTGRES_USER:-nabd} -d nabd']
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  emqx:
+    image: emqx/emqx:6.1.5
+    restart: unless-stopped
+    environment:
+      EMQX_NODE__NAME: emqx@node1.nabd
+      EMQX_DASHBOARD__DEFAULT_PASSWORD: ${EMQX_DASHBOARD_PASSWORD:?set EMQX_DASHBOARD_PASSWORD in .env}
+      # Anonymous access is off: every device and service authenticates (configured in Phase 1).
+      EMQX_MQTT__MAX_PACKET_SIZE: 4KB
+    ports:
+      # Plain MQTT is bound to localhost for development only. Production exposes 8883 (TLS) only.
+      - '127.0.0.1:1883:1883'
+      - '8883:8883'
+      - '127.0.0.1:18083:18083'
+    volumes:
+      - emqx-data:/opt/emqx/data
+    healthcheck:
+      test: ['CMD', '/opt/emqx/bin/emqx', 'ctl', 'status']
+      interval: 10s
+      timeout: 5s
+      retries: 12
+
+  api:
+    profiles: [stack]
+    build: { context: .., dockerfile: infra/node.Dockerfile, args: { APP: api } }
+    restart: unless-stopped
+    env_file: ../.env
+    depends_on: { timescaledb: { condition: service_healthy }, emqx: { condition: service_healthy } }
+
+  ingest:
+    profiles: [stack]
+    build: { context: .., dockerfile: infra/node.Dockerfile, args: { APP: ingest } }
+    restart: unless-stopped
+    env_file: ../.env
+    depends_on: { timescaledb: { condition: service_healthy }, emqx: { condition: service_healthy } }
+
+  simulator:
+    profiles: [stack]
+    build: { context: .., dockerfile: infra/node.Dockerfile, args: { APP: simulator } }
+    restart: unless-stopped
+    env_file: ../.env
+    depends_on: { emqx: { condition: service_healthy } }
+
+  caddy:
+    profiles: [stack]
+    image: caddy:2
+    restart: unless-stopped
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+    depends_on: [api]
+
+volumes:
+  pgdata:
+  emqx-data:
+  caddy-data:

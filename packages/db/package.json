@@ -1,0 +1,34 @@
+{
+  "name": "@nabd/db",
+  "version": "0.0.0",
+  "private": true,
+  "description": "SQL migrations (node-pg-migrate, plain SQL), seed and typed query helpers for TimescaleDB.",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "migrations"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
+    "lint": "eslint src",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run --passWithNoTests",
+    "migrate": "node-pg-migrate --migrations-dir migrations --use-glob --migration-file-language sql",
+    "migrate:up": "pnpm migrate up",
+    "migrate:down": "pnpm migrate down"
+  },
+  "dependencies": {
+    "pg": "8.23.1"
+  },
+  "devDependencies": {
+    "@types/pg": "8.23.1",
+    "node-pg-migrate": "9.0.0"
+  }
+}

@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Nabd sites map</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0;background:#0A0E13}
+a{color:#3DDC97}a:hover{color:#7CEBB8}
+@keyframes ring{0%{transform:translate(-50%,-50%) scale(.6);opacity:.8}100%{transform:translate(-50%,-50%) scale(2.2);opacity:0}}
+.ring{animation:ring 1.8s ease-out infinite}
+@media (prefers-reduced-motion: reduce){.ring{animation:none;opacity:0}}
+</style>
+</helmet>
+<div style="font-family: 'IBM Plex Sans', system-ui, sans-serif; color: #E7EDF3; background: #0A0E13; min-height: 1000px; display: flex; flex-wrap: wrap">
+
+<aside style="flex: 1 1 220px; max-width: 100%; background: #0D1218; border-right: 1px solid #1A222D; padding: 24px 16px; box-sizing: border-box; display: flex; flex-direction: column; gap: 28px">
+<a href="Main.dc.html" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: #E7EDF3; padding: 0 8px">
+<svg width="30" height="30" viewBox="0 0 36 36" aria-hidden="true"><rect x="0.5" y="0.5" width="35" height="35" rx="9" fill="#10161E" stroke="#222D3A"></rect><path d="M6 19 H12 L15 11 L19 26 L22 16 L24 19 H30" fill="none" stroke="#3DDC97" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+<span style="font-family: 'Archivo', sans-serif; font-weight: 800; font-size: 20px; font-stretch: 112%">Nabd</span>
+</a>
+<nav aria-label="App" style="display: flex; flex-direction: column; gap: 4px; font-size: 15px">
+<a href="Fleet.dc.html" style="display: flex; align-items: center; min-height: 44px; padding: 0 12px; border-radius: 10px; color: #B9C5D2; text-decoration: none">Overview</a>
+<a href="Map.dc.html" aria-current="page" style="display: flex; align-items: center; min-height: 44px; padding: 0 12px; border-radius: 10px; background: #161E28; color: #E7EDF3; text-decoration: none; font-weight: 600">Sites map</a>
+<a href="Device.dc.html" style="display: flex; align-items: center; min-height: 44px; padding: 0 12px; border-radius: 10px; color: #B9C5D2; text-decoration: none">Devices</a>
+<a href="Alerts.dc.html" style="display: flex; align-items: center; justify-content: space-between; min-height: 44px; padding: 0 12px; border-radius: 10px; color: #B9C5D2; text-decoration: none">Alerts <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; background: #3A2A14; color: #F5B13D; border-radius: 999px; padding: 2px 8px">2</span></a>
+<a href="Alerts.dc.html" style="display: flex; align-items: center; min-height: 44px; padding: 0 12px; border-radius: 10px; color: #B9C5D2; text-decoration: none">Rules</a>
+<a href="Device.dc.html" style="display: flex; align-items: center; min-height: 44px; padding: 0 12px; border-radius: 10px; color: #B9C5D2; text-decoration: none">Firmware</a>
+</nav>
+</aside>
+
+<main style="flex: 999 1 640px; min-width: 0; padding: 28px 32px 48px; box-sizing: border-box; display: flex; flex-direction: column; gap: 22px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 4px">
+<h1 style="margin: 0; font-family: 'Archivo', sans-serif; font-weight: 800; font-stretch: 110%; font-size: 32px">Sites map</h1>
+<span style="font-size: 14px; color: #93A3B5">4 sites across Greater Cairo, the Delta and Fayoum · select a site</span>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 14px; font-size: 13px; color: #B9C5D2">
+<span style="display: inline-flex; align-items: center; gap: 6px"><span style="color: #3DDC97">●</span>Normal</span>
+<span style="display: inline-flex; align-items: center; gap: 6px"><span style="color: #F5B13D">▲</span>Warning</span>
+<span style="display: inline-flex; align-items: center; gap: 6px"><span style="color: #FF7468">■</span>Critical</span>
+</div>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: stretch">
+<section aria-label="Map of sites" style="flex: 999 1 560px; min-width: 0; background: #0D1218; border: 1px solid #222D3A; border-radius: 18px; padding: 16px; box-sizing: border-box">
+<div style="position: relative; width: 100%; aspect-ratio: 705 / 465">
+<svg viewBox="0 0 705 465" width="100%" height="100%" aria-hidden="true" style="position: absolute; inset: 0; display: block">
+<rect x="0" y="0" width="705" height="465" fill="#0B1A26"></rect>
+<polygon points="0,132 67,145 180,108 213,90 235,72 288,52 360,33 442,40 498,42 570,79 615,108 705,99 705,465 0,465" fill="#141B23" stroke="#2A3646" stroke-width="1.5"></polygon>
+<polygon points="607,274 622,330 645,405 668,465 705,465 705,440 690,420 662,350 638,300 618,272" fill="#0B1A26" stroke="#2A3646" stroke-width="1.5"></polygon>
+<polyline points="570,79 566,130 565,180 585,217 600,250 607,274" fill="none" stroke="#1E4D6E" stroke-width="3"></polyline>
+<ellipse cx="585" cy="217" rx="9" ry="5" fill="#1E4D6E"></ellipse>
+<polyline points="367,465 390,409 405,330 409,262 405,240" fill="none" stroke="#2A6A94" stroke-width="3" stroke-linecap="round"></polyline>
+<polyline points="405,240 375,195 330,135 288,52" fill="none" stroke="#2A6A94" stroke-width="2.5" stroke-linecap="round"></polyline>
+<polyline points="405,240 412,195 435,127 498,52" fill="none" stroke="#2A6A94" stroke-width="2.5" stroke-linecap="round"></polyline>
+<ellipse cx="315" cy="349" rx="30" ry="8" fill="#1E4D6E"></ellipse>
+<g font-family="IBM Plex Sans, sans-serif" font-size="13" fill="#93A3B5">
+<text x="196" y="118">Alexandria</text>
+<text x="378" y="292">Cairo</text>
+<text x="548" y="70">Port Said</text>
+<text x="620" y="262">Suez</text>
+<text x="300" y="336">Lake Qarun</text>
+</g>
+<g font-family="IBM Plex Mono, monospace" font-size="11" fill="#5B6E82" letter-spacing="2">
+<text x="40" y="60">MEDITERRANEAN SEA</text>
+<text x="70" y="420">WESTERN DESERT</text>
+</g>
+</svg>
+<sc-for list="{{sites}}" as="s" hint-placeholder-count="4">
+<span aria-hidden="true" class="ring" style="position: absolute; left: {{s.left}}; top: {{s.top}}; width: 30px; height: 30px; border-radius: 50%; border: 2px solid {{s.color}}; pointer-events: none"></span>
+<button type="button" onClick="{{s.pick}}" aria-pressed="{{s.pressed}}" aria-label="{{s.aria}}" style="position: absolute; left: {{s.left}}; top: {{s.top}}; transform: translate(-50%, -50%); min-width: 44px; min-height: 44px; border-radius: 50%; border: 0; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0">
+<span style="width: {{s.size}}; height: {{s.size}}; border-radius: {{s.radius}}; background: {{s.color}}; box-shadow: 0 0 0 3px #0A0E13, 0 0 0 {{s.ring}} {{s.color}}; display: block; clip-path: {{s.clip}}"></span>
+</button>
+<span style="position: absolute; left: {{s.labelLeft}}; top: {{s.top}}; transform: translateY(-50%); background: rgba(10,14,19,.86); border: 1px solid #2E3B4B; border-radius: 8px; padding: 5px 9px; font-size: 12px; white-space: nowrap; pointer-events: none"><b style="font-weight: 600">{{s.short}}</b> <span style="font-family: 'IBM Plex Mono', monospace; color: {{s.color}}">{{s.value}}</span></span>
+</sc-for>
+</div>
+</section>
+
+<section aria-labelledby="sel-h" style="flex: 1 1 340px; min-width: 0; background: #10161E; border: 1px solid #222D3A; border-radius: 18px; overflow: hidden; display: flex; flex-direction: column">
+<img src="{{sel.img}}" alt="{{sel.alt}}" style="width: 100%; height: 190px; object-fit: cover; display: block">
+<div style="padding: 20px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 10px">
+<div style="display: flex; flex-direction: column; gap: 2px"><h2 id="sel-h" style="margin: 0; font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 22px">{{sel.name}}</h2><span style="font-size: 13px; color: #93A3B5">{{sel.place}}</span></div>
+<span style="font-size: 12px; font-weight: 600; color: {{sel.color}}; border: 1px solid {{sel.color}}; padding: 4px 10px; border-radius: 999px; white-space: nowrap">{{sel.status}}</span>
+</div>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+<sc-for list="{{sel.metrics}}" as="m" hint-placeholder-count="4">
+<div style="background: #161E28; border-radius: 12px; padding: 12px; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; color: #93A3B5">{{m.label}}</span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 19px">{{m.value}}</span></div>
+</sc-for>
+</div>
+<ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; font-size: 14px">
+<sc-for list="{{sel.devices}}" as="d" hint-placeholder-count="3">
+<li style="display: flex; justify-content: space-between; gap: 10px"><span><span style="font-family: 'IBM Plex Mono', monospace; color: #B9C5D2">{{d.id}}</span> · {{d.name}}</span><span style="color: {{d.color}}">{{d.state}}</span></li>
+</sc-for>
+</ul>
+<a href="Device.dc.html" style="font-weight: 600; font-size: 15px">Open site devices →</a>
+</div>
+</section>
+</div>
+
+<section aria-labelledby="up-h" style="background: #10161E; border: 1px solid #222D3A; border-radius: 18px; padding: 20px 22px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 10px"><h2 id="up-h" style="margin: 0; font-size: 17px; font-weight: 600">Last 24 hours by site</h2><span style="font-size: 13px; color: #93A3B5">each block is one hour · worst state in that hour</span></div>
+<sc-for list="{{uptime}}" as="u" hint-placeholder-count="4">
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px">
+<span style="flex: 0 0 200px; font-size: 14px">{{u.name}}</span>
+<div style="flex: 1 1 400px; min-width: 0; display: grid; grid-template-columns: repeat(24, minmax(0, 1fr)); gap: 3px">
+<sc-for list="{{u.blocks}}" as="b" hint-placeholder-count="24">
+<span title="{{b.tip}}" style="height: 22px; border-radius: 3px; background: {{b.color}}; display: block"></span>
+</sc-for>
+</div>
+<span style="flex: 0 0 70px; text-align: right; font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #B9C5D2">{{u.pct}}</span>
+</div>
+</sc-for>
+</section>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1000}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { t: 0, sel: 'heliopolis' };
+  }
+  componentDidMount() {
+    this.timer = setInterval(() => this.setState({ t: (this.state.t || 0) + 1 }), 2000);
+  }
+  componentWillUnmount() {
+    clearInterval(this.timer);
+  }
+  renderVals() {
+    const st = this.state || {};
+    const t = st.t || 0;
+    const selId = st.sel || 'heliopolis';
+    const C = { ok: '#3DDC97', warn: '#F5B13D', crit: '#FF7468' };
+    const pv = (3.3 + 0.35 * Math.sin((60 + t) / 9)).toFixed(2);
+    const fridge = (8.2 + 0.1 * Math.sin(t * 0.7)).toFixed(1);
+    const air = (29.4 + 0.2 * Math.sin(t / 3)).toFixed(1);
+    const defs = [
+      { id: 'natrun', short: 'Wadi El Natrun', name: 'Off-grid villa', place: 'Wadi El Natrun, Beheira', x: 277.5, y: 207, st: 'ok', value: pv + ' kW', img: '/_blob/92c6b8bbdb6baec50d63fb59ad29d224', alt: 'Solar panels on the stone roof of the villa',
+        metrics: [{ label: 'Solar input', value: pv + ' kW' }, { label: 'Battery', value: '87 %' }, { label: 'Bus voltage', value: '51.6 V' }, { label: 'House load', value: '1.21 kW' }],
+        devices: [{ id: 'nabd-01', name: 'Rooftop power node', state: 'Online', color: C.ok }, { id: 'nabd-02', name: 'Battery bank', state: 'Online', color: C.ok }, { id: 'nabd-03', name: 'Inverter', state: 'Online', color: C.ok }] },
+      { id: 'fayoum', short: 'Fayoum', name: 'Tomato greenhouse', place: 'Fayoum', x: 351, y: 373.5, st: 'ok', value: air + ' °C', img: '/_blob/95e7f584c94981397713327cceeac71c', alt: 'Tomato plants inside the greenhouse',
+        metrics: [{ label: 'Air', value: air + ' °C' }, { label: 'Humidity', value: '71 %' }, { label: 'Soil moisture', value: '38 %' }, { label: 'Pump', value: 'ON' }],
+        devices: [{ id: 'nabd-04', name: 'Greenhouse climate', state: 'Online', color: C.ok }, { id: 'nabd-05', name: 'Irrigation pump', state: 'Online', color: C.ok }, { id: 'nabd-06', name: 'Shade motor', state: 'Online', color: C.ok }] },
+      { id: 'heliopolis', short: 'Heliopolis', name: 'Clinic medicine fridge', place: 'Heliopolis, Cairo', x: 424.5, y: 256.5, st: 'warn', value: fridge + ' °C', img: '/_blob/4462d593115cf62704ecc957eb4704ce', alt: 'The clinic medicine fridge with its sensor',
+        metrics: [{ label: 'Fridge probe', value: fridge + ' °C' }, { label: 'Safe range', value: '2–8 °C' }, { label: 'Door', value: 'Closed' }, { label: 'Room', value: '24.1 °C' }],
+        devices: [{ id: 'nabd-07', name: 'Medicine fridge', state: 'Warning', color: C.warn }, { id: 'nabd-08', name: 'Clinic room', state: 'Online', color: C.ok }] },
+      { id: 'ramadan', short: '10th of Ramadan', name: 'Frozen-goods cold room', place: '10th of Ramadan City, Sharqia', x: 487.5, y: 225, st: 'crit', value: '−18.2 °C', img: '/_blob/c80f9aa19345a44051b67398b00560ae', alt: 'Racks of frozen goods in the cold room',
+        metrics: [{ label: 'Room', value: '−18.2 °C' }, { label: 'Compressor duty', value: '64 %' }, { label: 'Door sensor', value: 'No data' }, { label: 'Power draw', value: '7.8 kW' }],
+        devices: [{ id: 'nabd-09', name: 'Cold room', state: 'Online', color: C.ok }, { id: 'nabd-10', name: 'Cold room power', state: 'Online', color: C.ok }, { id: 'nabd-11', name: 'Cold room door', state: 'Offline 14 min', color: C.crit }] }
+    ];
+    const label = { ok: 'Normal', warn: 'Warning', crit: 'Critical' };
+    const sites = defs.map((d) => {
+      const on = d.id === selId;
+      const color = C[d.st];
+      const sz = d.st === 'warn' ? 18 : 14;
+      return {
+        left: (d.x / 705 * 100).toFixed(2) + '%',
+        top: (d.y / 465 * 100).toFixed(2) + '%',
+        labelLeft: 'calc(' + (d.x / 705 * 100).toFixed(2) + '% + 18px)',
+        color: color,
+        size: sz + 'px',
+        radius: d.st === 'ok' ? '50%' : '2px',
+        clip: d.st === 'warn' ? 'polygon(50% 0, 100% 100%, 0 100%)' : 'none',
+        ring: on ? '6px' : '0px',
+        pressed: on ? 'true' : 'false',
+        aria: d.short + ', ' + label[d.st] + ', ' + d.value,
+        short: d.short,
+        value: d.value,
+        pick: () => this.setState({ sel: d.id })
+      };
+    });
+    const s = defs.find((d) => d.id === selId) || defs[2];
+    const sel = { name: s.name, place: s.place, img: s.img, alt: s.alt, color: C[s.st], status: label[s.st], metrics: s.metrics, devices: s.devices };
+    const pattern = {
+      natrun: [],
+      fayoum: [{ h: 9, c: 'warn' }],
+      heliopolis: [{ h: 3, c: 'warn' }, { h: 23, c: 'warn' }],
+      ramadan: [{ h: 2, c: 'crit' }, { h: 13, c: 'crit' }, { h: 23, c: 'crit' }]
+    };
+    const pct = { natrun: '100 %', fayoum: '100 %', heliopolis: '100 %', ramadan: '96.5 %' };
+    const uptime = defs.map((d) => {
+      const blocks = [];
+      for (let h = 0; h < 24; h++) {
+        const hit = pattern[d.id].find((p) => p.h === h);
+        const c = hit ? hit.c : 'ok';
+        blocks.push({ color: c === 'ok' ? '#1F6B4C' : C[c], tip: (24 - h) + ' h ago · ' + label[c] });
+      }
+      return { name: d.name, blocks: blocks, pct: pct[d.id] };
+    });
+    return { sites: sites, sel: sel, uptime: uptime };
+  }
+}
+</script>
+</body>
+</html>

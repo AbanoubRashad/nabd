@@ -1,0 +1,5 @@
+# TLS for the API and WebSocket gateway. Replace [NABD_DOMAIN] in docs/DEPLOY.md step 4.
+api.{$NABD_DOMAIN:localhost} {
+	encode zstd gzip
+	reverse_proxy api:4000
+}

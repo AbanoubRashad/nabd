@@ -1,0 +1,22 @@
+{
+  "name": "@nabd/simulator",
+  "version": "0.0.0",
+  "private": true,
+  "description": "12 virtual devices that speak the same MQTT protocol as the firmware.",
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "dev": "tsx watch --env-file-if-exists=../../.env src/main.ts",
+    "start": "node dist/main.js",
+    "lint": "eslint src",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run --passWithNoTests"
+  },
+  "dependencies": {
+    "@nabd/shared": "workspace:*",
+    "pino": "10.4.0"
+  },
+  "devDependencies": {
+    "tsx": "4.23.15"
+  }
+}

@@ -1,0 +1,484 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Nabd landing page</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0;background:#F3F5F4}
+a{color:#0B7A55}a:hover{color:#075C40}
+@keyframes nabdpulse{0%{box-shadow:0 0 0 0 rgba(61,220,151,.6)}70%{box-shadow:0 0 0 10px rgba(61,220,151,0)}100%{box-shadow:0 0 0 0 rgba(61,220,151,0)}}
+.live-dot{animation:nabdpulse 1.6s ease-out infinite}
+.ind-card img{transition:transform .5s ease}
+.ind-card:hover img{transform:scale(1.04)}
+@media (prefers-reduced-motion: reduce){.live-dot{animation:none}.ind-card img{transition:none}}
+</style>
+</helmet>
+<div style="font-family: 'IBM Plex Sans', system-ui, sans-serif; color: #0B1117; background: #F3F5F4">
+
+<div style="background: #06090D; color: #DCE3EA; font-size: 14px; position: relative; z-index: 3">
+<div style="max-width: 1280px; margin: 0 auto; padding: 10px 32px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center">
+<span style="background: #3DDC97; color: #06130D; font-weight: 700; font-size: 11px; letter-spacing: .08em; padding: 3px 8px; border-radius: 4px">NEW</span>
+<span>Signed over-the-air updates with automatic rollback are live on every node.</span>
+<a href="Device.dc.html" style="color: #3DDC97; font-weight: 600">See it on a device →</a>
+</div>
+</div>
+<section aria-label="Introduction" style="position: relative; min-height: 780px; background: #0A0E13; color: #F2F5F8; overflow: hidden; display: flex; flex-direction: column">
+<img src="/_blob/97f9e5ede590645f53c7588ebb8544f3" alt="" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 40%">
+<div aria-hidden="true" style="position: absolute; inset: 0; background: linear-gradient(90deg, rgba(6,9,13,.94) 0%, rgba(6,9,13,.82) 42%, rgba(6,9,13,.35) 75%, rgba(6,9,13,.55) 100%)"></div>
+
+<header style="position: relative; max-width: 1280px; width: 100%; margin: 0 auto; padding: 24px 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px">
+<a href="#top" style="display: flex; align-items: center; gap: 12px; text-decoration: none; color: #F2F5F8">
+<svg width="36" height="36" viewBox="0 0 36 36" aria-hidden="true"><rect x="0.5" y="0.5" width="35" height="35" rx="9" fill="#0A0E13" stroke="#2E3B4B"></rect><path d="M6 19 H12 L15 11 L19 26 L22 16 L24 19 H30" fill="none" stroke="#3DDC97" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+<span style="font-family: 'Archivo', sans-serif; font-weight: 800; font-size: 22px; font-stretch: 112%">Nabd</span>
+<span style="font-size: 15px; color: #B9C5D2">نبض</span>
+</a>
+<nav aria-label="Main" style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 15px">
+<sc-for list="{{menus}}" as="m" hint-placeholder-count="4">
+<button type="button" onClick="{{m.toggle}}" aria-expanded="{{m.expanded}}" style="min-height: 44px; padding: 0 12px; border: 0; border-radius: 10px; background: {{m.bg}}; color: #E7EDF3; font: inherit; font-size: 15px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px">{{m.label}}<svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true" style="transform: {{m.rot}}"><path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg></button>
+</sc-for>
+<a href="Architecture.dc.html" style="color: #E7EDF3; text-decoration: none; min-height: 44px; padding: 0 12px; display: inline-flex; align-items: center">Developers</a>
+<a href="MobileAr.dc.html" lang="ar" style="color: #DCE3EA; text-decoration: none; border: 1px solid rgba(255,255,255,.3); border-radius: 8px; padding: 6px 10px; margin: 0 6px">عربي</a>
+<a href="Fleet.dc.html" style="color: #E7EDF3; text-decoration: none; min-height: 44px; padding: 0 10px; display: inline-flex; align-items: center">Sign in</a>
+<a href="Fleet.dc.html" style="background: #3DDC97; color: #06130D; font-weight: 600; text-decoration: none; padding: 12px 20px; border-radius: 10px; min-height: 44px; box-sizing: border-box; display: inline-flex; align-items: center">Open live demo</a>
+</nav>
+</header>
+
+<sc-if value="{{open.any}}" hint-placeholder-val="{{ false }}">
+<div style="position: relative; z-index: 4; max-width: 1280px; width: 100%; margin: 0 auto; padding: 0 32px; box-sizing: border-box">
+<div style="position: absolute; left: 32px; right: 32px; top: 4px; background: #FFFFFF; color: #0B1117; border-radius: 18px; box-shadow: 0 30px 80px rgba(0,0,0,.4); padding: 28px; display: flex; flex-wrap: wrap; gap: 28px">
+
+<sc-if value="{{open.products}}" hint-placeholder-val="{{ true }}">
+<div style="flex: 0 1 230px; min-width: 0; display: flex; flex-direction: column; gap: 4px; border-right: 1px solid #DDE3E7; padding-right: 20px">
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: #5B6875; margin-bottom: 8px">Products</span>
+<sc-for list="{{pcats}}" as="c" hint-placeholder-count="5">
+<button type="button" onMouseEnter="{{c.pick}}" onClick="{{c.pick}}" aria-pressed="{{c.pressed}}" style="min-height: 44px; padding: 0 12px; border: 0; border-radius: 10px; text-align: left; font: inherit; font-size: 15px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; background: {{c.bg}}; color: #0B1117; font-weight: {{c.weight}}"><span>{{c.label}}</span><span aria-hidden="true" style="color: #5B6875">›</span></button>
+</sc-for>
+<a href="Products.dc.html" style="margin-top: 10px; font-weight: 600; font-size: 14px; padding: 0 12px">All products →</a>
+</div>
+<div style="flex: 1 1 560px; min-width: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(220px, 100%), 1fr)); gap: 12px; align-content: start">
+<sc-for list="{{pitems}}" as="p" hint-placeholder-count="3">
+<a href="Products.dc.html" style="display: flex; gap: 12px; align-items: center; padding: 10px; border-radius: 12px; border: 1px solid #EEF1F3; color: #0B1117; text-decoration: none; min-height: 72px">
+<sc-if value="{{p.hasImg}}" hint-placeholder-val="{{ true }}"><img src="{{p.img}}" alt="" style="width: 64px; height: 64px; object-fit: contain; border-radius: 8px; background: #FFFFFF; flex: 0 0 64px"></sc-if>
+<sc-if value="{{p.noImg}}" hint-placeholder-val="{{ false }}"><span style="width: 64px; height: 64px; flex: 0 0 64px; border: 1.5px dashed #B7C1C9; border-radius: 8px; background: #F7F9F8; display: block"></span></sc-if>
+<span style="display: flex; flex-direction: column; gap: 2px"><span style="font-family: 'Archivo', sans-serif; font-weight: 800; font-size: 17px">{{p.code}} <span style="font-family: 'IBM Plex Sans', sans-serif; font-weight: 600; font-size: 15px">{{p.name}}</span></span><span style="font-size: 13px; color: #5B6875">{{p.line}}</span></span>
+</a>
+</sc-for>
+</div>
+</sc-if>
+
+<sc-if value="{{open.solutions}}" hint-placeholder-val="{{ false }}">
+<div style="flex: 1 1 100%; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr)); gap: 24px">
+<sc-for list="{{solutions}}" as="s" hint-placeholder-count="6">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<a href="#industries" style="font-weight: 700; font-size: 16px; color: #0B1117; text-decoration: none">{{s.name}} ›</a>
+<sc-for list="{{s.uses}}" as="u" hint-placeholder-count="3"><a href="#industries" style="font-size: 14px; color: #3A4652; text-decoration: none">{{u}}</a></sc-for>
+</div>
+</sc-for>
+</div>
+</sc-if>
+
+<sc-if value="{{open.platform}}" hint-placeholder-val="{{ false }}">
+<div style="flex: 1 1 100%; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr)); gap: 8px">
+<sc-for list="{{tech}}" as="x" hint-placeholder-count="8">
+<a href="{{x.href}}" style="display: flex; flex-direction: column; gap: 4px; padding: 14px; border-radius: 12px; color: #0B1117; text-decoration: none; background: #F7F9F8"><b style="font-size: 16px">{{x.name}}</b><span style="font-size: 14px; line-height: 1.5; color: #3A4652">{{x.text}}</span></a>
+</sc-for>
+</div>
+</sc-if>
+
+<sc-if value="{{open.resources}}" hint-placeholder-val="{{ false }}">
+<div style="flex: 1 1 100%; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr)); gap: 8px">
+<a href="#case" style="padding: 14px; border-radius: 12px; background: #F7F9F8; color: #0B1117; text-decoration: none; display: flex; flex-direction: column; gap: 4px"><b>Case study</b><span style="font-size: 14px; color: #3A4652">The off-grid villa in Wadi El Natrun</span></a>
+<a href="Architecture.dc.html" style="padding: 14px; border-radius: 12px; background: #F7F9F8; color: #0B1117; text-decoration: none; display: flex; flex-direction: column; gap: 4px"><b>Architecture</b><span style="font-size: 14px; color: #3A4652">How a reading moves through Nabd</span></a>
+<a href="Products.dc.html" style="padding: 14px; border-radius: 12px; background: #F7F9F8; color: #0B1117; text-decoration: none; display: flex; flex-direction: column; gap: 4px"><b>Hardware FAQ</b><span style="font-size: 14px; color: #3A4652">Sensors, offline memory, updates</span></a>
+<a href="https://github.com/AbanoubRashad/nabd" style="padding: 14px; border-radius: 12px; background: #F7F9F8; color: #0B1117; text-decoration: none; display: flex; flex-direction: column; gap: 4px"><b>Engineering notes</b><span style="font-size: 14px; color: #3A4652">Decision records and load-test results</span></a>
+</div>
+</sc-if>
+</div>
+</div>
+</sc-if>
+
+<div id="top" style="position: relative; flex: 1 1 auto; max-width: 1280px; width: 100%; margin: 0 auto; padding: 72px 32px 88px; box-sizing: border-box; display: flex; flex-wrap: wrap; gap: 48px; align-items: center">
+<div style="flex: 1 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 28px">
+<span style="display: inline-flex; align-self: flex-start; align-items: center; gap: 10px; font-family: 'IBM Plex Mono', monospace; font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; color: #C5D0DC; border: 1px solid rgba(255,255,255,.22); background: rgba(10,14,19,.5); padding: 8px 14px; border-radius: 999px"><span class="live-dot" style="width: 8px; height: 8px; border-radius: 50%; background: #3DDC97; display: inline-block"></span>Real-time IoT monitoring, built in Cairo</span>
+<h1 style="margin: 0; font-family: 'Archivo', sans-serif; font-weight: 800; font-stretch: 118%; font-size: 92px; line-height: 0.95; letter-spacing: -0.025em; text-wrap: balance">Every device has a pulse.</h1>
+<p style="margin: 0; font-size: 21px; line-height: 1.55; color: #D3DCE5; max-width: 580px; text-wrap: pretty">Nabd connects ESP32 sensors on rooftops, farms, clinics and cold rooms to one live dashboard. You see every reading in under a second, switch equipment from your phone, and get a WhatsApp message the moment something drifts.</p>
+<div style="display: flex; flex-wrap: wrap; gap: 12px">
+<a href="Fleet.dc.html" style="background: #3DDC97; color: #06130D; font-weight: 600; font-size: 17px; text-decoration: none; padding: 16px 26px; border-radius: 12px; min-height: 52px; box-sizing: border-box; display: inline-flex; align-items: center">Watch the live fleet</a>
+<a href="#platform" style="color: #F2F5F8; font-weight: 500; font-size: 17px; text-decoration: none; padding: 16px 26px; border-radius: 12px; border: 1px solid rgba(255,255,255,.35); background: rgba(10,14,19,.35); min-height: 52px; box-sizing: border-box; display: inline-flex; align-items: center">See how it works</a>
+</div>
+</div>
+
+<div style="flex: 0 1 400px; min-width: 0; margin-left: auto; background: rgba(13,18,24,.78); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border: 1px solid rgba(255,255,255,.14); border-radius: 20px; padding: 22px; display: flex; flex-direction: column; gap: 16px; box-shadow: 0 30px 80px rgba(0,0,0,.45)">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px">
+<div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 13px; color: #93A3B5">nabd-07 · Heliopolis clinic</span><span style="font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 19px">Medicine fridge</span></div>
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #F5B13D; border: 1px solid rgba(245,177,61,.45); background: rgba(245,177,61,.12); padding: 5px 10px; border-radius: 999px">▲ WARNING</span>
+</div>
+<div style="display: flex; align-items: baseline; gap: 10px"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 54px; font-weight: 500; color: #F5B13D; line-height: 1">{{fridge}}</span><span style="font-size: 20px; color: #B9C5D2">°C</span><span style="margin-left: auto; font-size: 13px; color: #93A3B5">safe 2–8 °C</span></div>
+<svg viewBox="0 0 360 90" width="100%" height="90" role="img" aria-label="Fridge temperature rising past the 8 degree limit over the last 30 minutes">
+<line x1="0" y1="30" x2="360" y2="30" stroke="#F5B13D" stroke-dasharray="4 5" stroke-width="1.5"></line>
+<polyline points="{{spark}}" fill="none" stroke="#F5B13D" stroke-width="2.5"></polyline>
+</svg>
+<div style="display: flex; flex-direction: column; gap: 8px; border-top: 1px solid rgba(255,255,255,.1); padding-top: 14px; font-size: 14px">
+<div style="display: flex; gap: 10px; align-items: center"><span style="width: 22px; height: 22px; border-radius: 50%; background: #25D366; color: #052E16; display: inline-flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700">✓</span><span>WhatsApp sent to clinic manager</span><span style="margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #93A3B5">14:36</span></div>
+<div style="display: flex; gap: 10px; align-items: center"><span style="width: 22px; height: 22px; border-radius: 50%; background: #3DDC97; color: #06130D; display: inline-flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700">✓</span><span>Acknowledged by reply “1”</span><span style="margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #93A3B5">14:38</span></div>
+</div>
+</div>
+</div>
+</section>
+
+<section aria-label="Live demo numbers" style="background: #FFFFFF; border-bottom: 1px solid #DDE3E7">
+<div style="max-width: 1280px; margin: 0 auto; padding: 28px 32px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr)); gap: 24px">
+<div style="display: flex; flex-direction: column; gap: 4px"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 30px; font-weight: 500">{{rows}}</span><span style="font-size: 14px; color: #5B6875">readings stored today · demo fleet, live</span></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 30px; font-weight: 500">{{latency}} ms</span><span style="font-size: 14px; color: #5B6875">device → screen, p95</span></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 30px; font-weight: 500">11 / 12</span><span style="font-size: 14px; color: #5B6875">devices online across 4 sites</span></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 30px; font-weight: 500">2 s</span><span style="font-size: 14px; color: #5B6875">between readings, every sensor</span></div>
+</div>
+<div style="max-width: 1280px; margin: 0 auto; padding: 0 32px 28px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 28px; font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #3A4652">
+<span style="font-family: 'IBM Plex Sans', sans-serif; font-size: 13px; color: #5B6875">Built on open standards</span>
+<span>MQTT 5</span><span aria-hidden="true" style="color: #B7C1C9">/</span><span>TLS 1.3</span><span aria-hidden="true" style="color: #B7C1C9">/</span><span>WebSocket</span><span aria-hidden="true" style="color: #B7C1C9">/</span><span>TimescaleDB</span><span aria-hidden="true" style="color: #B7C1C9">/</span><span>ESP32-S3</span><span aria-hidden="true" style="color: #B7C1C9">/</span><span>Signed OTA</span><span aria-hidden="true" style="color: #B7C1C9">/</span><span>WhatsApp Cloud API</span>
+</div>
+</section>
+
+<section id="industries" aria-labelledby="ind-h" style="max-width: 1280px; margin: 0 auto; padding: 112px 32px 96px; display: flex; flex-direction: column; gap: 40px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px">
+<div style="display: flex; flex-direction: column; gap: 14px; max-width: 720px">
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: #0B7A55">Industries</span>
+<h2 id="ind-h" style="margin: 0; font-family: 'Archivo', sans-serif; font-weight: 800; font-stretch: 112%; font-size: 56px; line-height: 1.02; letter-spacing: -0.015em">One platform for anything that should not quietly fail</h2>
+</div>
+<p style="margin: 0; max-width: 400px; font-size: 17px; line-height: 1.6; color: #3A4652">Four of these run in the live demo today. The other two use the same devices, rules and alerts with a different sensor.</p>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(360px, 100%), 1fr)); gap: 20px">
+<article class="ind-card" style="background: #FFFFFF; border: 1px solid #DDE3E7; border-radius: 18px; overflow: hidden; display: flex; flex-direction: column">
+<div style="height: 220px; overflow: hidden"><img src="/_blob/c14289e33fcf2c43cdaaacc5bbe17c4e" alt="Rows of solar panels in the desert at sunset" style="width: 100%; height: 220px; object-fit: cover; display: block"></div>
+<div style="padding: 22px; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 10px"><h3 style="margin: 0; font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 22px">Solar &amp; energy</h3><span style="font-size: 12px; font-weight: 600; color: #0B7A55; background: #E3F5EC; padding: 4px 10px; border-radius: 999px">● Live demo</span></div>
+<p style="margin: 0; font-size: 15px; line-height: 1.6; color: #3A4652">Panel output, battery charge and house load for off-grid homes and farms. Know before the batteries run flat.</p>
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #5B6875">kW · V · SoC % · load</span>
+</div>
+</article>
+<article class="ind-card" style="background: #FFFFFF; border: 1px solid #DDE3E7; border-radius: 18px; overflow: hidden; display: flex; flex-direction: column">
+<div style="height: 220px; overflow: hidden"><img src="/_blob/95e7f584c94981397713327cceeac71c" alt="Tomato plants in a greenhouse with a sensor box on a post" style="width: 100%; height: 220px; object-fit: cover; display: block"></div>
+<div style="padding: 22px; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 10px"><h3 style="margin: 0; font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 22px">Smart agriculture</h3><span style="font-size: 12px; font-weight: 600; color: #0B7A55; background: #E3F5EC; padding: 4px 10px; border-radius: 999px">● Live demo</span></div>
+<p style="margin: 0; font-size: 15px; line-height: 1.6; color: #3A4652">Greenhouse heat, humidity and soil moisture, with the irrigation pump switched from the dashboard.</p>
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #5B6875">°C · RH % · soil % · pump relay</span>
+</div>
+</article>
+<article class="ind-card" style="background: #FFFFFF; border: 1px solid #DDE3E7; border-radius: 18px; overflow: hidden; display: flex; flex-direction: column">
+<div style="height: 220px; overflow: hidden"><img src="/_blob/4462d593115cf62704ecc957eb4704ce" alt="A medicine refrigerator in a clinic with a temperature sensor on its side" style="width: 100%; height: 220px; object-fit: cover; display: block"></div>
+<div style="padding: 22px; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 10px"><h3 style="margin: 0; font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 22px">Healthcare cold chain</h3><span style="font-size: 12px; font-weight: 600; color: #0B7A55; background: #E3F5EC; padding: 4px 10px; border-radius: 999px">● Live demo</span></div>
+<p style="margin: 0; font-size: 15px; line-height: 1.6; color: #3A4652">Vaccine and medicine fridges held between 2 and 8 °C, with a temperature log for every hour of every day.</p>
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #5B6875">probe °C · door · compressor</span>
+</div>
+</article>
+<article class="ind-card" style="background: #FFFFFF; border: 1px solid #DDE3E7; border-radius: 18px; overflow: hidden; display: flex; flex-direction: column">
+<div style="height: 220px; overflow: hidden"><img src="/_blob/c80f9aa19345a44051b67398b00560ae" alt="Racks of wrapped pallets in a frozen-food cold store" style="width: 100%; height: 220px; object-fit: cover; display: block"></div>
+<div style="padding: 22px; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 10px"><h3 style="margin: 0; font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 22px">Food cold storage</h3><span style="font-size: 12px; font-weight: 600; color: #0B7A55; background: #E3F5EC; padding: 4px 10px; border-radius: 999px">● Live demo</span></div>
+<p style="margin: 0; font-size: 15px; line-height: 1.6; color: #3A4652">Freezer rooms at −18 °C, door sensors and compressor duty, so one open door doesn't cost a warehouse of stock.</p>
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #5B6875">°C · door · duty %</span>
+</div>
+</article>
+<article class="ind-card" style="background: #FFFFFF; border: 1px solid #DDE3E7; border-radius: 18px; overflow: hidden; display: flex; flex-direction: column">
+<div style="height: 220px; overflow: hidden"><img src="/_blob/294c239c05ef001046427c2b7f50b2ce" alt="Blue water pumps and steel pipes with a wireless sensor clamped to a pipe" style="width: 100%; height: 220px; object-fit: cover; display: block"></div>
+<div style="padding: 22px; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 10px"><h3 style="margin: 0; font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 22px">Water &amp; pumping</h3><span style="font-size: 12px; font-weight: 600; color: #3A4652; background: #EEF1F3; padding: 4px 10px; border-radius: 999px">Same platform</span></div>
+<p style="margin: 0; font-size: 15px; line-height: 1.6; color: #3A4652">Pump run hours, pipe pressure and tank level, with automatic shut-off when a pump starts running dry.</p>
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #5B6875">bar · level % · run hours</span>
+</div>
+</article>
+<article class="ind-card" style="background: #FFFFFF; border: 1px solid #DDE3E7; border-radius: 18px; overflow: hidden; display: flex; flex-direction: column">
+<div style="height: 220px; overflow: hidden"><img src="/_blob/0eb3d0f98777423e17be105a929a2c91" alt="An electric motor with a vibration sensor in a factory with a robot arm behind" style="width: 100%; height: 220px; object-fit: cover; display: block"></div>
+<div style="padding: 22px; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 10px"><h3 style="margin: 0; font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 22px">Manufacturing</h3><span style="font-size: 12px; font-weight: 600; color: #3A4652; background: #EEF1F3; padding: 4px 10px; border-radius: 999px">Same platform</span></div>
+<p style="margin: 0; font-size: 15px; line-height: 1.6; color: #3A4652">Motor vibration and temperature trends that warn you days before a bearing fails on the production line.</p>
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #5B6875">mm/s RMS · °C · current A</span>
+</div>
+</article>
+</div>
+</section>
+
+<section id="platform" aria-labelledby="pl-h" style="background: #0A0E13; color: #E7EDF3">
+<div style="max-width: 1280px; margin: 0 auto; padding: 112px 32px; display: flex; flex-direction: column; gap: 44px">
+<div style="display: flex; flex-direction: column; gap: 14px; max-width: 760px">
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: #3DDC97">Platform</span>
+<h2 id="pl-h" style="margin: 0; font-family: 'Archivo', sans-serif; font-weight: 800; font-stretch: 112%; font-size: 56px; line-height: 1.02; letter-spacing: -0.015em">From a sensor wire to a decision, in five steps</h2>
+</div>
+<div role="tablist" aria-label="Platform capabilities" style="display: flex; flex-wrap: wrap; gap: 8px">
+<sc-for list="{{tabs}}" as="t" hint-placeholder-count="5">
+<button type="button" role="tab" aria-selected="{{t.selected}}" onClick="{{t.pick}}" style="min-height: 48px; padding: 0 20px; border-radius: 12px; font: inherit; font-size: 16px; font-weight: 600; cursor: pointer; border: 1px solid {{t.border}}; background: {{t.bg}}; color: {{t.fg}}; display: inline-flex; align-items: center; gap: 10px"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; opacity: .8">{{t.num}}</span>{{t.label}}</button>
+</sc-for>
+</div>
+<div role="tabpanel" style="display: flex; flex-wrap: wrap; gap: 32px; align-items: stretch; background: #10161E; border: 1px solid #222D3A; border-radius: 22px; padding: 36px">
+<div style="flex: 1 1 380px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+<h3 style="margin: 0; font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 32px; line-height: 1.15">{{cur.title}}</h3>
+<p style="margin: 0; font-size: 17px; line-height: 1.65; color: #B9C5D2">{{cur.body}}</p>
+<ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px">
+<sc-for list="{{cur.points}}" as="p" hint-placeholder-count="3">
+<li style="display: flex; gap: 12px; font-size: 15px; line-height: 1.5; color: #DCE3EA"><span aria-hidden="true" style="color: #3DDC97; font-weight: 700">→</span><span>{{p}}</span></li>
+</sc-for>
+</ul>
+</div>
+<div style="flex: 1 1 460px; min-width: 0; background: #05080C; border: 1px solid #1A222D; border-radius: 16px; padding: 22px; display: flex; flex-direction: column; gap: 14px; min-height: 300px; box-sizing: border-box">
+<sc-if value="{{show.collect}}" hint-placeholder-val="{{ true }}">
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #93A3B5">nabd/v1/fayoum/nabd-04/telemetry · QoS 1</span>
+<pre style="margin: 0; font-family: 'IBM Plex Mono', monospace; font-size: 14px; line-height: 1.7; color: #C5D0DC; white-space: pre-wrap">{
+  "seq": 48210,
+  "ts": "2026-10-14T11:32:10.412Z",
+  "m": { "air_c": 29.4, "rh": 71, "soil": 38 }
+}</pre>
+<span style="font-size: 14px; color: #3DDC97">✓ validated · stored · pushed to 3 open dashboards</span>
+</sc-if>
+<sc-if value="{{show.see}}" hint-placeholder-val="{{ false }}">
+<span style="font-size: 14px; color: #93A3B5">Solar input vs load · live</span>
+<svg viewBox="0 0 460 200" width="100%" height="200" role="img" aria-label="Live chart of solar input above household load">
+<line x1="0" y1="50" x2="460" y2="50" stroke="#1E2733"></line><line x1="0" y1="100" x2="460" y2="100" stroke="#1E2733"></line><line x1="0" y1="150" x2="460" y2="150" stroke="#1E2733"></line>
+<polyline points="{{pvLine}}" fill="none" stroke="#3DDC97" stroke-width="2.5"></polyline>
+<polyline points="{{loadLine}}" fill="none" stroke="#6CB4FF" stroke-width="2.5"></polyline>
+</svg>
+<div style="display: flex; gap: 18px; font-size: 13px; color: #B9C5D2"><span><span style="color: #3DDC97">━</span> Solar {{pv}} kW</span><span><span style="color: #6CB4FF">━</span> Load {{load}} kW</span></div>
+</sc-if>
+<sc-if value="{{show.alert}}" hint-placeholder-val="{{ false }}">
+<div style="background: #0B141A; border-radius: 14px; padding: 16px; display: flex; flex-direction: column; gap: 10px">
+<div style="align-self: flex-start; max-width: 92%; background: #1F2C34; color: #E9EDEF; border-radius: 4px 12px 12px 12px; padding: 12px 14px; font-size: 14px; line-height: 1.55"><b>Nabd alert · Critical</b><br>Cold room door sensor, 10th of Ramadan City stopped reporting 5 minutes ago.<br>Reply 1 to acknowledge.</div>
+<div style="align-self: flex-end; background: #005C4B; color: #E9EDEF; border-radius: 12px 4px 12px 12px; padding: 10px 14px; font-size: 14px">1</div>
+</div>
+<span style="font-size: 14px; color: #B9C5D2">Fires after 5 min · clears with a margin · 30 min cool-down</span>
+</sc-if>
+<sc-if value="{{show.control}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; justify-content: space-between; align-items: center"><span style="font-weight: 600">Irrigation pump · Fayoum</span><span style="font-family: 'IBM Plex Mono', monospace; color: #3DDC97">ON</span></div>
+<ol style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; font-size: 15px">
+<li style="display: flex; gap: 12px; align-items: center"><span style="width: 24px; height: 24px; border-radius: 50%; background: #3DDC97; color: #06130D; display: inline-flex; align-items: center; justify-content: center; font-size: 12px">✓</span>Sent to broker<span style="margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #93A3B5">12 ms</span></li>
+<li style="display: flex; gap: 12px; align-items: center"><span style="width: 24px; height: 24px; border-radius: 50%; background: #3DDC97; color: #06130D; display: inline-flex; align-items: center; justify-content: center; font-size: 12px">✓</span>Delivered to device<span style="margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #93A3B5">380 ms</span></li>
+<li style="display: flex; gap: 12px; align-items: center"><span style="width: 24px; height: 24px; border-radius: 50%; background: #3DDC97; color: #06130D; display: inline-flex; align-items: center; justify-content: center; font-size: 12px">✓</span>Device confirmed the relay is on<span style="margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #93A3B5">640 ms</span></li>
+</ol>
+</sc-if>
+<sc-if value="{{show.update}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; justify-content: space-between; align-items: center"><span style="font-weight: 600">Firmware 1.4.2 → 1.5.0</span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #93A3B5">ECDSA P-256 ✓</span></div>
+<div style="height: 10px; background: #1E2733; border-radius: 999px; overflow: hidden"><div style="width: 72%; height: 10px; background: #3DDC97"></div></div>
+<ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px; font-size: 14px; color: #B9C5D2">
+<li>nabd-04 · installed · health check passed</li><li>nabd-05 · installed · health check passed</li><li>nabd-06 · downloading 72 %</li><li style="color: #F5B13D">Rollback armed: keeps 1.4.2 if it can't check in within 2 min</li>
+</ul>
+</sc-if>
+</div>
+</div>
+</div>
+</section>
+
+<section id="hardware" aria-labelledby="hw-h" style="max-width: 1280px; margin: 0 auto; padding: 112px 32px; display: flex; flex-direction: column; gap: 36px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px">
+<div style="display: flex; flex-direction: column; gap: 14px; max-width: 720px">
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: #0B7A55">Products</span>
+<h2 id="hw-h" style="margin: 0; font-family: 'Archivo', sans-serif; font-weight: 800; font-stretch: 112%; font-size: 56px; line-height: 1.02; letter-spacing: -0.015em">One ESP32 core, a device for every job</h2>
+</div>
+<a href="Products.dc.html" style="font-weight: 600; font-size: 16px">Browse all 8 products →</a>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(270px, 100%), 1fr)); gap: 18px">
+<sc-for list="{{featured}}" as="p" hint-placeholder-count="4">
+<a href="Products.dc.html" style="background: #FFFFFF; border: 1px solid #DDE3E7; border-radius: 18px; overflow: hidden; color: #0B1117; text-decoration: none; display: flex; flex-direction: column">
+<img src="{{p.img}}" alt="{{p.alt}}" style="width: 100%; height: 210px; object-fit: contain; background: #FFFFFF; display: block; border-bottom: 1px solid #EEF1F3">
+<span style="padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 6px">
+<span style="display: flex; align-items: baseline; gap: 10px"><span style="font-family: 'Archivo', sans-serif; font-weight: 800; font-stretch: 112%; font-size: 28px">{{p.code}}</span><span style="font-weight: 600; font-size: 17px">{{p.name}}</span></span>
+<span style="font-size: 15px; line-height: 1.5; color: #3A4652">{{p.line}}</span>
+<span style="align-self: flex-start; margin-top: 6px; font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 999px; background: {{p.badgeBg}}; color: {{p.badgeFg}}">{{p.status}}</span>
+</span>
+</a>
+</sc-for>
+</div>
+</section>
+
+<section aria-labelledby="dec-h" style="background: #FFFFFF; border-top: 1px solid #DDE3E7; border-bottom: 1px solid #DDE3E7">
+<div style="max-width: 1280px; margin: 0 auto; padding: 112px 32px; display: flex; flex-direction: column; gap: 44px">
+<div style="display: flex; flex-direction: column; gap: 14px; max-width: 760px">
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: #0B7A55">Engineering</span>
+<h2 id="dec-h" style="margin: 0; font-family: 'Archivo', sans-serif; font-weight: 800; font-stretch: 112%; font-size: 48px; line-height: 1.04">The hard parts, solved on purpose</h2>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr)); gap: 0; border-top: 1px solid #DDE3E7">
+<div style="padding: 28px 28px 28px 0; display: flex; flex-direction: column; gap: 10px; border-bottom: 1px solid #DDE3E7"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #0B7A55">01</span><h3 style="margin: 0; font-family: 'Archivo', sans-serif; font-size: 22px">No reading is lost</h3><p style="margin: 0; font-size: 15px; line-height: 1.6; color: #3A4652">Offline readings are buffered in flash and replayed with their original time. Ingest ignores duplicates by sequence number.</p></div>
+<div style="padding: 28px 28px 28px 0; display: flex; flex-direction: column; gap: 10px; border-bottom: 1px solid #DDE3E7"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #0B7A55">02</span><h3 style="margin: 0; font-family: 'Archivo', sans-serif; font-size: 22px">Commands you can trust</h3><p style="margin: 0; font-size: 15px; line-height: 1.6; color: #3A4652">Every switch shows sent, delivered and confirmed by the device, or a clear timeout. Never a button that pretends.</p></div>
+<div style="padding: 28px 28px 28px 0; display: flex; flex-direction: column; gap: 10px; border-bottom: 1px solid #DDE3E7"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #0B7A55">03</span><h3 style="margin: 0; font-family: 'Archivo', sans-serif; font-size: 22px">Alerts without spam</h3><p style="margin: 0; font-size: 15px; line-height: 1.6; color: #3A4652">Rules wait out short spikes, clear with a margin so they can't flap, and respect a cool-down and quiet hours.</p></div>
+<div style="padding: 28px 28px 28px 0; display: flex; flex-direction: column; gap: 10px; border-bottom: 1px solid #DDE3E7"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #0B7A55">04</span><h3 style="margin: 0; font-family: 'Archivo', sans-serif; font-size: 22px">Updates can't brick a box</h3><p style="margin: 0; font-size: 15px; line-height: 1.6; color: #3A4652">Signed firmware goes to the spare partition and is kept only if the node checks in. Otherwise it rolls back.</p></div>
+</div>
+</div>
+</section>
+
+<section id="security" aria-labelledby="sec-h" style="max-width: 1280px; margin: 0 auto; padding: 112px 32px; display: flex; flex-wrap: wrap; gap: 48px">
+<div style="flex: 1 1 380px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: #0B7A55">Security</span>
+<h2 id="sec-h" style="margin: 0; font-family: 'Archivo', sans-serif; font-weight: 800; font-stretch: 112%; font-size: 48px; line-height: 1.04">A device can only speak for itself</h2>
+<p style="margin: 0; font-size: 17px; line-height: 1.6; color: #3A4652">Connected equipment is a way into a network. Nabd treats every node as untrusted until it proves who it is.</p>
+</div>
+<ul style="flex: 1 1 560px; min-width: 0; margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr)); gap: 14px">
+<li style="background: #FFFFFF; border: 1px solid #DDE3E7; border-radius: 16px; padding: 22px; display: flex; flex-direction: column; gap: 8px"><b style="font-size: 17px">Encrypted end to end</b><span style="font-size: 15px; line-height: 1.55; color: #3A4652">TLS on MQTT, HTTPS and WebSocket. Nothing travels in plain text.</span></li>
+<li style="background: #FFFFFF; border: 1px solid #DDE3E7; border-radius: 16px; padding: 22px; display: flex; flex-direction: column; gap: 8px"><b style="font-size: 17px">One key per device</b><span style="font-size: 15px; line-height: 1.55; color: #3A4652">Broker rules let each node publish and listen only under its own topic.</span></li>
+<li style="background: #FFFFFF; border: 1px solid #DDE3E7; border-radius: 16px; padding: 22px; display: flex; flex-direction: column; gap: 8px"><b style="font-size: 17px">Signed firmware</b><span style="font-size: 15px; line-height: 1.55; color: #3A4652">A node refuses any update that isn't signed with the release key.</span></li>
+<li style="background: #FFFFFF; border: 1px solid #DDE3E7; border-radius: 16px; padding: 22px; display: flex; flex-direction: column; gap: 8px"><b style="font-size: 17px">Every action logged</b><span style="font-size: 15px; line-height: 1.55; color: #3A4652">Who switched what, when, and what the device answered.</span></li>
+</ul>
+</section>
+
+<section id="case" aria-labelledby="case-h" style="max-width: 1280px; margin: 0 auto; padding: 0 32px 112px">
+<div style="background: #0A0E13; color: #E7EDF3; border-radius: 26px; overflow: hidden; display: flex; flex-wrap: wrap">
+<div style="flex: 1 1 480px; min-width: 0; min-height: 360px; position: relative"><img src="/_blob/92c6b8bbdb6baec50d63fb59ad29d224" alt="Solar panels on the stone roof of an off-grid villa with a grey electrical box" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover"></div>
+<div style="flex: 1 1 480px; min-width: 0; padding: 48px; box-sizing: border-box; display: flex; flex-direction: column; gap: 18px">
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: #3DDC97">Case study · the first real node</span>
+<h2 id="case-h" style="margin: 0; font-family: 'Archivo', sans-serif; font-weight: 800; font-stretch: 110%; font-size: 40px; line-height: 1.08">An off-grid villa in Wadi El Natrun</h2>
+<p style="margin: 0; font-size: 17px; line-height: 1.6; color: #B9C5D2">A home that runs on solar and batteries alone. The owner wanted to know, from Cairo, whether tonight's battery would last, and to switch the water heater off when it wouldn't.</p>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(150px, 100%), 1fr)); gap: 12px">
+<div style="background: #161E28; border: 1px solid #2E3B4B; border-radius: 14px; padding: 16px; display: flex; flex-direction: column; gap: 4px"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 20px; color: #F5B13D">[MEASURED]</span><span style="font-size: 13px; color: #B9C5D2">uptime over 30 days</span></div>
+<div style="background: #161E28; border: 1px solid #2E3B4B; border-radius: 14px; padding: 16px; display: flex; flex-direction: column; gap: 4px"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 20px; color: #F5B13D">[MEASURED]</span><span style="font-size: 13px; color: #B9C5D2">readings replayed after outages</span></div>
+<div style="background: #161E28; border: 1px solid #2E3B4B; border-radius: 14px; padding: 16px; display: flex; flex-direction: column; gap: 4px"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 20px; color: #F5B13D">[MEASURED]</span><span style="font-size: 13px; color: #B9C5D2">p95 device → screen</span></div>
+</div>
+<a href="Device.dc.html" style="align-self: flex-start; color: #3DDC97; font-weight: 600; font-size: 16px">Open this node live →</a>
+</div>
+</div>
+</section>
+
+<section style="background: #3DDC97; color: #06130D">
+<div style="max-width: 1280px; margin: 0 auto; padding: 72px 32px; display: flex; flex-wrap: wrap; gap: 28px; align-items: center; justify-content: space-between">
+<div style="display: flex; flex-direction: column; gap: 10px; flex: 1 1 520px; min-width: 0">
+<span style="font-family: 'Archivo', sans-serif; font-weight: 800; font-stretch: 115%; font-size: 52px; line-height: 1">See the fleet breathe.</span>
+<span style="font-size: 18px; color: #0D3B27">The demo is live. Flip a relay and watch the device answer.</span>
+</div>
+<a href="Fleet.dc.html" style="background: #06130D; color: #F2F5F8; font-weight: 600; font-size: 17px; text-decoration: none; padding: 18px 30px; border-radius: 12px; min-height: 56px; box-sizing: border-box; display: inline-flex; align-items: center">Open live demo</a>
+</div>
+</section>
+
+<footer style="background: #0A0E13; color: #B9C5D2">
+<div style="max-width: 1280px; margin: 0 auto; padding: 40px 32px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 20px; font-size: 14px">
+<div style="display: flex; flex-direction: column; gap: 6px"><span style="color: #E7EDF3">Designed and built by Abanoub Rashad · Mechatronics engineer, software developer</span><span style="color: #93A3B5">Photos are AI-generated for this project. Demo data is simulated and labelled.</span></div>
+<div style="display: flex; gap: 22px; flex-wrap: wrap"><a href="https://abanoub--rashad.web.app" style="color: #3DDC97">Portfolio</a><a href="https://github.com/AbanoubRashad" style="color: #3DDC97">GitHub</a><a href="Architecture.dc.html" style="color: #3DDC97">Architecture</a></div>
+</div>
+</footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":5600}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { t: 0, tab: 'collect', menu: '', mcat: 'Sensor nodes' };
+  }
+  componentDidMount() {
+    this.timer = setInterval(() => this.setState({ t: (this.state.t || 0) + 1 }), 1000);
+  }
+  componentWillUnmount() {
+    clearInterval(this.timer);
+  }
+  renderVals() {
+    const st = this.state || {};
+    const t = st.t || 0;
+    const tab = st.tab || 'collect';
+    const defs = [
+      { id: 'collect', num: '01', label: 'Collect', title: 'Every reading, checked and kept', body: 'Nodes publish over MQTT with TLS. An ingest worker validates each message against one shared schema, drops duplicates and writes to a time-series database in batches.', points: ['QoS 1 delivery with per-device sequence numbers', 'Malformed messages kept aside with the reason', 'Hourly and daily roll-ups for instant charts'] },
+      { id: 'see', num: '02', label: 'See', title: 'Live without refreshing', body: 'Readings reach the dashboard over WebSockets in well under a second. Drop the connection and the page fills the gap from the database when it comes back.', points: ['Charts from 15 minutes to 7 days', 'English and Arabic, desktop and phone', 'Latency measured from the device clock'] },
+      { id: 'alert', num: '03', label: 'Alert', title: 'The right person, once', body: 'Write a rule in plain terms. When it fires, Nabd messages the right contact on WhatsApp or email, and a reply acknowledges it.', points: ['Wait-time, clear margin and cool-down on every rule', 'Backtest a rule against the last 7 days', 'Quiet hours, with critical alerts always on'] },
+      { id: 'control', num: '04', label: 'Control', title: 'Switch equipment from anywhere', body: 'Turn a pump, heater or fan on or off from the dashboard. You see each step of the command, and the device has the final word.', points: ['Every command has an ID and an expiry', 'Relays fall back to off if the link is lost', 'Demo visitors can only switch simulated devices'] },
+      { id: 'update', num: '05', label: 'Update', title: 'New firmware without a ladder', body: 'Push signed firmware to one node or a whole site. Each node verifies the signature, installs to a spare slot and keeps it only after checking in.', points: ['ECDSA signatures checked on the chip', 'Automatic rollback on a bad build', 'Version and health for every node'] }
+    ];
+    const tabs = defs.map((d) => ({
+      num: d.num,
+      label: d.label,
+      selected: d.id === tab ? 'true' : 'false',
+      bg: d.id === tab ? '#3DDC97' : 'transparent',
+      fg: d.id === tab ? '#06130D' : '#DCE3EA',
+      border: d.id === tab ? '#3DDC97' : '#2E3B4B',
+      pick: () => this.setState({ tab: d.id })
+    }));
+    const cur = defs.find((d) => d.id === tab) || defs[0];
+    const pvAt = (k) => 3.3 + 0.35 * Math.sin(k / 9) + 0.08 * Math.sin(k * 1.7);
+    const loadAt = (k) => 1.2 + 0.25 * Math.sin(k / 5 + 1) + 0.06 * Math.sin(k * 2.3);
+    let pv = '';
+    let load = '';
+    for (let i = 0; i <= 46; i++) {
+      const x = (i * 10).toFixed(0);
+      pv += x + ',' + (195 - pvAt(i + t) * 45).toFixed(1) + ' ';
+      load += x + ',' + (195 - loadAt(i + t) * 45).toFixed(1) + ' ';
+    }
+    let spark = '';
+    for (let i = 0; i <= 36; i++) {
+      const v = 6.2 + i * 0.06 + 0.15 * Math.sin((i + t) * 0.9);
+      spark += (i * 10) + ',' + (90 - (v - 5) * 18).toFixed(1) + ' ';
+    }
+    const fridge = (8.2 + 0.1 * Math.sin(t * 0.7)).toFixed(1);
+    const rows = (1284310 + t * 24).toLocaleString('en-US');
+    const menu = st.menu || '';
+    const mcat = st.mcat || 'Sensor nodes';
+    const menus = [['products', 'Products'], ['solutions', 'Solutions'], ['platform', 'Platform'], ['resources', 'Resources']].map((m) => ({
+      label: m[1],
+      expanded: menu === m[0] ? 'true' : 'false',
+      bg: menu === m[0] ? 'rgba(255,255,255,.14)' : 'transparent',
+      rot: menu === m[0] ? 'rotate(180deg)' : 'none',
+      toggle: () => this.setState({ menu: menu === m[0] ? '' : m[0] })
+    }));
+    const PR = [
+      { code: 'P1', name: 'Power Node', cat: 'Sensor nodes', line: 'Solar, battery and load', img: '/_blob/26ddb0c7aa683c70b02dcb49090514e2', alt: 'P1 power node', status: 'Prototype' },
+      { code: 'C1', name: 'Climate Node', cat: 'Sensor nodes', line: 'Air, humidity and soil', img: '/_blob/f3c1a67704f79c7723d511f9e9d416ba', alt: 'C1 climate node, open', status: 'Prototype' },
+      { code: 'F1', name: 'Cold-Chain Probe', cat: 'Sensor nodes', line: 'Fridges and freezers', img: '/_blob/b4897e4bc52a6753ce9182f4cfe86235', alt: 'F1 cold-chain probe', status: 'Prototype' },
+      { code: 'R1', name: 'Relay Controller', cat: 'Controllers', line: 'Switch pumps and heaters', img: '/_blob/683d6e47c62c8ee738a4f8fcd6f2cb95', alt: 'R1 relay controller', status: 'Prototype' },
+      { code: 'W1', name: 'Pump Controller', cat: 'Controllers', line: 'Pressure and dry-run', img: '', alt: '', status: 'Planned' },
+      { code: 'G1', name: 'BLE Gateway', cat: 'Gateways', line: 'BLE tags to MQTT', img: '/_blob/81875a80b378c49eb57b92cff6b042f6', alt: 'G1 BLE gateway', status: 'Planned' },
+      { code: 'T1', name: 'BLE Temperature Tag', cat: 'Sensor tags', line: 'Coin-cell sensor tag', img: '', alt: '', status: 'Planned' },
+      { code: 'K1', name: 'Starter Kit', cat: 'Kits', line: 'Everything for a first node', img: '/_blob/eccbe85ea4665bb14ffdc750797a0ba9', alt: 'Starter kit parts', status: 'Prototype' }
+    ];
+    const pcats = ['Sensor nodes', 'Controllers', 'Gateways', 'Sensor tags', 'Kits'].map((c) => ({
+      label: c,
+      pressed: c === mcat ? 'true' : 'false',
+      bg: c === mcat ? '#EEF1F3' : 'transparent',
+      weight: c === mcat ? '600' : '400',
+      pick: () => this.setState({ mcat: c })
+    }));
+    const pitems = PR.filter((p) => p.cat === mcat).map((p) => Object.assign({}, p, { hasImg: !!p.img, noImg: !p.img }));
+    const featured = ['P1', 'F1', 'R1', 'G1'].map((c) => {
+      const p = PR.find((x) => x.code === c);
+      const proto = p.status === 'Prototype';
+      return Object.assign({}, p, { badgeBg: proto ? '#E3F5EC' : '#EEF1F3', badgeFg: proto ? '#075C40' : '#3A4652' });
+    });
+    const solutions = [
+      { name: 'Solar & energy', uses: ['Off-grid homes', 'Battery health', 'Load control'] },
+      { name: 'Agriculture', uses: ['Greenhouse climate', 'Smart irrigation', 'Soil moisture'] },
+      { name: 'Healthcare', uses: ['Vaccine fridges', 'Pharmacy storage', 'Clinic rooms'] },
+      { name: 'Cold storage', uses: ['Freezer rooms', 'Door alarms', 'Compressor duty'] },
+      { name: 'Water & pumping', uses: ['Pump protection', 'Tank levels', 'Pipe pressure'] },
+      { name: 'Manufacturing', uses: ['Motor vibration', 'Machine temperature', 'Energy per line'] }
+    ];
+    const tech = [
+      { name: 'Connectivity', text: 'MQTT 5 over TLS, one key per device', href: '#platform' },
+      { name: 'Storage', text: 'Time-series data with hourly and daily roll-ups', href: '#platform' },
+      { name: 'Visualization', text: 'Live dashboards in English and Arabic', href: 'Fleet.dc.html' },
+      { name: 'Alerts', text: 'Rules with wait time, margin and cool-down', href: 'Alerts.dc.html' },
+      { name: 'Remote control', text: 'Commands confirmed by the device', href: 'Device.dc.html' },
+      { name: 'Firmware updates', text: 'Signed, staged, with automatic rollback', href: 'Device.dc.html' },
+      { name: 'Security', text: 'Encryption, access rules and an audit log', href: '#security' },
+      { name: 'Architecture', text: 'How the services fit together', href: 'Architecture.dc.html' }
+    ];
+    return {
+      menus: menus,
+      open: { any: menu !== '', products: menu === 'products', solutions: menu === 'solutions', platform: menu === 'platform', resources: menu === 'resources' },
+      pcats: pcats,
+      pitems: pitems,
+      featured: featured,
+      solutions: solutions,
+      tech: tech,
+      tabs: tabs,
+      cur: cur,
+      show: { collect: tab === 'collect', see: tab === 'see', alert: tab === 'alert', control: tab === 'control', update: tab === 'update' },
+      pvLine: pv.trim(),
+      loadLine: load.trim(),
+      pv: pvAt(46 + t).toFixed(2),
+      load: loadAt(46 + t).toFixed(2),
+      spark: spark.trim(),
+      fridge: fridge,
+      rows: rows,
+      latency: 380 + ((t * 37) % 60)
+    };
+  }
+}
+</script>
+</body>
+</html>

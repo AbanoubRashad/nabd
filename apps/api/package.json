@@ -1,0 +1,23 @@
+{
+  "name": "@nabd/api",
+  "version": "0.0.0",
+  "private": true,
+  "description": "REST + WebSocket gateway: auth, live fan-out, command dispatch, alert rules, OTA.",
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "dev": "tsx watch --env-file-if-exists=../../.env src/main.ts",
+    "start": "node dist/main.js",
+    "lint": "eslint src",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@nabd/shared": "workspace:*",
+    "fastify": "5.12.7",
+    "pino": "10.4.0"
+  },
+  "devDependencies": {
+    "tsx": "4.23.15"
+  }
+}

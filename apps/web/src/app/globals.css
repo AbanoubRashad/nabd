@@ -1,0 +1,107 @@
+@import 'tailwindcss';
+
+/*
+ * Design tokens from the approved design (docs/design-reference).
+ * Marketing pages use the light tokens; the app (/fleet, /sites, /devices, /alerts) and the
+ * dark landing sections set data-theme="dark" on their wrapper.
+ */
+:root {
+  /* light marketing */
+  --page: #f3f5f4;
+  --surface: #ffffff;
+  --ink: #0b1117;
+  --ink-2: #3a4652;
+  --muted: #5b6875;
+  --line: #dde3e7;
+  --green-text: #0b7a55;
+  --green-text-hover: #075c40;
+  --tag-green: #e3f5ec;
+  --tag-neutral: #eef1f3;
+
+  /* dark app */
+  --ground: #0a0e13;
+  --panel: #10161e;
+  --raised: #161e28;
+  --deep: #0d1218;
+  --line-1: #222d3a;
+  --line-2: #1e2733;
+  --line-3: #2e3b4b;
+  --text: #e7edf3;
+  --text-2: #b9c5d2;
+  --text-muted: #93a3b5;
+
+  /* signals (both themes) */
+  --signal: #3ddc97;
+  --on-signal: #06130d;
+  --info: #6cb4ff;
+  --warning: #f5b13d;
+  --critical: #ff7468;
+}
+
+@theme inline {
+  --color-page: var(--page);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-green-text: var(--green-text);
+  --color-green-text-hover: var(--green-text-hover);
+  --color-tag-green: var(--tag-green);
+  --color-tag-neutral: var(--tag-neutral);
+
+  --color-ground: var(--ground);
+  --color-panel: var(--panel);
+  --color-raised: var(--raised);
+  --color-deep: var(--deep);
+  --color-line-1: var(--line-1);
+  --color-line-2: var(--line-2);
+  --color-line-3: var(--line-3);
+  --color-text: var(--text);
+  --color-text-2: var(--text-2);
+  --color-text-muted: var(--text-muted);
+
+  --color-signal: var(--signal);
+  --color-on-signal: var(--on-signal);
+  --color-info: var(--info);
+  --color-warning: var(--warning);
+  --color-critical: var(--critical);
+
+  --font-display: var(--font-archivo), system-ui, sans-serif;
+  --font-sans: var(--font-plex-sans), var(--font-plex-arabic), system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
+  --font-arabic: var(--font-plex-arabic), var(--font-plex-sans), system-ui, sans-serif;
+
+  --radius-control: 10px;
+  --radius-card: 16px;
+}
+
+html {
+  background: var(--page);
+  color: var(--ink);
+}
+
+html[lang='ar'] body {
+  font-family: var(--font-arabic);
+}
+
+.font-display {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-stretch: 115%;
+}
+
+:focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

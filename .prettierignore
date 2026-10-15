@@ -1,0 +1,10 @@
+pnpm-lock.yaml
+**/dist
+**/.next
+**/.turbo
+**/coverage
+docs/design-reference
+design-pages
+firmware/nabd-node/.pio
+*.md
+**/next-env.d.ts
