@@ -47,16 +47,23 @@ describe('villa', () => {
   it('keeps every reading inside the ranges from the brief over a full day', () => {
     let state = { soc: 70, heater: false, pvW: 0, loadW: 0 };
     const start = Date.parse('2026-10-14T00:00:00Z');
+    // Track the extremes and assert once: 43,200 ticks of expect() calls would dominate the run time.
+    const lo = { soc: Infinity, bus_v: Infinity, load_w: Infinity };
+    const hi = { soc: -Infinity, bus_v: -Infinity, load_w: -Infinity };
     for (let t = start; t < start + 86_400_000; t += TICK_MS) {
       state = stepVilla(state, new Date(t), rng);
       const m = villaMetrics('nabd-01', state, rng);
-      expect(m.soc).toBeGreaterThanOrEqual(20);
-      expect(m.soc).toBeLessThanOrEqual(100);
-      expect(m.bus_v).toBeGreaterThanOrEqual(48);
-      expect(m.bus_v).toBeLessThanOrEqual(54);
-      expect(m.load_w).toBeGreaterThanOrEqual(600);
-      expect(m.load_w).toBeLessThanOrEqual(2800);
+      for (const k of ['soc', 'bus_v', 'load_w'] as const) {
+        lo[k] = Math.min(lo[k], m[k] ?? NaN);
+        hi[k] = Math.max(hi[k], m[k] ?? NaN);
+      }
     }
+    expect(lo.soc).toBeGreaterThanOrEqual(20);
+    expect(hi.soc).toBeLessThanOrEqual(100);
+    expect(lo.bus_v).toBeGreaterThanOrEqual(48);
+    expect(hi.bus_v).toBeLessThanOrEqual(54);
+    expect(lo.load_w).toBeGreaterThanOrEqual(600);
+    expect(hi.load_w).toBeLessThanOrEqual(2800);
   });
 
   it('adds 1.5 kW of load while the water heater relay is on', () => {

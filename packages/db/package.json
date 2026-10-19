@@ -28,7 +28,8 @@
     "migrate:up": "pnpm migrate up",
     "migrate:down": "pnpm migrate down",
     "credentials": "tsx src/cli/credentials.ts",
-    "seed": "tsx --env-file-if-exists=../../.env src/cli/seed.ts"
+    "seed": "tsx --env-file-if-exists=../../.env src/cli/seed.ts",
+    "test:int": "vitest run --config vitest.int.config.ts"
   },
   "dependencies": {
     "pg": "8.23.1",
@@ -38,6 +39,8 @@
   "devDependencies": {
     "@types/pg": "8.23.1",
     "node-pg-migrate": "9.0.0",
-    "tsx": "4.23.15"
+    "tsx": "4.23.15",
+    "@testcontainers/postgresql": "12.2.0",
+    "vitest": "5.0.5"
   }
 }
