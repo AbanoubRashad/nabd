@@ -13,6 +13,9 @@ import {
 import { readCredentials } from '@nabd/db/credentials';
 import { Batcher } from './batcher.js';
 import { route } from './route.js';
+import { providersFromEnv } from '@nabd/notify';
+import { RulesEngine } from './rules/engine.js';
+import { PgRulesStore } from './rules/pg-store.js';
 
 const log = pino({ name: 'ingest', level: process.env.LOG_LEVEL ?? 'info' });
 const port = Number(process.env.INGEST_PORT ?? 4100);
@@ -112,6 +115,33 @@ const batcher = new Batcher({
 // ---- MQTT -----------------------------------------------------------------------------------------------
 
 await refreshKnownDevices();
+
+// ---- rules engine (Phase 4) -------------------------------------------------------------------------------
+
+const engine = new RulesEngine(
+  new PgRulesStore(pool),
+  providersFromEnv(process.env, (line) => log.info(line)),
+  log,
+);
+await engine.load();
+// Rule edits from the dashboard are picked up within a minute; the clock drives silence and escalation.
+const reloadTimer = setInterval(() => {
+  engine.load().catch((err: unknown) => log.warn({ err }, 'could not reload rules'));
+}, 60_000);
+const clockTimer = setInterval(() => void engine.tick(), 30_000);
+
+// Acknowledge / mute requests from the API (dashboard button or WhatsApp reply) arrive by NOTIFY.
+const listener = await pool.connect();
+await listener.query('LISTEN nabd_alert_actions');
+listener.on('notification', (n) => {
+  if (n.channel !== 'nabd_alert_actions' || !n.payload) return;
+  try {
+    const a = JSON.parse(n.payload) as { alertId: string; action: 'ack' | 'mute'; by: string; at: string };
+    void engine.onAction(a.alertId, a.action, a.by, new Date(a.at));
+  } catch (err) {
+    log.warn({ err }, 'bad alert action');
+  }
+});
 const knownTimer = setInterval(() => {
   refreshKnownDevices().catch((err: unknown) => log.warn({ err }, 'could not refresh device list'));
 }, 30_000);
@@ -146,9 +176,16 @@ client.on('message', (topic, payload) => {
       const lag = (now.getTime() - r.ts.getTime()) / 1000;
       if (lag >= 0 && lag < 60) deviceLag.observe(lag); // older ones are replays from the offline buffer
       batcher.addReadings(r.deviceId, r.rows, r.ts);
+      // Rules never block ingest: the engine queues its own work.
+      void engine.onReading(
+        r.deviceId,
+        r.ts,
+        Object.fromEntries(r.rows.map((row) => [row.metric, row.value])),
+      );
       break;
     }
     case 'status':
+      if (r.update.online) engine.onSeen(r.update.deviceId, r.update.at);
       updateDeviceStatus(pool, r.update).catch((err: unknown) => log.error({ err }, 'status update failed'));
       break;
     case 'dead':
@@ -190,9 +227,13 @@ for (const signal of ['SIGINT', 'SIGTERM'] as const) {
     stopping = true;
     log.info({ signal, pending: batcher.pending }, 'draining');
     clearInterval(knownTimer);
+    clearInterval(reloadTimer);
+    clearInterval(clockTimer);
     void (async () => {
       await client.endAsync();
       const left = await batcher.drain();
+      await engine.idle();
+      listener.release();
       if (left > 0) log.error({ left }, 'shutdown with rows still unwritten');
       await pool.end();
       server.close(() => process.exit(left > 0 ? 1 : 0));

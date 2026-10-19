@@ -117,6 +117,9 @@ importers:
       '@nabd/db':
         specifier: workspace:*
         version: link:../../packages/db
+      '@nabd/notify':
+        specifier: workspace:*
+        version: link:../../packages/notify
       '@nabd/shared':
         specifier: workspace:*
         version: link:../../packages/shared

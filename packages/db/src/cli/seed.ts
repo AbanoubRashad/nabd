@@ -84,6 +84,22 @@ try {
     );
   }
 
+  // Optional admin account, only from the environment (never a default password).
+  if (process.env.ADMIN_EMAIL && process.env.ADMIN_PASSWORD) {
+    if (process.env.ADMIN_PASSWORD.length < 12)
+      throw new Error('ADMIN_PASSWORD must be at least 12 characters');
+    await client.query(
+      `INSERT INTO users (email, name, role, password_hash) VALUES ($1, $2, 'admin', $3)
+       ON CONFLICT (email) DO UPDATE SET password_hash = $3, role = 'admin'`,
+      [
+        process.env.ADMIN_EMAIL,
+        process.env.ADMIN_NAME ?? 'Owner',
+        await argon2.hash(process.env.ADMIN_PASSWORD, { type: argon2.argon2id }),
+      ],
+    );
+    console.log(`admin account ${process.env.ADMIN_EMAIL} is ready`);
+  }
+
   await client.query('COMMIT');
   console.log(
     `seeded ${SEED_SITES.length} sites, ${SEED_DEVICES.length} devices, ${SEED_RULES.length} rules and 1 contact`,
