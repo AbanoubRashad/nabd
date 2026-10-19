@@ -8,7 +8,7 @@ Status key: ✅ done · 🔶 in progress · ⏳ not started · ⛔ blocked (need
 | Phase | Scope | Status |
 | --- | --- | --- |
 | 0 | Monorepo, tooling, docker-compose, ADRs, this plan | 🔶 scaffold done; Docker and the GitHub repo still to confirm |
-| 1 | Contract, simulator, ingest, database | ⏳ |
+| 1 | Contract, simulator, ingest, database | 🔶 code and unit tests done; end-to-end run blocked on Docker |
 | 2 | API, WebSocket, `/fleet`, `/sites`, `/devices/[id]` | ⏳ |
 | 3 | Commands (relay flow) | ⏳ |
 | 4 | Rules engine and notifications | ⏳ |
@@ -20,7 +20,7 @@ Status key: ✅ done · 🔶 in progress · ⏳ not started · ⛔ blocked (need
 
 ---
 
-## Proposed changes to the brief (please confirm)
+## Proposed changes to the brief (confirmed by the owner, 2026-10-19)
 
 1. **Next.js 16 instead of 15.** 16.4 is the current stable release. Same App Router, plus Cache Components
    and `proxy.ts`. Baytak is already on 16, so the two portfolio projects match.
@@ -246,3 +246,53 @@ Status key: ✅ done · 🔶 in progress · ⏳ not started · ⛔ blocked (need
 - `pnpm infra:up` (Docker needs WSL)
 - CI on GitHub (no repo yet)
 - firmware build (PlatformIO not installed)
+
+### 2026-10-19: Phase 1, code complete (Docker still blocked)
+
+**Built:**
+
+- `@nabd/shared`:
+  - zod schemas for telemetry, status, cmd, ack and OTA (2 KB limit, registry-only metric keys,
+    plausibility ranges, 5-minute future-skew check)
+  - metric registry with EN/AR labels, `products.ts` (copy from the Products artboard), and the seed
+    constants (4 sites, 12 devices, 4 rules, 1 contact with no phone number)
+- `@nabd/db`:
+  - schema migration: every table from section 5, the `readings` hypertable, columnstore after 7 days,
+    90-day retention, `readings_1m/1h/1d` (min/max/sum/count) with refresh policies, `dead_letters`
+  - `unnest` batch insert and status helpers, `pnpm db:seed`, and `pnpm credentials` (per-device and
+    service MQTT passwords in the gitignored `secrets/`, argon2id hashes in the database)
+- EMQX: built-in-database auth (PBKDF2) and an ACL that confines each device to its own subtree;
+  least-privilege `svc-ingest` and `svc-api` accounts
+- Simulator: 12 devices with the section 9 behaviours, persisted `seq`, Last Will, two-step acks with the
+  brief's timings, optional 2 % timeouts, nabd-11 offline 15 min every hour
+- Ingest: shared subscription, validation, dead letters, 250 ms / 500-row batches in one transaction,
+  retry with backoff, `/healthz`, Prometheus `/metrics`, graceful drain
+
+**Verified on this PC:**
+
+- `pnpm format:check` ✓ · `pnpm lint` ✓ (8/8) · `pnpm typecheck` ✓ (8/8) · `pnpm build` ✓ (6/6)
+- `pnpm test`: 56 tests pass (shared 27, simulator 14, ingest 14, api 1)
+  - the fridge scenario stays above 8 °C for 6–8 min once per 20 min, then recovers below 7.5 °C
+  - simulator protocol against an in-process broker (aedes): retained status, valid telemetry with a
+    counting `seq`, delivered → done in ≥ 800 ms, expired and unknown-relay rejections, Last Will
+  - in 1 of 4 full runs the api health test failed under parallel load; it passed alone and in the other
+    3 runs. Watching it.
+
+**Not verified yet (needs Docker):**
+
+- the migration on a real TimescaleDB, the seed, the EMQX config and ACL, and the end-to-end path
+  simulator → EMQX → ingest → rows. `pnpm test:int` (Testcontainers) is written; it currently fails only
+  with "Could not find a working container runtime".
+
+**Decisions made:**
+
+- MQTT 3.1.1 for devices and services. The contract needs nothing from MQTT 5, ESP32 libraries speak
+  3.1.1, and it lets the protocol tests run on aedes.
+- TimescaleDB requires the partitioning column in every unique index, so the idempotency key is
+  `(device_id, seq, metric, ts)`. A replay carries the same `ts`, so duplicates are still dropped.
+- The design gives full values only for the fridge rule. The other rules' clear thresholds, cooldowns and
+  severities are my choices, marked in `packages/shared/src/seed.ts`.
+
+**Next:** once WSL and Docker work, run `pnpm credentials`, `pnpm infra:up`, `pnpm db:migrate`,
+`pnpm db:seed`, `pnpm dev` and `pnpm test:int`, fix whatever the real database and broker disagree with,
+then start Phase 2.
