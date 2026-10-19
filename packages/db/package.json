@@ -8,6 +8,10 @@
     ".": {
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
+    },
+    "./credentials": {
+      "types": "./dist/credentials.d.ts",
+      "default": "./dist/credentials.js"
     }
   },
   "files": [
@@ -20,15 +24,20 @@
     "lint": "eslint src",
     "typecheck": "tsc --noEmit",
     "test": "vitest run --passWithNoTests",
-    "migrate": "node-pg-migrate --migrations-dir migrations --use-glob --migration-file-language sql",
+    "migrate": "node-pg-migrate --migrations-dir migrations --use-glob --migration-file-language sql --envPath ../../.env",
     "migrate:up": "pnpm migrate up",
-    "migrate:down": "pnpm migrate down"
+    "migrate:down": "pnpm migrate down",
+    "credentials": "tsx src/cli/credentials.ts",
+    "seed": "tsx --env-file-if-exists=../../.env src/cli/seed.ts"
   },
   "dependencies": {
-    "pg": "8.23.1"
+    "pg": "8.23.1",
+    "@nabd/shared": "workspace:*",
+    "argon2": "0.45.1"
   },
   "devDependencies": {
     "@types/pg": "8.23.1",
-    "node-pg-migrate": "9.0.0"
+    "node-pg-migrate": "9.0.0",
+    "tsx": "4.23.15"
   }
 }

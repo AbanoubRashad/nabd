@@ -26,8 +26,6 @@ services:
     environment:
       EMQX_NODE__NAME: emqx@node1.nabd
       EMQX_DASHBOARD__DEFAULT_PASSWORD: ${EMQX_DASHBOARD_PASSWORD:?set EMQX_DASHBOARD_PASSWORD in .env}
-      # Anonymous access is off: every device and service authenticates (configured in Phase 1).
-      EMQX_MQTT__MAX_PACKET_SIZE: 4KB
     ports:
       # Plain MQTT is bound to localhost for development only. Production exposes 8883 (TLS) only.
       - '127.0.0.1:1883:1883'
@@ -35,6 +33,10 @@ services:
       - '127.0.0.1:18083:18083'
     volumes:
       - emqx-data:/opt/emqx/data
+      # Authentication, ACL and packet limits (see infra/emqx/README.md). Run `pnpm credentials` first.
+      - ./emqx/base.hocon:/opt/emqx/etc/base.hocon:ro
+      - ./emqx/acl.conf:/opt/emqx/etc/nabd-acl/acl.conf:ro
+      - ./emqx/secrets:/opt/emqx/etc/nabd:ro
     healthcheck:
       test: ['CMD', '/opt/emqx/bin/emqx', 'ctl', 'status']
       interval: 10s

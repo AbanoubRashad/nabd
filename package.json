@@ -17,7 +17,10 @@
     "format:check": "prettier --check .",
     "infra:up": "docker compose -f infra/docker-compose.yml up -d emqx timescaledb",
     "infra:down": "docker compose -f infra/docker-compose.yml down",
-    "infra:logs": "docker compose -f infra/docker-compose.yml logs -f"
+    "infra:logs": "docker compose -f infra/docker-compose.yml logs -f",
+    "credentials": "pnpm --filter @nabd/db credentials",
+    "db:migrate": "pnpm --filter @nabd/db migrate up",
+    "db:seed": "pnpm --filter @nabd/db seed"
   },
   "devDependencies": {
     "@eslint/js": "9.39.5",
