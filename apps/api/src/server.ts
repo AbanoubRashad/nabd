@@ -38,6 +38,7 @@ import {
   seriesDto,
   siteDto,
   statsDto,
+  summaryDto,
   userDto,
   type RuleDto,
 } from '@nabd/shared';
@@ -61,6 +62,8 @@ export interface ServerDeps {
     webOrigins: string[];
     whatsappAppSecret: string | null;
     whatsappVerifyToken: string | null;
+    /** The real board's device id, which alone may fill the landing page case study. */
+    realDevice?: string | null;
     logLevel?: string;
   };
 }
@@ -224,6 +227,58 @@ export async function buildServer(deps: ServerDeps): Promise<FastifyInstance> {
         to,
         pickSource(from.getTime(), to.getTime()),
       );
+    },
+  );
+
+  app.get(
+    '/fleet/summary',
+    {
+      schema: {
+        tags: ['fleet'],
+        description: 'Measured numbers for the landing page. Cached for 5 seconds.',
+        response: { 200: summaryDto },
+      },
+    },
+    async (_req, reply) => {
+      reply.header('cache-control', 'public, max-age=5');
+      const [devices, readingsToday, alerts] = await Promise.all([
+        store.listDevices(),
+        store.readingsToday(),
+        store.listAlerts({ limit: 20 }),
+      ]);
+      const fridge = devices.find((d) => d.id === 'nabd-07');
+      const fridgeAlert = alerts.find((a) => a.deviceId === 'nabd-07');
+      const detail = fridgeAlert ? await store.getAlert(fridgeAlert.id) : null;
+      const real = deps.config.realDevice;
+      const realStats = real ? await store.realDeviceStats(real) : null;
+      return {
+        readingsToday,
+        devicesOnline: devices.filter((d) => d.online).length,
+        devicesTotal: devices.length,
+        sites: new Set(devices.map((d) => d.siteSlug)).size,
+        latencyP95Ms: latency.p95('push'),
+        fridge: fridge
+          ? {
+              probeC: fridge.online ? (fridge.latest.probe_c?.value ?? null) : null,
+              status: fridge.status,
+              spark: await store.recentMinutes('nabd-07', 'probe_c'),
+              alert: detail
+                ? {
+                    openedAt: detail.openedAt,
+                    notifiedAt: detail.events?.find((e) => e.kind === 'notified')?.at ?? null,
+                    acknowledgedAt: detail.acknowledgedAt,
+                  }
+                : null,
+            }
+          : null,
+        caseStudy: realStats
+          ? {
+              uptimePct30d: realStats.uptimePct30d,
+              replayedReadings: realStats.replayedReadings,
+              latencyP95Ms: latency.p95('push'),
+            }
+          : null,
+      };
     },
   );
 

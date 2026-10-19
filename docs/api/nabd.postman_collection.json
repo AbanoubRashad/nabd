@@ -168,6 +168,19 @@
           }
         },
         {
+          "name": "GET /fleet/summary",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/fleet/summary",
+              "host": ["{{baseUrl}}"],
+              "path": ["fleet", "summary"]
+            },
+            "description": "Measured numbers for the landing page. Cached for 5 seconds."
+          }
+        },
+        {
           "name": "GET /fleet/stats",
           "request": {
             "method": "GET",

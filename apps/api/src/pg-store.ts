@@ -216,6 +216,44 @@ export class PgStore implements Store {
     };
   }
 
+  async readingsToday(): Promise<number> {
+    const { rows } = await this.pool.query(
+      `SELECT COALESCE(sum(count), 0)::bigint AS n FROM readings_1h
+       WHERE bucket >= date_trunc('day', now() AT TIME ZONE 'Africa/Cairo') AT TIME ZONE 'Africa/Cairo'`,
+    );
+    return Number((rows[0] as Row).n);
+  }
+
+  async recentMinutes(deviceId: string, metric: string): Promise<number[]> {
+    const { rows } = await this.pool.query(
+      `SELECT sum / count AS v FROM readings_1m
+       WHERE device_id = $1 AND metric = $2 AND bucket >= now() - interval '30 minutes' ORDER BY bucket`,
+      [deviceId, metric],
+    );
+    return rows.map((r: Row) => Number(r.v));
+  }
+
+  async realDeviceStats(deviceId: string) {
+    // Uptime: share of minutes in the last 30 days with at least one reading. Replays: readings that
+    // arrived more than a minute after their device timestamp (sent from the offline buffer).
+    const { rows } = await this.pool.query(
+      `SELECT
+         (SELECT count(DISTINCT bucket) FROM readings_1m WHERE device_id = $1 AND bucket > now() - interval '30 days') AS minutes,
+         (SELECT min(ts) FROM readings WHERE device_id = $1) AS first,
+         (SELECT count(*) FROM readings WHERE device_id = $1 AND received_at - ts > interval '1 minute'
+            AND ts > now() - interval '30 days') AS replayed`,
+      [deviceId],
+    );
+    const r = rows[0] as Row;
+    if (!r.first) return null;
+    const since = Math.max(Date.parse(String(r.first)), Date.now() - 30 * 86_400_000);
+    const possible = Math.max(1, Math.floor((Date.now() - since) / 60_000));
+    return {
+      uptimePct30d: Math.min(100, Math.round((Number(r.minutes) / possible) * 1000) / 10),
+      replayedReadings: Number(r.replayed),
+    };
+  }
+
   async siteHistory(): Promise<HistoryDto[]> {
     // For each site and each of the last 24 hours: the worst severity of any alert open during that hour.
     const { rows } = await this.pool.query(`

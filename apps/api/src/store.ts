@@ -57,6 +57,14 @@ export interface Store {
   getDevice(id: string): Promise<DeviceDto | null>;
   series(deviceId: string, metric: string, from: Date, to: Date, source: SeriesSource): Promise<SeriesDto>;
   siteHistory(): Promise<HistoryDto[]>;
+  /** Readings stored since local midnight (Cairo), from the hourly roll-up. */
+  readingsToday(): Promise<number>;
+  /** Per-minute averages of one metric over the last 30 minutes. */
+  recentMinutes(deviceId: string, metric: string): Promise<number[]>;
+  /** Case-study figures for the real board over 30 days, or null if it has no data yet. */
+  realDeviceStats(
+    deviceId: string,
+  ): Promise<{ uptimePct30d: number | null; replayedReadings: number } | null>;
   recentEvents(limit: number): Promise<FleetEventDto[]>;
   /** Readings with a seq above `afterSeq`, newer than `since`, oldest first. */
   messagesSince(deviceId: string, afterSeq: number, since: Date, limit: number): Promise<StoredMessage[]>;

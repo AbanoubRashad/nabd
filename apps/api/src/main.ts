@@ -79,6 +79,7 @@ const app = await buildServer({
     webOrigins: (process.env.WEB_ORIGIN ?? 'http://localhost:3001,http://localhost:3000').split(','),
     whatsappAppSecret: process.env.WHATSAPP_APP_SECRET || null,
     whatsappVerifyToken: process.env.WHATSAPP_VERIFY_TOKEN || null,
+    realDevice: process.env.NABD_REAL_DEVICE || null,
   },
 });
 

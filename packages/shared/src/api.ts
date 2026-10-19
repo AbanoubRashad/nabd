@@ -189,6 +189,35 @@ export const fleetEventDto = z.object({
 });
 export type FleetEventDto = z.infer<typeof fleetEventDto>;
 
+/** Public numbers for the landing page. Every value is measured; null means "not measured yet". */
+export const summaryDto = z.object({
+  readingsToday: z.number(),
+  devicesOnline: z.number(),
+  devicesTotal: z.number(),
+  sites: z.number(),
+  latencyP95Ms: z.number().nullable(),
+  fridge: z
+    .object({
+      probeC: z.number().nullable(),
+      status: z.enum(['ok', 'warning', 'critical', 'offline']),
+      /** Last 30 minutes of the probe, one value per minute, for the hero sparkline. */
+      spark: z.array(z.number()),
+      alert: z
+        .object({ openedAt: z.string(), notifiedAt: z.string().nullable(), acknowledgedAt: z.string().nullable() })
+        .nullable(),
+    })
+    .nullable(),
+  /** Filled only from the real board (NABD_REAL_DEVICE); simulated data never fills the case study. */
+  caseStudy: z
+    .object({
+      uptimePct30d: z.number().nullable(),
+      replayedReadings: z.number().nullable(),
+      latencyP95Ms: z.number().nullable(),
+    })
+    .nullable(),
+});
+export type SummaryDto = z.infer<typeof summaryDto>;
+
 export const statsDto = z.object({
   devicesTotal: z.number(),
   devicesOnline: z.number(),

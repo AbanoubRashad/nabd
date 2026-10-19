@@ -123,6 +123,13 @@ describe('read endpoints', () => {
     expect(bad.statusCode).toBe(400);
   });
 
+  it('serves landing numbers and never fills the case study from simulated data', async () => {
+    const { app } = await harness();
+    const res = await app.inject('/fleet/summary');
+    expect(res.statusCode).toBe(200);
+    expect(res.json()).toMatchObject({ devicesTotal: 12, sites: 4, caseStudy: null });
+  });
+
   it('publishes an OpenAPI document', async () => {
     const { app } = await harness();
     await app.ready();

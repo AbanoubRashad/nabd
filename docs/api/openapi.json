@@ -683,6 +683,113 @@
         }
       }
     },
+    "/fleet/summary": {
+      "get": {
+        "tags": ["fleet"],
+        "description": "Measured numbers for the landing page. Cached for 5 seconds.",
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "readingsToday": {
+                      "type": "number"
+                    },
+                    "devicesOnline": {
+                      "type": "number"
+                    },
+                    "devicesTotal": {
+                      "type": "number"
+                    },
+                    "sites": {
+                      "type": "number"
+                    },
+                    "latencyP95Ms": {
+                      "nullable": true,
+                      "type": "number"
+                    },
+                    "fridge": {
+                      "nullable": true,
+                      "type": "object",
+                      "properties": {
+                        "probeC": {
+                          "nullable": true,
+                          "type": "number"
+                        },
+                        "status": {
+                          "type": "string",
+                          "enum": ["ok", "warning", "critical", "offline"]
+                        },
+                        "spark": {
+                          "type": "array",
+                          "items": {
+                            "type": "number"
+                          }
+                        },
+                        "alert": {
+                          "nullable": true,
+                          "type": "object",
+                          "properties": {
+                            "openedAt": {
+                              "type": "string"
+                            },
+                            "notifiedAt": {
+                              "nullable": true,
+                              "type": "string"
+                            },
+                            "acknowledgedAt": {
+                              "nullable": true,
+                              "type": "string"
+                            }
+                          },
+                          "required": ["openedAt", "notifiedAt", "acknowledgedAt"],
+                          "additionalProperties": false
+                        }
+                      },
+                      "required": ["probeC", "status", "spark", "alert"],
+                      "additionalProperties": false
+                    },
+                    "caseStudy": {
+                      "nullable": true,
+                      "type": "object",
+                      "properties": {
+                        "uptimePct30d": {
+                          "nullable": true,
+                          "type": "number"
+                        },
+                        "replayedReadings": {
+                          "nullable": true,
+                          "type": "number"
+                        },
+                        "latencyP95Ms": {
+                          "nullable": true,
+                          "type": "number"
+                        }
+                      },
+                      "required": ["uptimePct30d", "replayedReadings", "latencyP95Ms"],
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": [
+                    "readingsToday",
+                    "devicesOnline",
+                    "devicesTotal",
+                    "sites",
+                    "latencyP95Ms",
+                    "fridge",
+                    "caseStudy"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/fleet/stats": {
       "get": {
         "tags": ["fleet"],

@@ -74,6 +74,15 @@ export class MemoryStore implements Store {
   async series(deviceId: string, metric: string, from: Date, to: Date, source: SeriesSource) {
     return { deviceId, metric, source, from: from.toISOString(), to: to.toISOString(), points: [] };
   }
+  async readingsToday() {
+    return 0;
+  }
+  async recentMinutes() {
+    return [5.1, 5.4];
+  }
+  async realDeviceStats() {
+    return null;
+  }
   async siteHistory() {
     return SEED_SITES.map((s) => ({ slug: s.slug, hours: Array(24).fill('ok'), uptimePct: 100 }));
   }
