@@ -203,7 +203,11 @@ export const summaryDto = z.object({
       /** Last 30 minutes of the probe, one value per minute, for the hero sparkline. */
       spark: z.array(z.number()),
       alert: z
-        .object({ openedAt: z.string(), notifiedAt: z.string().nullable(), acknowledgedAt: z.string().nullable() })
+        .object({
+          openedAt: z.string(),
+          notifiedAt: z.string().nullable(),
+          acknowledgedAt: z.string().nullable(),
+        })
         .nullable(),
     })
     .nullable(),
