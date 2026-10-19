@@ -16,8 +16,8 @@ describe('pickSource', () => {
   it('switches to the next level as soon as the finer one would pass the point limit', () => {
     expect(pickSource(0, MAX_POINTS * 2000)).toBe('raw');
     expect(pickSource(0, MAX_POINTS * 2000 + 1)).toBe('1m');
-    expect(pickSource(0, 365 * 86_400_000)).toBe('1h'); // 8,760 hourly points would be too many…
-    expect(pickSource(0, 3 * 365 * 86_400_000)).toBe('1d'); // …and three years needs daily ones
+    expect(pickSource(0, 60 * 86_400_000)).toBe('1h'); // 1,440 hourly points
+    expect(pickSource(0, 365 * 86_400_000)).toBe('1d'); // 8,760 hourly points would be too many
   });
 });
 
