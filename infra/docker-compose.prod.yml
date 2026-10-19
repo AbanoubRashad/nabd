@@ -1,0 +1,102 @@
+# Production overrides for the VPS:
+#   docker compose -f infra/docker-compose.yml -f infra/docker-compose.prod.yml --profile stack up -d
+#
+# - EMQX gets a TLS listener on 8883 using the certificate Caddy obtains for mqtt.<domain>.
+# - Plain MQTT (1883) is only reachable inside the Docker network: no host port at all.
+# - Postgres and the EMQX dashboard are not published to the host; use an SSH tunnel to reach them.
+services:
+  emqx:
+    ports: !override
+      - '8883:8883'
+    environment:
+      EMQX_LISTENERS__SSL__DEFAULT__BIND: '0.0.0.0:8883'
+      EMQX_LISTENERS__SSL__DEFAULT__SSL_OPTIONS__CERTFILE: /certs/mqtt.${NABD_DOMAIN}/mqtt.${NABD_DOMAIN}.crt
+      EMQX_LISTENERS__SSL__DEFAULT__SSL_OPTIONS__KEYFILE: /certs/mqtt.${NABD_DOMAIN}/mqtt.${NABD_DOMAIN}.key
+      EMQX_LISTENERS__SSL__DEFAULT__SSL_OPTIONS__VERSIONS: '[tlsv1.3, tlsv1.2]'
+    volumes:
+      # Caddy's certificate directory for Let's Encrypt production issuances.
+      - type: volume
+        source: caddy-data
+        target: /certs
+        read_only: true
+        volume:
+          subpath: caddy/certificates/acme-v02.api.letsencrypt.org-directory
+    depends_on:
+      caddy: { condition: service_started }
+
+  timescaledb:
+    ports: !reset []
+
+  caddy:
+    environment:
+      NABD_DOMAIN: ${NABD_DOMAIN:?set NABD_DOMAIN in .env}
+      ACME_EMAIL: ${ACME_EMAIL:?set ACME_EMAIL in .env}
+    volumes:
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - ./firmware:/srv/firmware:ro
+
+  api:
+    environment:
+      NODE_ENV: production
+      MQTT_URL: mqtt://emqx:1883
+      DATABASE_URL: postgres://${POSTGRES_USER:-nabd}:${POSTGRES_PASSWORD}@timescaledb:5432/nabd
+      NABD_CREDENTIALS_FILE: /run/secrets/nabd-credentials.json
+    volumes:
+      - ../secrets:/run/secrets:ro
+
+  ingest:
+    environment:
+      NODE_ENV: production
+      MQTT_URL: mqtt://emqx:1883
+      DATABASE_URL: postgres://${POSTGRES_USER:-nabd}:${POSTGRES_PASSWORD}@timescaledb:5432/nabd
+      NABD_CREDENTIALS_FILE: /run/secrets/nabd-credentials.json
+    volumes:
+      - ../secrets:/run/secrets:ro
+
+  simulator:
+    environment:
+      NODE_ENV: production
+      MQTT_URL: mqtt://emqx:1883
+      NABD_CREDENTIALS_FILE: /run/secrets/nabd-credentials.json
+      SIM_STATE_DIR: /state
+    volumes:
+      - ../secrets:/run/secrets:ro
+      - sim-state:/state
+
+  # One-shot: `docker compose … run --rm migrate` applies migrations and seeds the demo fleet.
+  migrate:
+    profiles: [tools]
+    build: { context: .., dockerfile: infra/node.Dockerfile, args: { APP: db } }
+    env_file: ../.env
+    environment:
+      DATABASE_URL: postgres://${POSTGRES_USER:-nabd}:${POSTGRES_PASSWORD}@timescaledb:5432/nabd
+      NABD_CREDENTIALS_FILE: /run/secrets/nabd-credentials.json
+      NODE_ENV: production
+    command:
+      ['sh', '-c', 'npx node-pg-migrate up --migrations-dir migrations --use-glob && node dist/cli/seed.js']
+    volumes:
+      - ../secrets:/run/secrets:ro
+    depends_on: { timescaledb: { condition: service_healthy } }
+
+  # Nightly logical backup. Upload to object storage is configured in docs/DEPLOY.md (step 9).
+  backup:
+    profiles: [stack]
+    image: timescale/timescaledb:2.30.2-pg16
+    restart: unless-stopped
+    environment:
+      PGPASSWORD: ${POSTGRES_PASSWORD}
+    entrypoint: ['/bin/sh', '-c']
+    command:
+      - >-
+        while true; do
+          pg_dump -h timescaledb -U ${POSTGRES_USER:-nabd} -d nabd -Fc -f /backups/nabd-$$(date +%F).dump &&
+          find /backups -name 'nabd-*.dump' -mtime +14 -delete;
+          sleep 86400;
+        done
+    volumes:
+      - ./backups:/backups
+    depends_on: { timescaledb: { condition: service_healthy } }
+
+volumes:
+  sim-state:

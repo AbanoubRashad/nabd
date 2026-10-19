@@ -110,7 +110,7 @@
     "chart": "{metric} · last 24 hours",
     "chartNote": "{source} roll-up · min / avg / max",
     "control": "Remote control",
-    "relay": "Relay {ch} · GPIO 26",
+    "relay": "Relay {ch} · GPIO {pin}",
     "relayLabel": "{name} relay",
     "steps": {
       "sent": "Sent to broker",

@@ -34,11 +34,11 @@
   "dependencies": {
     "pg": "8.23.1",
     "@nabd/shared": "workspace:*",
-    "argon2": "0.45.1"
+    "argon2": "0.45.1",
+    "node-pg-migrate": "9.0.0"
   },
   "devDependencies": {
     "@types/pg": "8.23.1",
-    "node-pg-migrate": "9.0.0",
     "tsx": "4.23.15",
     "@testcontainers/postgresql": "12.2.0",
     "vitest": "5.0.5"

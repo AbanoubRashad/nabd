@@ -110,7 +110,7 @@
     "chart": "{metric} · آخر 24 ساعة",
     "chartNote": "تجميع {source} · أدنى / متوسط / أعلى",
     "control": "التحكم عن بُعد",
-    "relay": "المرحّل {ch} · GPIO 26",
+    "relay": "المرحّل {ch} · GPIO {pin}",
     "relayLabel": "مرحّل {name}",
     "steps": {
       "sent": "أُرسل إلى الوسيط",

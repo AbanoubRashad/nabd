@@ -21,7 +21,8 @@
     "credentials": "pnpm --filter @nabd/db credentials",
     "db:migrate": "pnpm --filter @nabd/db migrate up",
     "db:seed": "pnpm --filter @nabd/db seed",
-    "test:int": "turbo run test:int"
+    "test:int": "turbo run test:int",
+    "load": "pnpm --filter @nabd/load load"
   },
   "devDependencies": {
     "@eslint/js": "9.39.5",

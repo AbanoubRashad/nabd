@@ -92,7 +92,9 @@ export function RelayControl({ deviceId, channel, name, reported, reportedAt, up
       <div className="flex items-center justify-between gap-4">
         <div className="flex flex-col gap-1">
           <span className="font-semibold">{name}</span>
-          <span className="text-[13px] text-text-muted">{t('relay', { ch: channel })}</span>
+          <span className="text-[13px] text-text-muted">
+            {t('relay', { ch: channel, pin: channel === 1 ? 4 : 5 })}
+          </span>
         </div>
         <button
           type="button"

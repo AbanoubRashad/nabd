@@ -22,7 +22,8 @@ export function Catalog() {
     : 'all';
 
   function set(key: 'cat' | 'status', value: string) {
-    const next = new URLSearchParams(params.toString());
+    // Read the live URL: two quick clicks must not build on search params that have not updated yet.
+    const next = new URLSearchParams(window.location.search);
     if (value === 'all') next.delete(key);
     else next.set(key, value);
     const q = next.toString();

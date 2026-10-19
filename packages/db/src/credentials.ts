@@ -8,7 +8,9 @@ import { SEED_DEVICES } from '@nabd/shared';
 export const REPO_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '../../..');
 
 /** Development credentials. Both paths are under a `secrets/` directory, which .gitignore excludes. */
-export const CREDENTIALS_FILE = resolve(REPO_ROOT, 'secrets/dev-credentials.json');
+export const CREDENTIALS_FILE = process.env.NABD_CREDENTIALS_FILE
+  ? resolve(process.env.NABD_CREDENTIALS_FILE)
+  : resolve(REPO_ROOT, 'secrets/dev-credentials.json');
 export const EMQX_USERS_FILE = resolve(REPO_ROOT, 'infra/emqx/secrets/users.csv');
 
 /** MQTT service accounts. Each one gets only the topics it needs (infra/emqx/acl.conf). */
@@ -21,7 +23,7 @@ export interface Credentials {
 
 const secret = () => randomBytes(24).toString('base64url');
 
-export function readCredentials(file = process.env.NABD_CREDENTIALS_FILE ?? CREDENTIALS_FILE): Credentials {
+export function readCredentials(file = CREDENTIALS_FILE): Credentials {
   if (!existsSync(file)) {
     throw new Error(`${file} not found. Run \`pnpm credentials\` first.`);
   }

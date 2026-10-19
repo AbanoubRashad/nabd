@@ -38,3 +38,10 @@ apps/web/next-env.d.ts
 
 # simulator state (persisted seq counters)
 .sim-state/
+
+# production data on the VPS
+infra/backups/
+infra/firmware/
+
+# Playwright
+apps/web/e2e/screenshots/

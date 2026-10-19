@@ -216,6 +216,9 @@ importers:
       argon2:
         specifier: 0.45.1
         version: 0.45.1
+      node-pg-migrate:
+        specifier: 9.0.0
+        version: 9.0.0(@types/pg@8.23.1)(pg@8.23.1)
       pg:
         specifier: 8.23.1
         version: 8.23.1
@@ -226,9 +229,6 @@ importers:
       '@types/pg':
         specifier: 8.23.1
         version: 8.23.1
-      node-pg-migrate:
-        specifier: 9.0.0
-        version: 9.0.0(@types/pg@8.23.1)(pg@8.23.1)
       tsx:
         specifier: 4.23.15
         version: 4.23.15
@@ -243,6 +243,25 @@ importers:
       zod:
         specifier: 4.6.7
         version: 4.6.7
+
+  scripts/load:
+    dependencies:
+      mqtt:
+        specifier: 5.16.0
+        version: 5.16.0
+      pg:
+        specifier: 8.23.1
+        version: 8.23.1
+      ws:
+        specifier: 8.22.0
+        version: 8.22.0
+    devDependencies:
+      '@types/pg':
+        specifier: 8.23.1
+        version: 8.23.1
+      '@types/ws':
+        specifier: 8.18.2
+        version: 8.18.2
 
 packages:
 

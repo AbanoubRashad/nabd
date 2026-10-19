@@ -1,5 +1,29 @@
-# TLS for the API and WebSocket gateway. Replace [NABD_DOMAIN] in docs/DEPLOY.md step 4.
-api.{$NABD_DOMAIN:localhost} {
+# Caddy terminates TLS for everything public on the VPS (docs/DEPLOY.md). Certificates come from Let's
+# Encrypt automatically. Set NABD_DOMAIN in .env, for example nabd.example.com.
+{
+	email {$ACME_EMAIL}
+}
+
+# REST API and the WebSocket (wss://api.<domain>/ws). Caddy proxies WebSocket upgrades as is.
+api.{$NABD_DOMAIN} {
 	encode zstd gzip
 	reverse_proxy api:4000
+	header {
+		Strict-Transport-Security "max-age=63072000; includeSubDomains"
+		-Server
+	}
+}
+
+# Signed firmware images. Devices download over HTTPS and verify the ECDSA signature themselves, so the
+# file server only needs to be reachable, not trusted.
+fw.{$NABD_DOMAIN} {
+	root * /srv/firmware
+	file_server
+	header Cache-Control "public, max-age=31536000, immutable"
+}
+
+# This site only exists so Caddy obtains (and renews) a certificate for the MQTT name. EMQX reads the
+# same files for its TLS listener on 8883 (infra/docker-compose.prod.yml).
+mqtt.{$NABD_DOMAIN} {
+	respond "MQTT is on port 8883" 200
 }
