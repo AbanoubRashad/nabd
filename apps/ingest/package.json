@@ -16,6 +16,7 @@
     "@nabd/db": "workspace:*",
     "@nabd/notify": "workspace:*",
     "@nabd/shared": "workspace:*",
+    "@sentry/node": "11.4.0",
     "mqtt": "5.16.0",
     "pino": "10.4.0",
     "prom-client": "15.1.3"

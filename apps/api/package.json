@@ -24,6 +24,7 @@
     "@nabd/db": "workspace:*",
     "@nabd/notify": "workspace:*",
     "@nabd/shared": "workspace:*",
+    "@sentry/node": "11.4.0",
     "argon2": "0.45.1",
     "fastify": "5.12.7",
     "fastify-plugin": "5.1.0",

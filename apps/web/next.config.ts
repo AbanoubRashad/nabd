@@ -6,6 +6,8 @@ const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts');
 const api = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000';
 const ws = process.env.NEXT_PUBLIC_WS_URL ?? 'ws://localhost:4000/ws';
 const dev = process.env.NODE_ENV !== 'production';
+// When Sentry is on, the browser must be allowed to send to its ingest host.
+const sentry = process.env.NEXT_PUBLIC_SENTRY_DSN ? new URL(process.env.NEXT_PUBLIC_SENTRY_DSN).origin : '';
 
 /**
  * Content Security Policy. The marketing pages are prerendered, so a per-request nonce is not possible;
@@ -18,7 +20,7 @@ const csp = [
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob:",
   "font-src 'self'",
-  `connect-src 'self' ${api} ${ws}${dev ? ' ws://localhost:*' : ''}`,
+  `connect-src 'self' ${api} ${ws}${sentry ? ` ${sentry}` : ''}${dev ? ' ws://localhost:*' : ''}`,
   "frame-ancestors 'none'",
   "object-src 'none'",
   "base-uri 'self'",

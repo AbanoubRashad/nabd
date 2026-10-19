@@ -1,3 +1,4 @@
+import './sentry.js';
 import { randomBytes } from 'node:crypto';
 import { pino } from 'pino';
 import { createPool } from '@nabd/db';

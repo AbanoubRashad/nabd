@@ -7,17 +7,16 @@ Status key: ✅ done · 🔶 in progress · ⏳ not started · ⛔ blocked (need
 
 | Phase | Scope | Status |
 | --- | --- | --- |
-| 0 | Monorepo, tooling, docker-compose, ADRs, this plan | 🔶 scaffold done; Docker and the GitHub repo still to confirm |
-| 1 | Contract, simulator, ingest, database | 🔶 code and unit tests done; end-to-end run blocked on Docker |
-| 2 | API, WebSocket, `/fleet`, `/sites`, `/devices/[id]` | ⏳ |
-| 3 | Commands (relay flow) | ⏳ |
-| 4 | Rules engine and notifications | ⏳ |
-| 5 | Real hardware (ESP32-S3 firmware) | ⏳ needs the board |
-| 6 | Signed OTA with rollback | ⏳ needs the board |
-| 7 | Landing, products, mega-menus, Arabic, mobile, polish | ⏳ |
-| 8 | Hardening, load test, deploy | ⏳ needs accounts and a VPS |
-| 9 | README, case study, portfolio card, launch post | ⏳ |
-
+| 0 | Monorepo, tooling, docker-compose, ADRs, this plan | 🔶 done; CI on GitHub waits for the repo |
+| 1 | Contract, simulator, ingest, database | 🔶 code and tests done; real DB and broker run waits for Docker |
+| 2 | API, WebSocket, `/fleet`, `/sites`, `/devices/[id]` | 🔶 code and tests done; live check waits for Docker |
+| 3 | Commands (relay flow) | 🔶 code and tests done; live check waits for Docker |
+| 4 | Rules engine and notifications | 🔶 code and tests done; WhatsApp needs your Meta account |
+| 5 | Real hardware (ESP32-S3 firmware) | ⛔ code and native tests done; needs the board |
+| 6 | Signed OTA with rollback | ⛔ code and signing done; needs the board |
+| 7 | Landing, products, mega-menus, Arabic, mobile, polish | ✅ built and checked in the browser; Lighthouse after deploy |
+| 8 | Hardening, load test, deploy | 🔶 security, CSP, e2e, deploy guide and load test written; deploy needs accounts |
+| 9 | README, case study, portfolio card, launch post | ✅ written; portfolio change left uncommitted for review |
 ---
 
 ## Proposed changes to the brief (confirmed by the owner, 2026-10-19)
@@ -40,23 +39,17 @@ Status key: ✅ done · 🔶 in progress · ⏳ not started · ⛔ blocked (need
 
 ## Decisions and blockers for the owner
 
-- ⛔ **Docker can't start on this PC.** Docker Desktop is installed but **WSL is not**, and the Linux
-  engine needs it. Phase 1 needs Docker for TimescaleDB, EMQX and Testcontainers. Fix it with
-  `wsl --install`: run it in an admin terminal, then reboot and start Docker Desktop. I can run it if you
-  say so, but it needs admin rights and a reboot.
-- ⛔ **GitHub repo `AbanoubRashad/nabd` (public, MIT).** It isn't created yet, because that touches your
-  account. Until it exists, CI runs locally with the same commands as the workflow.
-- **Hardware for Phases 5–6:** ESP32-S3 DevKitC-1, INA219, SHT31, DS18B20 (waterproof), a 1-channel
-  opto-isolated relay module, and an SSD1306 0.96" I²C OLED. Do you have these on the desk?
-- **PlatformIO** isn't installed here. I'll install it in Phase 5 with `pip install platformio`, which is
-  free and local only.
-- Later, each one asked for at the time:
-  - Meta WhatsApp Business account plus approval of the `nabd_alert` template (Phase 4 uses the console
-    provider until then)
-  - Resend key
-  - Sentry DSNs
-  - VPS, domain and DNS
-  - Vercel project
+- ⛔ **Reboot the PC to finish WSL.** `wsl --install` ran on 2026-10-19, but WSL2 cannot start until
+  Windows restarts with "Virtual Machine Platform" enabled. If it still fails after the reboot, turn on
+  virtualization (Intel VT-x or AMD SVM) in the BIOS. Then start Docker Desktop. Everything that touches
+  the real database and broker is waiting on this.
+- ⛔ **GitHub repo `AbanoubRashad/nabd`** (public, MIT): create it, or tell me to, and push.
+- ⛔ **The ESP32-S3 board and sensors** for Phases 5–6 ([BOM](hardware/BOM.md)).
+- 🔑 **Back up the OTA signing key** at `%LOCALAPPDATA%
+abd-toolsota-signing-key.pem`. It is outside
+  the repo on purpose. Nodes only accept firmware signed with it.
+- Deployment accounts, each step marked in [DEPLOY.md](DEPLOY.md): domain, VPS, Vercel, Meta WhatsApp,
+  Resend, Sentry, object storage for backups.
 
 ## Plan by phase
 
@@ -296,3 +289,53 @@ Status key: ✅ done · 🔶 in progress · ⏳ not started · ⛔ blocked (need
 **Next:** once WSL and Docker work, run `pnpm credentials`, `pnpm infra:up`, `pnpm db:migrate`,
 `pnpm db:seed`, `pnpm dev` and `pnpm test:int`, fix whatever the real database and broker disagree with,
 then start Phase 2.
+
+### 2026-10-19: Phases 2–9, code complete
+
+**Built:**
+
+- Phase 4 core: rules state machine, series source selection and command lifecycle in `@nabd/shared`
+- `@nabd/notify`: WhatsApp Cloud API, Resend and console providers, with retries
+- API (Phases 2–3):
+  - REST endpoints with OpenAPI and Postman, plus argon2id login, JWT cookie and rotating refresh tokens
+  - CSRF header, rate limits, WebSocket hub with seq back-fill
+  - command service with a 10 s timeout, WhatsApp webhook, `/fleet/summary`
+- Ingest (Phase 4): rules engine on live readings and a 30 s clock, persisted rule state, alert timeline,
+  notifications, ack and mute by LISTEN/NOTIFY
+- Web:
+  - dashboard: `/fleet`, `/sites`, `/devices/[id]`, `/alerts`, `/alerts/[id]`, `/alerts/rules`, `/firmware`
+  - marketing: landing page, `/products`, `/products/[code]`
+  - English and Arabic RTL, mobile tab bar, sitemap, robots, OG image, CSP
+- Firmware (Phases 5–6): `nabd_core` library and device code (provisioning, profiles, TLS MQTT, buffer,
+  commands, fail-safe, OLED, watchdog, signed OTA with rollback), `scripts/sign-firmware.ts`, hardware docs
+- Phase 8: SECURITY.md checklist, production compose override (MQTT TLS, closed ports, migrations,
+  backups), Caddy, DEPLOY.md, load test, Sentry (off without a DSN), Playwright tests
+- Phase 9: README, CASE_STUDY, launch post, portfolio card
+
+**Verified on this PC:**
+
+- unit tests:
+  - shared 60, API 20, ingest 18, simulator 14, notify 7, web 3
+  - firmware core 16 (built with Zig's C++ compiler, since this PC has no gcc; CI uses gcc)
+- Playwright against the production build: 11 pass, run twice
+  - landing, tabs keyboard, mega-menu keyboard, filters in the URL
+  - Arabic RTL with no horizontal scroll at 390 px
+  - axe on 4 pages
+  - the 4 live tests skip without the API
+- screenshots checked in English and Arabic, desktop and 390 px
+- `sign-firmware.ts`: keygen refuses a key inside the repo; a signed image verifies; a 1-byte change fails
+
+**Bugs found and fixed while checking:**
+
+- unprefixed routes such as `/fleet` returned 404 (the proxy matcher lost its escaped dot)
+- the demo button text was invisible (unlayered link colour beat the utilities)
+- the product filters lost a selection on quick clicks
+- `upgrade-insecure-requests` would break a local production run against an HTTP API
+- the brief's GPIO 26 does not exist on the ESP32-S3 (SPI flash), so relays moved to GPIO 4 and 5
+
+**Not verified yet:**
+
+- anything against the real TimescaleDB and EMQX: migrations, the ACL, the end-to-end pipeline, the 4
+  live Playwright tests, the load test
+- the firmware build for the ESP32-S3 (in progress on this PC) and every on-board acceptance test
+- Lighthouse, the 24-hour unattended run, and Sentry receiving an error (all after deploy)
