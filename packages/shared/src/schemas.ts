@@ -35,13 +35,16 @@ export type Status = z.infer<typeof statusSchema>;
 export const ACK_STATES = ['delivered', 'done', 'rejected'] as const;
 export type AckState = (typeof ACK_STATES)[number];
 
+/** Relay channel: the board has at most two. */
+const relayChannel = z.union([z.literal(1), z.literal(2)]);
+
 const commandId = z.string().regex(/^c-[A-Za-z0-9-]{1,40}$/);
 
 export const ackSchema = z.strictObject({
   id: commandId,
   state: z.enum(ACK_STATES),
   reason: z.string().max(64).optional(),
-  relay: z.strictObject({ ch: z.int().min(1).max(2), on: z.boolean() }).optional(),
+  relay: z.strictObject({ ch: relayChannel, on: z.boolean() }).optional(),
 });
 export type Ack = z.infer<typeof ackSchema>;
 
@@ -51,7 +54,7 @@ export const commandSchema = z.discriminatedUnion('op', [
   z.strictObject({
     id: commandId,
     op: z.literal('relay.set'),
-    args: z.strictObject({ ch: z.int().min(1).max(2), on: z.boolean() }),
+    args: z.strictObject({ ch: relayChannel, on: z.boolean() }),
     exp: isoTime,
   }),
   z.strictObject({

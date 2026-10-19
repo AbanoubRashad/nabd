@@ -13,10 +13,13 @@
     "test": "vitest run --passWithNoTests"
   },
   "dependencies": {
+    "@nabd/db": "workspace:*",
     "@nabd/shared": "workspace:*",
+    "mqtt": "5.16.0",
     "pino": "10.4.0"
   },
   "devDependencies": {
+    "aedes": "1.2.0",
     "tsx": "4.23.15"
   }
 }
