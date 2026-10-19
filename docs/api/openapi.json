@@ -1,0 +1,2415 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Nabd API",
+    "version": "1.0.0",
+    "description": "REST API for the Nabd IoT platform. Cookie auth; mutating requests need the `x-nabd-csrf` header."
+  },
+  "components": {
+    "schemas": {}
+  },
+  "paths": {
+    "/auth/login": {
+      "post": {
+        "tags": ["auth"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "maxLength": 200,
+                    "format": "email",
+                    "pattern": "^(?:[A-Za-z0-9_'+\\-]+\\.)*[A-Za-z0-9_'+\\-]*[A-Za-z0-9_+-]@(?:[A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$"
+                  },
+                  "password": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  }
+                },
+                "required": ["email", "password"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "role": {
+                      "type": "string",
+                      "enum": ["admin", "viewer"]
+                    }
+                  },
+                  "required": ["id", "email", "name", "role"],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["error"],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/refresh": {
+      "post": {
+        "tags": ["auth"],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "role": {
+                      "type": "string",
+                      "enum": ["admin", "viewer"]
+                    }
+                  },
+                  "required": ["id", "email", "name", "role"],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["error"],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "tags": ["auth"],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/auth/me": {
+      "get": {
+        "tags": ["auth"],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "role": {
+                      "type": "string",
+                      "enum": ["admin", "viewer", "anon"]
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["role", "name"],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sites": {
+      "get": {
+        "tags": ["fleet"],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "slug": {
+                        "type": "string"
+                      },
+                      "nameEn": {
+                        "type": "string"
+                      },
+                      "nameAr": {
+                        "type": "string"
+                      },
+                      "placeEn": {
+                        "type": "string"
+                      },
+                      "placeAr": {
+                        "type": "string"
+                      },
+                      "kind": {
+                        "type": "string"
+                      },
+                      "timezone": {
+                        "type": "string"
+                      },
+                      "lat": {
+                        "type": "number"
+                      },
+                      "lng": {
+                        "type": "number"
+                      },
+                      "image": {
+                        "nullable": true,
+                        "type": "string"
+                      },
+                      "status": {
+                        "type": "string",
+                        "enum": ["ok", "warning", "critical"]
+                      },
+                      "deviceIds": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "required": [
+                      "slug",
+                      "nameEn",
+                      "nameAr",
+                      "placeEn",
+                      "placeAr",
+                      "kind",
+                      "timezone",
+                      "lat",
+                      "lng",
+                      "image",
+                      "status",
+                      "deviceIds"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sites/history": {
+      "get": {
+        "tags": ["fleet"],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "slug": {
+                        "type": "string"
+                      },
+                      "hours": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "enum": ["ok", "warning", "critical"]
+                        }
+                      },
+                      "uptimePct": {
+                        "type": "number"
+                      }
+                    },
+                    "required": ["slug", "hours", "uptimePct"],
+                    "additionalProperties": false
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/devices": {
+      "get": {
+        "tags": ["fleet"],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "siteSlug": {
+                        "type": "string"
+                      },
+                      "nameEn": {
+                        "type": "string"
+                      },
+                      "nameAr": {
+                        "type": "string"
+                      },
+                      "kind": {
+                        "type": "string"
+                      },
+                      "isSimulated": {
+                        "type": "boolean"
+                      },
+                      "fwVersion": {
+                        "nullable": true,
+                        "type": "string"
+                      },
+                      "online": {
+                        "type": "boolean"
+                      },
+                      "rssi": {
+                        "nullable": true,
+                        "type": "number"
+                      },
+                      "uptimeS": {
+                        "nullable": true,
+                        "type": "number"
+                      },
+                      "bootReason": {
+                        "nullable": true,
+                        "type": "string"
+                      },
+                      "lastSeenAt": {
+                        "nullable": true,
+                        "type": "string"
+                      },
+                      "latest": {
+                        "type": "object",
+                        "additionalProperties": {
+                          "type": "object",
+                          "properties": {
+                            "value": {
+                              "type": "number"
+                            },
+                            "ts": {
+                              "type": "string"
+                            }
+                          },
+                          "required": ["value", "ts"],
+                          "additionalProperties": false
+                        }
+                      },
+                      "status": {
+                        "type": "string",
+                        "enum": ["ok", "warning", "critical", "offline"]
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "siteSlug",
+                      "nameEn",
+                      "nameAr",
+                      "kind",
+                      "isSimulated",
+                      "fwVersion",
+                      "online",
+                      "rssi",
+                      "uptimeS",
+                      "bootReason",
+                      "lastSeenAt",
+                      "latest",
+                      "status"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/devices/{id}": {
+      "get": {
+        "tags": ["fleet"],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "maxLength": 64
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "siteSlug": {
+                      "type": "string"
+                    },
+                    "nameEn": {
+                      "type": "string"
+                    },
+                    "nameAr": {
+                      "type": "string"
+                    },
+                    "kind": {
+                      "type": "string"
+                    },
+                    "isSimulated": {
+                      "type": "boolean"
+                    },
+                    "fwVersion": {
+                      "nullable": true,
+                      "type": "string"
+                    },
+                    "online": {
+                      "type": "boolean"
+                    },
+                    "rssi": {
+                      "nullable": true,
+                      "type": "number"
+                    },
+                    "uptimeS": {
+                      "nullable": true,
+                      "type": "number"
+                    },
+                    "bootReason": {
+                      "nullable": true,
+                      "type": "string"
+                    },
+                    "lastSeenAt": {
+                      "nullable": true,
+                      "type": "string"
+                    },
+                    "latest": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "type": "object",
+                        "properties": {
+                          "value": {
+                            "type": "number"
+                          },
+                          "ts": {
+                            "type": "string"
+                          }
+                        },
+                        "required": ["value", "ts"],
+                        "additionalProperties": false
+                      }
+                    },
+                    "status": {
+                      "type": "string",
+                      "enum": ["ok", "warning", "critical", "offline"]
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "siteSlug",
+                    "nameEn",
+                    "nameAr",
+                    "kind",
+                    "isSimulated",
+                    "fwVersion",
+                    "online",
+                    "rssi",
+                    "uptimeS",
+                    "bootReason",
+                    "lastSeenAt",
+                    "latest",
+                    "status"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["error"],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/devices/{id}/readings": {
+      "get": {
+        "tags": ["fleet"],
+        "description": "Picks raw, 1m, 1h or 1d data automatically so the series stays at or under 2,000 points.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "enum": [
+                "pv_w",
+                "load_w",
+                "bus_v",
+                "soc",
+                "batt_a",
+                "batt_c",
+                "inv_w",
+                "ac_v",
+                "inv_c",
+                "air_c",
+                "rh",
+                "soil_pct",
+                "probe_c",
+                "door",
+                "compressor",
+                "duty_pct",
+                "current_a",
+                "power_w",
+                "relay1",
+                "relay2"
+              ]
+            },
+            "in": "query",
+            "name": "metric",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string",
+              "format": "date-time",
+              "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+            },
+            "in": "query",
+            "name": "from",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "string",
+              "format": "date-time",
+              "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+            },
+            "in": "query",
+            "name": "to",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "string",
+              "maxLength": 64
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "deviceId": {
+                      "type": "string"
+                    },
+                    "metric": {
+                      "type": "string"
+                    },
+                    "source": {
+                      "type": "string",
+                      "enum": ["raw", "1m", "1h", "1d"]
+                    },
+                    "from": {
+                      "type": "string"
+                    },
+                    "to": {
+                      "type": "string"
+                    },
+                    "points": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "t": {
+                            "type": "string"
+                          },
+                          "avg": {
+                            "type": "number"
+                          },
+                          "min": {
+                            "type": "number"
+                          },
+                          "max": {
+                            "type": "number"
+                          }
+                        },
+                        "required": ["t", "avg", "min", "max"],
+                        "additionalProperties": false
+                      }
+                    }
+                  },
+                  "required": ["deviceId", "metric", "source", "from", "to", "points"],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["error"],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["error"],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/fleet/stats": {
+      "get": {
+        "tags": ["fleet"],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "devicesTotal": {
+                      "type": "number"
+                    },
+                    "devicesOnline": {
+                      "type": "number"
+                    },
+                    "offline": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "since": {
+                            "nullable": true,
+                            "type": "string"
+                          }
+                        },
+                        "required": ["id", "since"],
+                        "additionalProperties": false
+                      }
+                    },
+                    "messagesPerSecond": {
+                      "type": "number"
+                    },
+                    "openAlerts": {
+                      "type": "object",
+                      "properties": {
+                        "critical": {
+                          "type": "number"
+                        },
+                        "warning": {
+                          "type": "number"
+                        }
+                      },
+                      "required": ["critical", "warning"],
+                      "additionalProperties": false
+                    },
+                    "latencyP95Ms": {
+                      "nullable": true,
+                      "type": "number"
+                    },
+                    "receiveP95Ms": {
+                      "nullable": true,
+                      "type": "number"
+                    },
+                    "latencySamples": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "devicesTotal",
+                    "devicesOnline",
+                    "offline",
+                    "messagesPerSecond",
+                    "openAlerts",
+                    "latencyP95Ms",
+                    "receiveP95Ms",
+                    "latencySamples"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/events": {
+      "get": {
+        "tags": ["fleet"],
+        "parameters": [
+          {
+            "schema": {
+              "default": 20,
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100
+            },
+            "in": "query",
+            "name": "limit",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "at": {
+                        "type": "string"
+                      },
+                      "kind": {
+                        "type": "string",
+                        "enum": ["alert", "command", "ota"]
+                      },
+                      "severity": {
+                        "type": "string",
+                        "enum": ["critical", "warning", "info"]
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "deviceId": {
+                        "type": "string"
+                      }
+                    },
+                    "required": ["at", "kind", "severity", "title", "detail", "deviceId"],
+                    "additionalProperties": false
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/devices/{id}/commands": {
+      "post": {
+        "tags": ["commands"],
+        "description": "Anonymous demo visitors may switch relays on simulated devices only, at most once every 3 seconds per IP.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "op": {
+                        "type": "string",
+                        "enum": ["relay.set"]
+                      },
+                      "args": {
+                        "type": "object",
+                        "properties": {
+                          "ch": {
+                            "anyOf": [
+                              {
+                                "type": "number",
+                                "enum": [1]
+                              },
+                              {
+                                "type": "number",
+                                "enum": [2]
+                              }
+                            ]
+                          },
+                          "on": {
+                            "type": "boolean"
+                          }
+                        },
+                        "required": ["ch", "on"]
+                      }
+                    },
+                    "required": ["op", "args"]
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "op": {
+                        "type": "string",
+                        "enum": ["reboot"]
+                      },
+                      "args": {
+                        "default": {},
+                        "type": "object",
+                        "properties": {}
+                      }
+                    },
+                    "required": ["op"]
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "maxLength": 64
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "deviceId": {
+                      "type": "string"
+                    },
+                    "op": {
+                      "type": "string"
+                    },
+                    "args": {
+                      "type": "object",
+                      "additionalProperties": {}
+                    },
+                    "state": {
+                      "type": "string",
+                      "enum": ["pending", "sent", "delivered", "done", "rejected", "timeout"]
+                    },
+                    "requestedBy": {
+                      "type": "string"
+                    },
+                    "createdAt": {
+                      "type": "string"
+                    },
+                    "sentAt": {
+                      "nullable": true,
+                      "type": "string"
+                    },
+                    "deliveredAt": {
+                      "nullable": true,
+                      "type": "string"
+                    },
+                    "doneAt": {
+                      "nullable": true,
+                      "type": "string"
+                    },
+                    "expiresAt": {
+                      "type": "string"
+                    },
+                    "error": {
+                      "nullable": true,
+                      "type": "string"
+                    },
+                    "result": {
+                      "nullable": true,
+                      "type": "object",
+                      "additionalProperties": {}
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "deviceId",
+                    "op",
+                    "args",
+                    "state",
+                    "requestedBy",
+                    "createdAt",
+                    "sentAt",
+                    "deliveredAt",
+                    "doneAt",
+                    "expiresAt",
+                    "error",
+                    "result"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["error"],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["error"],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["error"],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["error"],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/commands/{id}": {
+      "get": {
+        "tags": ["commands"],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "maxLength": 64
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "deviceId": {
+                      "type": "string"
+                    },
+                    "op": {
+                      "type": "string"
+                    },
+                    "args": {
+                      "type": "object",
+                      "additionalProperties": {}
+                    },
+                    "state": {
+                      "type": "string",
+                      "enum": ["pending", "sent", "delivered", "done", "rejected", "timeout"]
+                    },
+                    "requestedBy": {
+                      "type": "string"
+                    },
+                    "createdAt": {
+                      "type": "string"
+                    },
+                    "sentAt": {
+                      "nullable": true,
+                      "type": "string"
+                    },
+                    "deliveredAt": {
+                      "nullable": true,
+                      "type": "string"
+                    },
+                    "doneAt": {
+                      "nullable": true,
+                      "type": "string"
+                    },
+                    "expiresAt": {
+                      "type": "string"
+                    },
+                    "error": {
+                      "nullable": true,
+                      "type": "string"
+                    },
+                    "result": {
+                      "nullable": true,
+                      "type": "object",
+                      "additionalProperties": {}
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "deviceId",
+                    "op",
+                    "args",
+                    "state",
+                    "requestedBy",
+                    "createdAt",
+                    "sentAt",
+                    "deliveredAt",
+                    "doneAt",
+                    "expiresAt",
+                    "error",
+                    "result"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["error"],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/alert-rules": {
+      "get": {
+        "tags": ["alerts"],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "number"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "deviceId": {
+                        "nullable": true,
+                        "type": "string"
+                      },
+                      "siteSlug": {
+                        "nullable": true,
+                        "type": "string"
+                      },
+                      "metric": {
+                        "nullable": true,
+                        "type": "string"
+                      },
+                      "operator": {
+                        "type": "string",
+                        "enum": ["gt", "lt", "outside", "offline"]
+                      },
+                      "threshold": {
+                        "nullable": true,
+                        "type": "number"
+                      },
+                      "thresholdHigh": {
+                        "nullable": true,
+                        "type": "number"
+                      },
+                      "forSeconds": {
+                        "type": "number"
+                      },
+                      "clearThreshold": {
+                        "nullable": true,
+                        "type": "number"
+                      },
+                      "cooldownSeconds": {
+                        "type": "number"
+                      },
+                      "severity": {
+                        "type": "string",
+                        "enum": ["warning", "critical"]
+                      },
+                      "quietHours": {
+                        "nullable": true,
+                        "type": "object",
+                        "properties": {
+                          "start": {
+                            "type": "string"
+                          },
+                          "end": {
+                            "type": "string"
+                          }
+                        },
+                        "required": ["start", "end"],
+                        "additionalProperties": false
+                      },
+                      "channels": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "enum": ["whatsapp", "email"]
+                        }
+                      },
+                      "escalateAfterSeconds": {
+                        "nullable": true,
+                        "type": "number"
+                      },
+                      "enabled": {
+                        "type": "boolean"
+                      },
+                      "state": {
+                        "type": "string",
+                        "enum": ["ok", "firing"]
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "name",
+                      "deviceId",
+                      "siteSlug",
+                      "metric",
+                      "operator",
+                      "threshold",
+                      "thresholdHigh",
+                      "forSeconds",
+                      "clearThreshold",
+                      "cooldownSeconds",
+                      "severity",
+                      "quietHours",
+                      "channels",
+                      "escalateAfterSeconds",
+                      "enabled",
+                      "state"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["alerts"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 80
+                  },
+                  "deviceId": {
+                    "nullable": true,
+                    "type": "string"
+                  },
+                  "siteSlug": {
+                    "nullable": true,
+                    "type": "string"
+                  },
+                  "metric": {
+                    "nullable": true,
+                    "type": "string",
+                    "enum": [
+                      "pv_w",
+                      "load_w",
+                      "bus_v",
+                      "soc",
+                      "batt_a",
+                      "batt_c",
+                      "inv_w",
+                      "ac_v",
+                      "inv_c",
+                      "air_c",
+                      "rh",
+                      "soil_pct",
+                      "probe_c",
+                      "door",
+                      "compressor",
+                      "duty_pct",
+                      "current_a",
+                      "power_w",
+                      "relay1",
+                      "relay2"
+                    ]
+                  },
+                  "operator": {
+                    "type": "string",
+                    "enum": ["gt", "lt", "outside", "offline"]
+                  },
+                  "threshold": {
+                    "nullable": true,
+                    "type": "number"
+                  },
+                  "thresholdHigh": {
+                    "nullable": true,
+                    "type": "number"
+                  },
+                  "forSeconds": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 86400
+                  },
+                  "clearThreshold": {
+                    "nullable": true,
+                    "type": "number"
+                  },
+                  "cooldownSeconds": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 604800
+                  },
+                  "severity": {
+                    "type": "string",
+                    "enum": ["warning", "critical"]
+                  },
+                  "quietHours": {
+                    "nullable": true,
+                    "type": "object",
+                    "properties": {
+                      "start": {
+                        "type": "string",
+                        "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+                      },
+                      "end": {
+                        "type": "string",
+                        "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+                      }
+                    },
+                    "required": ["start", "end"]
+                  },
+                  "channels": {
+                    "maxItems": 2,
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "enum": ["whatsapp", "email"]
+                    }
+                  },
+                  "escalateAfterSeconds": {
+                    "nullable": true,
+                    "type": "integer",
+                    "minimum": 60,
+                    "maximum": 86400
+                  },
+                  "enabled": {
+                    "default": true,
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "name",
+                  "deviceId",
+                  "siteSlug",
+                  "metric",
+                  "operator",
+                  "threshold",
+                  "thresholdHigh",
+                  "forSeconds",
+                  "clearThreshold",
+                  "cooldownSeconds",
+                  "severity",
+                  "quietHours",
+                  "channels",
+                  "escalateAfterSeconds"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "deviceId": {
+                      "nullable": true,
+                      "type": "string"
+                    },
+                    "siteSlug": {
+                      "nullable": true,
+                      "type": "string"
+                    },
+                    "metric": {
+                      "nullable": true,
+                      "type": "string"
+                    },
+                    "operator": {
+                      "type": "string",
+                      "enum": ["gt", "lt", "outside", "offline"]
+                    },
+                    "threshold": {
+                      "nullable": true,
+                      "type": "number"
+                    },
+                    "thresholdHigh": {
+                      "nullable": true,
+                      "type": "number"
+                    },
+                    "forSeconds": {
+                      "type": "number"
+                    },
+                    "clearThreshold": {
+                      "nullable": true,
+                      "type": "number"
+                    },
+                    "cooldownSeconds": {
+                      "type": "number"
+                    },
+                    "severity": {
+                      "type": "string",
+                      "enum": ["warning", "critical"]
+                    },
+                    "quietHours": {
+                      "nullable": true,
+                      "type": "object",
+                      "properties": {
+                        "start": {
+                          "type": "string"
+                        },
+                        "end": {
+                          "type": "string"
+                        }
+                      },
+                      "required": ["start", "end"],
+                      "additionalProperties": false
+                    },
+                    "channels": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "enum": ["whatsapp", "email"]
+                      }
+                    },
+                    "escalateAfterSeconds": {
+                      "nullable": true,
+                      "type": "number"
+                    },
+                    "enabled": {
+                      "type": "boolean"
+                    },
+                    "state": {
+                      "type": "string",
+                      "enum": ["ok", "firing"]
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "name",
+                    "deviceId",
+                    "siteSlug",
+                    "metric",
+                    "operator",
+                    "threshold",
+                    "thresholdHigh",
+                    "forSeconds",
+                    "clearThreshold",
+                    "cooldownSeconds",
+                    "severity",
+                    "quietHours",
+                    "channels",
+                    "escalateAfterSeconds",
+                    "enabled",
+                    "state"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["error"],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/alert-rules/{id}": {
+      "patch": {
+        "tags": ["alerts"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 80
+                  },
+                  "deviceId": {
+                    "nullable": true,
+                    "type": "string"
+                  },
+                  "siteSlug": {
+                    "nullable": true,
+                    "type": "string"
+                  },
+                  "metric": {
+                    "nullable": true,
+                    "type": "string",
+                    "enum": [
+                      "pv_w",
+                      "load_w",
+                      "bus_v",
+                      "soc",
+                      "batt_a",
+                      "batt_c",
+                      "inv_w",
+                      "ac_v",
+                      "inv_c",
+                      "air_c",
+                      "rh",
+                      "soil_pct",
+                      "probe_c",
+                      "door",
+                      "compressor",
+                      "duty_pct",
+                      "current_a",
+                      "power_w",
+                      "relay1",
+                      "relay2"
+                    ]
+                  },
+                  "operator": {
+                    "type": "string",
+                    "enum": ["gt", "lt", "outside", "offline"]
+                  },
+                  "threshold": {
+                    "nullable": true,
+                    "type": "number"
+                  },
+                  "thresholdHigh": {
+                    "nullable": true,
+                    "type": "number"
+                  },
+                  "forSeconds": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 86400
+                  },
+                  "clearThreshold": {
+                    "nullable": true,
+                    "type": "number"
+                  },
+                  "cooldownSeconds": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 604800
+                  },
+                  "severity": {
+                    "type": "string",
+                    "enum": ["warning", "critical"]
+                  },
+                  "quietHours": {
+                    "nullable": true,
+                    "type": "object",
+                    "properties": {
+                      "start": {
+                        "type": "string",
+                        "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+                      },
+                      "end": {
+                        "type": "string",
+                        "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+                      }
+                    },
+                    "required": ["start", "end"]
+                  },
+                  "channels": {
+                    "maxItems": 2,
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "enum": ["whatsapp", "email"]
+                    }
+                  },
+                  "escalateAfterSeconds": {
+                    "nullable": true,
+                    "type": "integer",
+                    "minimum": 60,
+                    "maximum": 86400
+                  },
+                  "enabled": {
+                    "default": true,
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "name",
+                  "deviceId",
+                  "siteSlug",
+                  "metric",
+                  "operator",
+                  "threshold",
+                  "thresholdHigh",
+                  "forSeconds",
+                  "clearThreshold",
+                  "cooldownSeconds",
+                  "severity",
+                  "quietHours",
+                  "channels",
+                  "escalateAfterSeconds"
+                ]
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "exclusiveMinimum": true,
+              "maximum": 9007199254740991
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "deviceId": {
+                      "nullable": true,
+                      "type": "string"
+                    },
+                    "siteSlug": {
+                      "nullable": true,
+                      "type": "string"
+                    },
+                    "metric": {
+                      "nullable": true,
+                      "type": "string"
+                    },
+                    "operator": {
+                      "type": "string",
+                      "enum": ["gt", "lt", "outside", "offline"]
+                    },
+                    "threshold": {
+                      "nullable": true,
+                      "type": "number"
+                    },
+                    "thresholdHigh": {
+                      "nullable": true,
+                      "type": "number"
+                    },
+                    "forSeconds": {
+                      "type": "number"
+                    },
+                    "clearThreshold": {
+                      "nullable": true,
+                      "type": "number"
+                    },
+                    "cooldownSeconds": {
+                      "type": "number"
+                    },
+                    "severity": {
+                      "type": "string",
+                      "enum": ["warning", "critical"]
+                    },
+                    "quietHours": {
+                      "nullable": true,
+                      "type": "object",
+                      "properties": {
+                        "start": {
+                          "type": "string"
+                        },
+                        "end": {
+                          "type": "string"
+                        }
+                      },
+                      "required": ["start", "end"],
+                      "additionalProperties": false
+                    },
+                    "channels": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "enum": ["whatsapp", "email"]
+                      }
+                    },
+                    "escalateAfterSeconds": {
+                      "nullable": true,
+                      "type": "number"
+                    },
+                    "enabled": {
+                      "type": "boolean"
+                    },
+                    "state": {
+                      "type": "string",
+                      "enum": ["ok", "firing"]
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "name",
+                    "deviceId",
+                    "siteSlug",
+                    "metric",
+                    "operator",
+                    "threshold",
+                    "thresholdHigh",
+                    "forSeconds",
+                    "clearThreshold",
+                    "cooldownSeconds",
+                    "severity",
+                    "quietHours",
+                    "channels",
+                    "escalateAfterSeconds",
+                    "enabled",
+                    "state"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["error"],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["alerts"],
+        "parameters": [
+          {
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "exclusiveMinimum": true,
+              "maximum": 9007199254740991
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/alert-rules/{id}/test": {
+      "post": {
+        "tags": ["alerts"],
+        "description": "Backtest over the last 7 days of one-minute roll-ups: \"would have fired N times\".",
+        "parameters": [
+          {
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "exclusiveMinimum": true,
+              "maximum": 9007199254740991
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "fired": {
+                      "type": "number"
+                    },
+                    "devices": {
+                      "type": "number"
+                    },
+                    "days": {
+                      "type": "number"
+                    }
+                  },
+                  "required": ["fired", "devices", "days"],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["error"],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/alert-rules/{id}/test-message": {
+      "post": {
+        "tags": ["alerts"],
+        "parameters": [
+          {
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "exclusiveMinimum": true,
+              "maximum": 9007199254740991
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "sent": {
+                      "type": "number"
+                    },
+                    "preview": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["sent", "preview"],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["error"],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/alerts": {
+      "get": {
+        "tags": ["alerts"],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "enum": ["true", "false"]
+            },
+            "in": "query",
+            "name": "open",
+            "required": false
+          },
+          {
+            "schema": {
+              "default": 50,
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 200
+            },
+            "in": "query",
+            "name": "limit",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "ruleId": {
+                        "type": "number"
+                      },
+                      "ruleName": {
+                        "type": "string"
+                      },
+                      "deviceId": {
+                        "type": "string"
+                      },
+                      "siteSlug": {
+                        "type": "string"
+                      },
+                      "severity": {
+                        "type": "string",
+                        "enum": ["warning", "critical"]
+                      },
+                      "state": {
+                        "type": "string",
+                        "enum": ["pending", "firing", "acknowledged", "muted", "resolved"]
+                      },
+                      "openedAt": {
+                        "type": "string"
+                      },
+                      "acknowledgedAt": {
+                        "nullable": true,
+                        "type": "string"
+                      },
+                      "acknowledgedBy": {
+                        "nullable": true,
+                        "type": "string"
+                      },
+                      "resolvedAt": {
+                        "nullable": true,
+                        "type": "string"
+                      },
+                      "peakValue": {
+                        "nullable": true,
+                        "type": "number"
+                      },
+                      "events": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "at": {
+                              "type": "string"
+                            },
+                            "kind": {
+                              "type": "string"
+                            },
+                            "detail": {
+                              "type": "object",
+                              "additionalProperties": {}
+                            }
+                          },
+                          "required": ["at", "kind", "detail"],
+                          "additionalProperties": false
+                        }
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "ruleId",
+                      "ruleName",
+                      "deviceId",
+                      "siteSlug",
+                      "severity",
+                      "state",
+                      "openedAt",
+                      "acknowledgedAt",
+                      "acknowledgedBy",
+                      "resolvedAt",
+                      "peakValue"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/alerts/{id}": {
+      "get": {
+        "tags": ["alerts"],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "maxLength": 64
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "ruleId": {
+                      "type": "number"
+                    },
+                    "ruleName": {
+                      "type": "string"
+                    },
+                    "deviceId": {
+                      "type": "string"
+                    },
+                    "siteSlug": {
+                      "type": "string"
+                    },
+                    "severity": {
+                      "type": "string",
+                      "enum": ["warning", "critical"]
+                    },
+                    "state": {
+                      "type": "string",
+                      "enum": ["pending", "firing", "acknowledged", "muted", "resolved"]
+                    },
+                    "openedAt": {
+                      "type": "string"
+                    },
+                    "acknowledgedAt": {
+                      "nullable": true,
+                      "type": "string"
+                    },
+                    "acknowledgedBy": {
+                      "nullable": true,
+                      "type": "string"
+                    },
+                    "resolvedAt": {
+                      "nullable": true,
+                      "type": "string"
+                    },
+                    "peakValue": {
+                      "nullable": true,
+                      "type": "number"
+                    },
+                    "events": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "at": {
+                            "type": "string"
+                          },
+                          "kind": {
+                            "type": "string"
+                          },
+                          "detail": {
+                            "type": "object",
+                            "additionalProperties": {}
+                          }
+                        },
+                        "required": ["at", "kind", "detail"],
+                        "additionalProperties": false
+                      }
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "ruleId",
+                    "ruleName",
+                    "deviceId",
+                    "siteSlug",
+                    "severity",
+                    "state",
+                    "openedAt",
+                    "acknowledgedAt",
+                    "acknowledgedBy",
+                    "resolvedAt",
+                    "peakValue"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["error"],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/alerts/{id}/ack": {
+      "post": {
+        "tags": ["alerts"],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "maxLength": 64
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": ["ok"],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["error"],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/firmware": {
+      "get": {
+        "tags": ["firmware"],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "version": {
+                        "type": "string"
+                      },
+                      "sha256": {
+                        "type": "string"
+                      },
+                      "url": {
+                        "type": "string"
+                      },
+                      "notes": {
+                        "nullable": true,
+                        "type": "string"
+                      },
+                      "createdAt": {
+                        "type": "string"
+                      }
+                    },
+                    "required": ["version", "sha256", "url", "notes", "createdAt"],
+                    "additionalProperties": false
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/devices/{id}/ota": {
+      "post": {
+        "tags": ["firmware"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "version": {
+                    "type": "string",
+                    "pattern": "^\\d+\\.\\d+\\.\\d+$"
+                  }
+                },
+                "required": ["version"]
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "maxLength": 64
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": {
+                      "type": "boolean"
+                    },
+                    "version": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["ok", "version"],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["error"],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["error"],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:4000"
+    }
+  ]
+}

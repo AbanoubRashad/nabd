@@ -4,8 +4,15 @@
     "rootDir": "src",
     "outDir": "dist",
     "composite": true,
-    "types": ["node"]
+    "types": [
+      "node"
+    ]
   },
-  "include": ["src"],
-  "exclude": ["src/**/*.test.ts"]
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "src/**/*.test.ts",
+    "src/memory-store.ts"
+  ]
 }

@@ -1,0 +1,471 @@
+{
+  "info": {
+    "name": "Nabd API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Generated from the API route schemas. Log in with POST /auth/login first; cookies carry the session."
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:4000"
+    }
+  ],
+  "item": [
+    {
+      "name": "auth",
+      "item": [
+        {
+          "name": "POST /auth/login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "x-nabd-csrf",
+                "value": "1"
+              },
+              {
+                "key": "content-type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            }
+          }
+        },
+        {
+          "name": "POST /auth/refresh",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "x-nabd-csrf",
+                "value": "1"
+              },
+              {
+                "key": "content-type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/refresh",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "refresh"]
+            },
+            "description": ""
+          }
+        },
+        {
+          "name": "POST /auth/logout",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "x-nabd-csrf",
+                "value": "1"
+              },
+              {
+                "key": "content-type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/logout",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "logout"]
+            },
+            "description": ""
+          }
+        },
+        {
+          "name": "GET /auth/me",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/auth/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "me"]
+            },
+            "description": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "fleet",
+      "item": [
+        {
+          "name": "GET /sites",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/sites",
+              "host": ["{{baseUrl}}"],
+              "path": ["sites"]
+            },
+            "description": ""
+          }
+        },
+        {
+          "name": "GET /sites/history",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/sites/history",
+              "host": ["{{baseUrl}}"],
+              "path": ["sites", "history"]
+            },
+            "description": ""
+          }
+        },
+        {
+          "name": "GET /devices",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/devices",
+              "host": ["{{baseUrl}}"],
+              "path": ["devices"]
+            },
+            "description": ""
+          }
+        },
+        {
+          "name": "GET /devices/{id}",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/devices/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["devices", ":id"]
+            },
+            "description": ""
+          }
+        },
+        {
+          "name": "GET /devices/{id}/readings",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/devices/:id/readings",
+              "host": ["{{baseUrl}}"],
+              "path": ["devices", ":id", "readings"]
+            },
+            "description": "Picks raw, 1m, 1h or 1d data automatically so the series stays at or under 2,000 points."
+          }
+        },
+        {
+          "name": "GET /fleet/stats",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/fleet/stats",
+              "host": ["{{baseUrl}}"],
+              "path": ["fleet", "stats"]
+            },
+            "description": ""
+          }
+        },
+        {
+          "name": "GET /events",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/events",
+              "host": ["{{baseUrl}}"],
+              "path": ["events"]
+            },
+            "description": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "commands",
+      "item": [
+        {
+          "name": "POST /devices/{id}/commands",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "x-nabd-csrf",
+                "value": "1"
+              },
+              {
+                "key": "content-type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/devices/:id/commands",
+              "host": ["{{baseUrl}}"],
+              "path": ["devices", ":id", "commands"]
+            },
+            "description": "Anonymous demo visitors may switch relays on simulated devices only, at most once every 3 seconds per IP.",
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            }
+          }
+        },
+        {
+          "name": "GET /commands/{id}",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/commands/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["commands", ":id"]
+            },
+            "description": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "alerts",
+      "item": [
+        {
+          "name": "GET /alert-rules",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/alert-rules",
+              "host": ["{{baseUrl}}"],
+              "path": ["alert-rules"]
+            },
+            "description": ""
+          }
+        },
+        {
+          "name": "POST /alert-rules",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "x-nabd-csrf",
+                "value": "1"
+              },
+              {
+                "key": "content-type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/alert-rules",
+              "host": ["{{baseUrl}}"],
+              "path": ["alert-rules"]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            }
+          }
+        },
+        {
+          "name": "PATCH /alert-rules/{id}",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "x-nabd-csrf",
+                "value": "1"
+              },
+              {
+                "key": "content-type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/alert-rules/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["alert-rules", ":id"]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            }
+          }
+        },
+        {
+          "name": "DELETE /alert-rules/{id}",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "x-nabd-csrf",
+                "value": "1"
+              },
+              {
+                "key": "content-type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/alert-rules/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["alert-rules", ":id"]
+            },
+            "description": ""
+          }
+        },
+        {
+          "name": "POST /alert-rules/{id}/test",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "x-nabd-csrf",
+                "value": "1"
+              },
+              {
+                "key": "content-type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/alert-rules/:id/test",
+              "host": ["{{baseUrl}}"],
+              "path": ["alert-rules", ":id", "test"]
+            },
+            "description": "Backtest over the last 7 days of one-minute roll-ups: \"would have fired N times\"."
+          }
+        },
+        {
+          "name": "POST /alert-rules/{id}/test-message",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "x-nabd-csrf",
+                "value": "1"
+              },
+              {
+                "key": "content-type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/alert-rules/:id/test-message",
+              "host": ["{{baseUrl}}"],
+              "path": ["alert-rules", ":id", "test-message"]
+            },
+            "description": ""
+          }
+        },
+        {
+          "name": "GET /alerts",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/alerts",
+              "host": ["{{baseUrl}}"],
+              "path": ["alerts"]
+            },
+            "description": ""
+          }
+        },
+        {
+          "name": "GET /alerts/{id}",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/alerts/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["alerts", ":id"]
+            },
+            "description": ""
+          }
+        },
+        {
+          "name": "POST /alerts/{id}/ack",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "x-nabd-csrf",
+                "value": "1"
+              },
+              {
+                "key": "content-type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/alerts/:id/ack",
+              "host": ["{{baseUrl}}"],
+              "path": ["alerts", ":id", "ack"]
+            },
+            "description": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "firmware",
+      "item": [
+        {
+          "name": "GET /firmware",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/firmware",
+              "host": ["{{baseUrl}}"],
+              "path": ["firmware"]
+            },
+            "description": ""
+          }
+        },
+        {
+          "name": "POST /devices/{id}/ota",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "x-nabd-csrf",
+                "value": "1"
+              },
+              {
+                "key": "content-type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/devices/:id/ota",
+              "host": ["{{baseUrl}}"],
+              "path": ["devices", ":id", "ota"]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
