@@ -8,7 +8,16 @@ You need the board on USB, this repository, and Python 3.10 or newer.
 python -m venv ~/.nabd-pio && ~/.nabd-pio/bin/pip install platformio    # Windows: ~/.nabd-pio/Scripts/pip
 ```
 
-The first build downloads the ESP32-S3 toolchain (about 600 MB).
+The first build downloads the ESP32-S3 toolchain and core libraries (several GB unpacked).
+
+**On Windows:**
+
+- Run `pio` from **PowerShell or cmd, not Git Bash**. Espressif's tool installer refuses MSYS/MinGW
+  shells ("MSys/Mingw is not supported"), and the build then fails with
+  `'xtensa-esp32s3-elf-g++' is not recognized`.
+- Use a **short PlatformIO home**, or the core libraries hit the 260-character path limit while
+  unpacking: `$env:PLATFORMIO_CORE_DIR = 'C:\pio'` before the first build. Enabling Windows long paths
+  (admin) works too.
 
 ## 2. Create the device's MQTT password (30 seconds)
 
