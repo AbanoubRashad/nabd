@@ -1,9 +1,10 @@
 /**
- * API response and request shapes. These zod schemas validate requests at the edge and generate the
- * OpenAPI document (docs/api/openapi.json), so the spec cannot drift from the code.
+ * API request and response shapes, shared by the API (request validation, OpenAPI) and the web app (types).
+ * The OpenAPI document (docs/api/openapi.json) is generated from these schemas, so it cannot drift.
  */
 import { z } from 'zod';
-import { COMMAND_STATES, METRIC_KEYS } from '@nabd/shared';
+import { COMMAND_STATES } from './commands.js';
+import { METRIC_KEYS } from './metrics.js';
 
 export const siteStatus = z.enum(['ok', 'warning', 'critical']);
 

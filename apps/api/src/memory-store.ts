@@ -1,6 +1,6 @@
 /** In-memory Store for route tests: the demo fleet from the seed, no database. */
 import { SEED_DEVICES, SEED_RULES, SEED_SITES, type SeriesSource } from '@nabd/shared';
-import type { AlertDto, CommandDto, DeviceDto, FirmwareDto, RuleBody, RuleDto, SiteDto } from './dto.js';
+import type { AlertDto, CommandDto, DeviceDto, FirmwareDto, RuleBody, RuleDto, SiteDto } from '@nabd/shared';
 import type { CommandPatch, NewCommand, Store, StoredMessage, UserRecord } from './store.js';
 
 export class MemoryStore implements Store {

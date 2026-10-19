@@ -40,7 +40,7 @@ import {
   statsDto,
   userDto,
   type RuleDto,
-} from './dto.js';
+} from '@nabd/shared';
 import type { CommandService, DeviceInfo, Publisher } from './live/commands.js';
 import type { Hub } from './live/hub.js';
 import type { LatencyTracker } from './live/latency.js';

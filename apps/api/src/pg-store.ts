@@ -11,7 +11,7 @@ import type {
   RuleDto,
   SeriesDto,
   SiteDto,
-} from './dto.js';
+} from '@nabd/shared';
 import type { CommandPatch, NewCommand, Store, StoredMessage, UserRecord } from './store.js';
 
 const iso = (d: Date | string | null | undefined): string | null =>

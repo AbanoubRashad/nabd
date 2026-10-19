@@ -13,7 +13,7 @@ import {
   type Ack,
   type CommandState,
 } from '@nabd/shared';
-import type { CommandDto } from '../dto.js';
+import type { CommandDto } from '@nabd/shared';
 import type { Store } from '../store.js';
 import type { Hub } from './hub.js';
 

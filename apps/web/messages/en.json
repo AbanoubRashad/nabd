@@ -1,0 +1,225 @@
+{
+  "meta": {
+    "title": "Nabd: every device has a pulse",
+    "description": "Real-time IoT monitoring with real hardware: ESP32 nodes, MQTT over TLS, live dashboards, WhatsApp alerts, remote relay control and signed firmware updates."
+  },
+  "app": {
+    "nav": {
+      "label": "App",
+      "overview": "Overview",
+      "sites": "Sites map",
+      "devices": "Devices",
+      "alerts": "Alerts",
+      "rules": "Rules",
+      "firmware": "Firmware",
+      "home": "Home"
+    },
+    "demo": {
+      "title": "Demo mode",
+      "body": "12 simulated nodes and 1 real board. Relays here are safe to flip."
+    },
+    "live": {
+      "live": "LIVE · WebSocket",
+      "connecting": "Connecting…",
+      "reconnecting": "Reconnecting…"
+    },
+    "apiDown": {
+      "title": "Can't reach the Nabd API",
+      "body": "The dashboard needs the API, the broker and the database. Start them with pnpm infra:up and pnpm dev, then reload."
+    },
+    "status": {
+      "ok": "Online",
+      "normal": "Normal",
+      "warning": "Warning",
+      "critical": "Critical",
+      "offline": "Offline"
+    },
+    "skip": "Skip to content"
+  },
+  "fleet": {
+    "title": "Fleet overview",
+    "subtitle": "{sites} sites · {devices} devices · updated {ago}",
+    "range": "Time range",
+    "online": "Devices online",
+    "offlineFor": "{id} offline {minutes} min",
+    "allOnline": "every device reporting",
+    "rate": "Messages per second",
+    "rateNote": "QoS 1 · measured at the API",
+    "openAlerts": "Open alerts",
+    "openAlertsNote": "{critical} critical · {warning} warning",
+    "latency": "Device → screen, p95",
+    "latencyNote": "measured from device timestamp",
+    "latencyWaiting": "waiting for live readings",
+    "power": "Power · Off-grid villa, Wadi El Natrun",
+    "powerNote": "nabd-01 · {range} · {step}",
+    "solar": "Solar",
+    "load": "Load",
+    "events": "Events",
+    "allAlerts": "All alerts",
+    "noEvents": "Nothing yet. Alerts, commands and updates appear here as they happen.",
+    "devices": "Devices",
+    "search": "Search",
+    "searchPlaceholder": "ID, site or sensor",
+    "columns": {
+      "device": "Device",
+      "site": "Site",
+      "reading": "Latest reading",
+      "signal": "Signal",
+      "firmware": "Firmware",
+      "seen": "Last seen",
+      "status": "Status"
+    },
+    "noMatch": "No device matches “{q}”."
+  },
+  "sites": {
+    "title": "Sites map",
+    "subtitle": "4 sites across Greater Cairo, the Delta and Fayoum · select a site",
+    "mapLabel": "Map of sites",
+    "openDevices": "Open site devices →",
+    "history": "Last 24 hours by site",
+    "historyNote": "each block is one hour · worst state in that hour",
+    "hoursAgo": "{h} h ago",
+    "safeRange": "Safe range",
+    "metrics": {
+      "solar": "Solar input",
+      "battery": "Battery",
+      "bus": "Bus voltage",
+      "load": "House load",
+      "air": "Air",
+      "humidity": "Humidity",
+      "soil": "Soil moisture",
+      "pump": "Pump",
+      "probe": "Fridge probe",
+      "door": "Door",
+      "room": "Room",
+      "duty": "Compressor duty",
+      "doorSensor": "Door sensor",
+      "power": "Power draw"
+    }
+  },
+  "device": {
+    "breadcrumb": "Breadcrumb",
+    "fleet": "Fleet",
+    "firmware": "Firmware {v}",
+    "wifi": "Wi-Fi {rssi}",
+    "up": "Up {uptime}",
+    "real": "Real hardware",
+    "simulated": "Simulated",
+    "seq": "seq #{seq} · received {age}",
+    "waiting": "waiting for the first reading",
+    "chart": "{metric} · last 24 hours",
+    "chartNote": "{source} roll-up · min / avg / max",
+    "control": "Remote control",
+    "relay": "Relay {ch} · GPIO 26",
+    "relayLabel": "{name} relay",
+    "steps": {
+      "sent": "Sent to broker",
+      "delivered": "Delivered to device",
+      "done": "Device confirmed"
+    },
+    "progress": "Command progress",
+    "timeoutNote": "Command {id} times out after 10 s with no reply, and the switch returns to its real state.",
+    "timedOut": "No reply within 10 s. The switch shows the device's real state again.",
+    "rejected": "The device rejected the command: {reason}",
+    "forbidden": "Only the owner can switch the real board. Try a simulated device such as nabd-05.",
+    "rateLimited": "One command every 3 seconds in the demo. Try again in a moment.",
+    "noRelay": "This device has no relay.",
+    "otaTitle": "Firmware update",
+    "otaReady": "Version {v} is signed and ready. The node keeps {current} as a fallback and rolls back if it doesn't check in within 2 minutes.",
+    "otaNone": "No signed release newer than {current} yet.",
+    "otaButton": "Update to {v}",
+    "otaAdmin": "Updates need the owner's login.",
+    "otaSent": "Offer sent. The node downloads, verifies and reboots into {v}.",
+    "raw": "Raw MQTT messages",
+    "rawEmpty": "Messages appear here as the device publishes them."
+  },
+  "alerts": {
+    "title": "Alerts",
+    "open": "Open",
+    "recent": "Recent",
+    "none": "No alerts. Rules that fire show up here.",
+    "rulesTitle": "Alert rules",
+    "back": "← Fleet",
+    "newRule": "New rule",
+    "when": "WHEN",
+    "spam": "SO IT DOESN'T SPAM",
+    "notify": "THEN NOTIFY",
+    "device": "Device",
+    "anyDevice": "Any device",
+    "reading": "Reading",
+    "is": "Is",
+    "ops": {
+      "gt": "above",
+      "lt": "below",
+      "outside": "outside range",
+      "offline": "silent (no messages)"
+    },
+    "threshold": "Threshold ({unit})",
+    "thresholdHigh": "Upper threshold ({unit})",
+    "forAtLeast": "For at least (min)",
+    "clearsBelow": "Clears below ({unit})",
+    "clearsAbove": "Clears above ({unit})",
+    "repeat": "Repeat at most every (min)",
+    "severity": "Severity",
+    "severities": {
+      "warning": "Warning",
+      "critical": "Critical"
+    },
+    "whatsapp": "WhatsApp · clinic manager",
+    "email": "Email · on-call list",
+    "escalate": "Escalate to owner after 15 min unacknowledged",
+    "quiet": "Quiet hours {start}–{end}",
+    "backtest": "Tested against the last 7 days: would have fired <b>{n}</b> times.",
+    "backtesting": "Testing against the last 7 days…",
+    "testMessage": "Send test message",
+    "save": "Save rule",
+    "saved": "Saved.",
+    "adminOnly": "Saving and test messages need the owner's login. You can still try the backtest.",
+    "preview": "What the manager receives",
+    "previewNote": "Sent with an approved WhatsApp Cloud API template. Replies come back by webhook.",
+    "ackReply": "Acknowledged by you. Nabd will message again when it clears.",
+    "timeline": "This alert so far",
+    "allRules": "All rules",
+    "cols": {
+      "rule": "Rule",
+      "condition": "Condition",
+      "notify": "Notify",
+      "state": "State"
+    },
+    "firing": "Firing",
+    "ok": "OK",
+    "events": {
+      "crossed": "Reading crossed {threshold}, timer started",
+      "opened": "Alert opened",
+      "notified": "{channels} sent",
+      "suppressed": "Message held back ({why})",
+      "acknowledged": "Acknowledged by {by}",
+      "muted": "Muted until {until}",
+      "escalated": "Escalated to the owner",
+      "resolved": "Resolved",
+      "clearsWhen": "Clears when {condition}"
+    },
+    "ack": "Acknowledge",
+    "acked": "Acknowledged",
+    "peak": "Peak {value}",
+    "loginToAck": "Sign in to acknowledge.",
+    "states": {
+      "firing": "Firing",
+      "acknowledged": "Acknowledged",
+      "muted": "Muted",
+      "resolved": "Resolved",
+      "pending": "Pending"
+    }
+  },
+  "firmware": {
+    "title": "Firmware",
+    "subtitle": "Signed releases (ECDSA P-256). Devices verify the signature before they install.",
+    "none": "No releases yet. Build, then sign with scripts/sign-firmware.ts.",
+    "cols": {
+      "version": "Version",
+      "sha": "SHA-256",
+      "date": "Released",
+      "notes": "Notes"
+    }
+  }
+}

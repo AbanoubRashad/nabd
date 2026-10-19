@@ -14,7 +14,7 @@ import type {
   RuleDto,
   SeriesDto,
   SiteDto,
-} from './dto.js';
+} from '@nabd/shared';
 
 export interface UserRecord {
   id: number;

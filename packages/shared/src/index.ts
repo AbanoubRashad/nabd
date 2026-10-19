@@ -6,3 +6,4 @@ export * from './seed.js';
 export * from './rules.js';
 export * from './series.js';
 export * from './commands.js';
+export * from './api.js';
