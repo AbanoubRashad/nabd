@@ -221,5 +221,449 @@
       "date": "Released",
       "notes": "Notes"
     }
+  },
+  "header": {
+    "announce": "Signed over-the-air updates with automatic rollback are live on every node.",
+    "announceLink": "See it on a device →",
+    "new": "NEW",
+    "main": "Main",
+    "home": "Nabd home",
+    "menus": {
+      "products": "Products",
+      "solutions": "Solutions",
+      "platform": "Platform",
+      "resources": "Resources"
+    },
+    "developers": "Developers",
+    "arabic": "عربي",
+    "english": "English",
+    "signIn": "Sign in",
+    "demo": "Open live demo",
+    "allProducts": "All products →",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "categories": {
+      "Sensor nodes": "Sensor nodes",
+      "Controllers": "Controllers",
+      "Gateways": "Gateways",
+      "Sensor tags": "Sensor tags",
+      "Kits": "Kits"
+    },
+    "solutions": [
+      {
+        "name": "Solar & energy",
+        "uses": ["Off-grid homes", "Battery health", "Load control"]
+      },
+      {
+        "name": "Agriculture",
+        "uses": ["Greenhouse climate", "Smart irrigation", "Soil moisture"]
+      },
+      {
+        "name": "Healthcare",
+        "uses": ["Vaccine fridges", "Pharmacy storage", "Clinic rooms"]
+      },
+      {
+        "name": "Cold storage",
+        "uses": ["Freezer rooms", "Door alarms", "Compressor duty"]
+      },
+      {
+        "name": "Water & pumping",
+        "uses": ["Pump protection", "Tank levels", "Pipe pressure"]
+      },
+      {
+        "name": "Manufacturing",
+        "uses": ["Motor vibration", "Machine temperature", "Energy per line"]
+      }
+    ],
+    "tech": [
+      {
+        "name": "Connectivity",
+        "text": "MQTT 3.1.1 over TLS, one key per device",
+        "href": "/#platform"
+      },
+      {
+        "name": "Storage",
+        "text": "Time-series data with hourly and daily roll-ups",
+        "href": "/#platform"
+      },
+      {
+        "name": "Visualization",
+        "text": "Live dashboards in English and Arabic",
+        "href": "/fleet"
+      },
+      {
+        "name": "Alerts",
+        "text": "Rules with wait time, margin and cool-down",
+        "href": "/alerts/rules"
+      },
+      {
+        "name": "Remote control",
+        "text": "Commands confirmed by the device",
+        "href": "/devices/nabd-05"
+      },
+      {
+        "name": "Firmware updates",
+        "text": "Signed, staged, with automatic rollback",
+        "href": "/devices/nabd-01"
+      },
+      {
+        "name": "Security",
+        "text": "Encryption, access rules and an audit log",
+        "href": "/#security"
+      },
+      {
+        "name": "Architecture",
+        "text": "How the services fit together",
+        "href": "/#architecture"
+      }
+    ],
+    "resources": [
+      {
+        "name": "Case study",
+        "text": "The off-grid villa in Wadi El Natrun",
+        "href": "/#case"
+      },
+      {
+        "name": "Architecture",
+        "text": "How a reading moves through Nabd",
+        "href": "/#architecture"
+      },
+      {
+        "name": "Hardware FAQ",
+        "text": "Sensors, offline memory, updates",
+        "href": "/products#faq"
+      },
+      {
+        "name": "Engineering notes",
+        "text": "Decision records and load-test results",
+        "href": "https://github.com/AbanoubRashad/nabd"
+      }
+    ]
+  },
+  "home": {
+    "eyebrow": "Real-time IoT monitoring, built in Cairo",
+    "title": "Every device has a pulse.",
+    "lead": "Nabd connects ESP32 sensors on rooftops, farms, clinics and cold rooms to one live dashboard. You see every reading in under a second, switch equipment from your phone, and get a WhatsApp message the moment something drifts.",
+    "ctaFleet": "Watch the live fleet",
+    "ctaHow": "See how it works",
+    "card": {
+      "where": "nabd-07 · Heliopolis clinic",
+      "name": "Medicine fridge",
+      "warning": "▲ WARNING",
+      "critical": "■ CRITICAL",
+      "normal": "● NORMAL",
+      "offline": "■ OFFLINE",
+      "safe": "safe 2–8 °C",
+      "chart": "Fridge temperature over the last 30 minutes, with the 8 degree limit",
+      "sent": "WhatsApp sent to clinic manager",
+      "acked": "Acknowledged by reply “1”",
+      "waiting": "No alert in the last few minutes. The demo fridge door is left open every 20 minutes."
+    },
+    "numbers": {
+      "label": "Live demo numbers",
+      "rows": "readings stored today · demo fleet, live",
+      "latency": "device → screen, p95",
+      "online": "devices online across {sites} sites",
+      "interval": "between readings, every sensor",
+      "standards": "Built on open standards",
+      "offline": "Live numbers appear here while the demo API is running."
+    },
+    "industries": {
+      "eyebrow": "Industries",
+      "title": "One platform for anything that should not quietly fail",
+      "lead": "Four of these run in the live demo today. The other two use the same devices, rules and alerts with a different sensor.",
+      "live": "● Live demo",
+      "same": "Same platform",
+      "items": [
+        {
+          "title": "Solar & energy",
+          "body": "Panel output, battery charge and house load for off-grid homes and farms. Know before the batteries run flat.",
+          "units": "kW · V · SoC % · load",
+          "alt": "Rows of solar panels in the desert at sunset"
+        },
+        {
+          "title": "Smart agriculture",
+          "body": "Greenhouse heat, humidity and soil moisture, with the irrigation pump switched from the dashboard.",
+          "units": "°C · RH % · soil % · pump relay",
+          "alt": "Tomato plants in a greenhouse with a sensor box on a post"
+        },
+        {
+          "title": "Healthcare cold chain",
+          "body": "Vaccine and medicine fridges held between 2 and 8 °C, with a temperature log for every hour of every day.",
+          "units": "probe °C · door · compressor",
+          "alt": "A medicine refrigerator in a clinic with a temperature sensor on its side"
+        },
+        {
+          "title": "Food cold storage",
+          "body": "Freezer rooms at −18 °C, door sensors and compressor duty, so one open door doesn't cost a warehouse of stock.",
+          "units": "°C · door · duty %",
+          "alt": "Racks of wrapped pallets in a frozen-food cold store"
+        },
+        {
+          "title": "Water & pumping",
+          "body": "Pump run hours, pipe pressure and tank level, with automatic shut-off when a pump starts running dry.",
+          "units": "bar · level % · run hours",
+          "alt": "Blue water pumps and steel pipes with a wireless sensor clamped to a pipe"
+        },
+        {
+          "title": "Manufacturing",
+          "body": "Motor vibration and temperature trends that warn you days before a bearing fails on the production line.",
+          "units": "mm/s RMS · °C · current A",
+          "alt": "An electric motor with a vibration sensor in a factory with a robot arm behind"
+        }
+      ]
+    },
+    "platform": {
+      "eyebrow": "Platform",
+      "title": "From a sensor wire to a decision, in five steps",
+      "tabsLabel": "Platform capabilities",
+      "tabs": [
+        {
+          "id": "collect",
+          "label": "Collect",
+          "title": "Every reading, checked and kept",
+          "body": "Nodes publish over MQTT with TLS. An ingest worker validates each message against one shared schema, drops duplicates and writes to a time-series database in batches.",
+          "points": [
+            "QoS 1 delivery with per-device sequence numbers",
+            "Malformed messages kept aside with the reason",
+            "Hourly and daily roll-ups for instant charts"
+          ]
+        },
+        {
+          "id": "see",
+          "label": "See",
+          "title": "Live without refreshing",
+          "body": "Readings reach the dashboard over WebSockets in well under a second. Drop the connection and the page fills the gap from the database when it comes back.",
+          "points": [
+            "Charts from 15 minutes to 7 days",
+            "English and Arabic, desktop and phone",
+            "Latency measured from the device clock"
+          ]
+        },
+        {
+          "id": "alert",
+          "label": "Alert",
+          "title": "The right person, once",
+          "body": "Write a rule in plain terms. When it fires, Nabd messages the right contact on WhatsApp or email, and a reply acknowledges it.",
+          "points": [
+            "Wait-time, clear margin and cool-down on every rule",
+            "Backtest a rule against the last 7 days",
+            "Quiet hours, with critical alerts always on"
+          ]
+        },
+        {
+          "id": "control",
+          "label": "Control",
+          "title": "Switch equipment from anywhere",
+          "body": "Turn a pump, heater or fan on or off from the dashboard. You see each step of the command, and the device has the final word.",
+          "points": [
+            "Every command has an ID and an expiry",
+            "Relays fall back to off if the link is lost",
+            "Demo visitors can only switch simulated devices"
+          ]
+        },
+        {
+          "id": "update",
+          "label": "Update",
+          "title": "New firmware without a ladder",
+          "body": "Push signed firmware to one node or a whole site. Each node verifies the signature, installs to a spare slot and keeps it only after checking in.",
+          "points": [
+            "ECDSA signatures checked on the chip",
+            "Automatic rollback on a bad build",
+            "Version and health for every node"
+          ]
+        }
+      ],
+      "collectNote": "✓ validated · stored · pushed live to every open dashboard",
+      "seeTitle": "Solar input vs load · live",
+      "seeChart": "Live chart of solar input above household load",
+      "alertBody": "Cold room door sensor, 10th of Ramadan City stopped reporting 5 minutes ago.",
+      "alertNote": "Fires after 5 min · clears with a margin · cool-down between messages",
+      "controlTitle": "Irrigation pump · Fayoum",
+      "controlSteps": ["Sent to broker", "Delivered to device", "Device confirmed the relay is on"],
+      "controlNote": "Example timings. Flip a relay in the demo to see your own.",
+      "updateTitle": "Firmware 1.4.2 → 1.5.0",
+      "updateLines": [
+        "Image checked: SHA-256 and ECDSA P-256 signature",
+        "Written to the spare slot, then a reboot",
+        "Kept only after Wi-Fi, MQTT and one publish succeed",
+        "Rollback armed: keeps 1.4.2 if it can't check in"
+      ]
+    },
+    "products": {
+      "eyebrow": "Products",
+      "title": "One ESP32 core, a device for every job",
+      "all": "Browse all 8 products →"
+    },
+    "decisions": {
+      "eyebrow": "Engineering",
+      "title": "The hard parts, solved on purpose",
+      "items": [
+        {
+          "title": "No reading is lost",
+          "body": "Offline readings are buffered in flash and replayed with their original time. Ingest ignores duplicates by sequence number."
+        },
+        {
+          "title": "Commands you can trust",
+          "body": "Every switch shows sent, delivered and confirmed by the device, or a clear timeout. Never a button that pretends."
+        },
+        {
+          "title": "Alerts without spam",
+          "body": "Rules wait out short spikes, clear with a margin so they can't flap, and respect a cool-down and quiet hours."
+        },
+        {
+          "title": "Updates can't brick a box",
+          "body": "Signed firmware goes to the spare partition and is kept only if the node checks in. Otherwise it rolls back."
+        }
+      ]
+    },
+    "security": {
+      "eyebrow": "Security",
+      "title": "A device can only speak for itself",
+      "lead": "Connected equipment is a way into a network. Nabd treats every node as untrusted until it proves who it is.",
+      "items": [
+        {
+          "title": "Encrypted end to end",
+          "body": "TLS on MQTT, HTTPS and WebSocket. Nothing travels in plain text."
+        },
+        {
+          "title": "One key per device",
+          "body": "Broker rules let each node publish and listen only under its own topic."
+        },
+        {
+          "title": "Signed firmware",
+          "body": "A node refuses any update that isn't signed with the release key."
+        },
+        {
+          "title": "Every action logged",
+          "body": "Who switched what, when, and what the device answered."
+        }
+      ]
+    },
+    "architecture": {
+      "eyebrow": "Architecture",
+      "title": "How a reading moves through Nabd",
+      "label": "Architecture: devices publish to the broker; ingest validates and stores readings and runs the rules; the API pushes live readings to the dashboard and sends commands back."
+    },
+    "case": {
+      "eyebrow": "Case study · the first real node",
+      "title": "An off-grid villa in Wadi El Natrun",
+      "body": "A home that runs on solar and batteries alone. The owner wanted to know, from Cairo, whether tonight's battery would last, and to switch the water heater off when it wouldn't.",
+      "uptime": "uptime over 30 days",
+      "replayed": "readings replayed after outages",
+      "latency": "p95 device → screen",
+      "pending": "These fill in from the real board once it is installed and reporting. Until then they stay as placeholders.",
+      "open": "Open this node live →",
+      "alt": "Solar panels on the stone roof of an off-grid villa with a grey electrical box"
+    },
+    "cta": {
+      "title": "See the fleet breathe.",
+      "body": "The demo is live. Flip a relay and watch the device answer.",
+      "button": "Open live demo"
+    }
+  },
+  "footer": {
+    "built": "Designed and built by Abanoub Rashad · Mechatronics engineer, software developer",
+    "disclosure": "Photos are AI-generated for this project, and product photos are concept renders. Demo data is simulated and labelled.",
+    "portfolio": "Portfolio",
+    "github": "GitHub",
+    "architecture": "Architecture"
+  },
+  "products": {
+    "title": "Hardware",
+    "metaTitle": "Products",
+    "lead": "One ESP32-S3 core, many jobs. Every Nabd device shares the same firmware, security and dashboard, so a fridge probe and a pump controller behave the same way.",
+    "breadcrumb": "Breadcrumb",
+    "home": "Home",
+    "prototype": "Prototype",
+    "planned": "Planned",
+    "prototypeNote": "Prototype: built and running",
+    "plannedNote": "Planned",
+    "catalogue": "Product catalogue",
+    "category": "Category",
+    "all": "All products",
+    "status": "Status",
+    "anyStatus": "Any status",
+    "showing": "Showing <b>{shown}</b> of {total} products",
+    "none": "No product matches these filters.",
+    "enclosure": "Enclosure in design",
+    "elseTitle": "Need something else?",
+    "elseBody": "Every node is open hardware. Pick a sensor and the firmware has a driver slot for it.",
+    "elseLink": "Read the hardware guide →",
+    "kitEyebrow": "K1 Starter Kit",
+    "kitTitle": "Everything for your first node, and a dashboard waiting for it",
+    "kitPoints": [
+      "ESP32-S3 board and OLED",
+      "INA219, SHT31 and DS18B20 probe",
+      "Relay module, fail-safe wiring",
+      "Wiring diagram and firmware",
+      "Flash and provision in about 10 minutes",
+      "Appears live on the demo fleet"
+    ],
+    "kitCta": "Get the parts list",
+    "kitAlt": "The parts of the starter kit laid out on a dark surface",
+    "sharesTitle": "What every Nabd device shares",
+    "shares": [
+      {
+        "title": "Open protocols",
+        "body": "MQTT over TLS, a published topic contract and JSON payloads. Any broker or platform can read them."
+      },
+      {
+        "title": "Offline memory",
+        "body": "5,000 readings kept in flash during a Wi-Fi drop, replayed in order with their original timestamps."
+      },
+      {
+        "title": "Secure by default",
+        "body": "Pinned broker certificate, a unique key per device and firmware that must carry a valid signature."
+      },
+      {
+        "title": "Remote updates",
+        "body": "Two firmware slots. A new version is kept only after the node checks in; otherwise it rolls back."
+      },
+      {
+        "title": "Readable on the box",
+        "body": "A small screen shows readings, connection state and the last command, so a technician needs no phone."
+      },
+      {
+        "title": "Safe when alone",
+        "body": "Relays switch off if the link is lost for too long, and a watchdog restarts a stuck node."
+      }
+    ],
+    "faqTitle": "Questions about the hardware",
+    "faq": [
+      {
+        "q": "Is the hardware real or only a design?",
+        "a": "Prototypes are one ESP32-S3 board with off-the-shelf sensors, running the same firmware with a different device profile; one P1 reports to the live demo. The enclosures pictured are AI concept renders. Products marked Planned are designed but not built yet."
+      },
+      {
+        "q": "Can I use my own sensors?",
+        "a": "Yes. The firmware has a small driver interface: add a sensor, map its readings to metric names in the shared registry, and the dashboard, alerts and history work without other changes."
+      },
+      {
+        "q": "What happens when the internet goes down?",
+        "a": "The node keeps sampling and stores up to 5,000 readings in flash. When the connection returns it sends them in order with their original timestamps, so charts have no gaps."
+      },
+      {
+        "q": "How are updates kept safe?",
+        "a": "Firmware must be signed with the release key. The node installs it to a spare slot and only keeps it after it reconnects and publishes successfully; otherwise it rolls back by itself."
+      },
+      {
+        "q": "Do the planned BLE tags need a special gateway?",
+        "a": "They report through the G1 gateway, which reads standard iBeacon and Eddystone advertising, so third-party BLE sensor tags using those formats can work too."
+      }
+    ],
+    "talk": "Not sure which device fits your site?",
+    "talkCta": "Talk to the engineer",
+    "detail": {
+      "back": "← All products",
+      "specs": "Specifications",
+      "profile": "Firmware profile",
+      "none": "none (third-party hardware)",
+      "live": "Running in the demo",
+      "liveCta": "Open {id} live →",
+      "plannedNote": "Planned: designed, not built yet. It is not for sale and not in the demo.",
+      "prototypeNote": "Prototype: built and running on the bench.",
+      "renderNote": "The photo is an AI concept render of the enclosure."
+    }
   }
 }

@@ -10,13 +10,21 @@ function baseUrl(): string {
   return typeof window === 'undefined' ? (process.env.API_URL_INTERNAL ?? PUBLIC_API_URL) : PUBLIC_API_URL;
 }
 
-/** GET a JSON resource, or null if the API is unreachable or answers with an error. */
-export async function apiGet<T>(path: string, timeoutMs = 3000): Promise<T | null> {
+/**
+ * GET a JSON resource, or null if the API is unreachable or answers with an error. `revalidate` (seconds)
+ * lets the server cache a public response, which keeps the landing page fast; otherwise nothing is cached.
+ */
+export async function apiGet<T>(
+  path: string,
+  opts: { timeoutMs?: number; revalidate?: number } = {},
+): Promise<T | null> {
   try {
     const res = await fetch(`${baseUrl()}${path}`, {
-      cache: 'no-store',
+      ...(opts.revalidate === undefined
+        ? { cache: 'no-store' as const }
+        : { next: { revalidate: opts.revalidate } }),
       credentials: 'include',
-      signal: AbortSignal.timeout(timeoutMs),
+      signal: AbortSignal.timeout(opts.timeoutMs ?? 3000),
     });
     if (!res.ok) return null;
     return (await res.json()) as T;

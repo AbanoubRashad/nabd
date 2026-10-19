@@ -121,11 +121,20 @@ html[lang='ar'] body {
   animation: nabd-ring 1.8s ease-out infinite;
 }
 
-[data-theme='dark'] a {
-  color: var(--signal);
-}
-[data-theme='dark'] a:hover {
-  color: #7cebb8;
+/* Default link colours per theme. In the base layer, so utility classes on a link always win. */
+@layer base {
+  a {
+    color: var(--green-text);
+  }
+  a:hover {
+    color: var(--green-text-hover);
+  }
+  [data-theme='dark'] a {
+    color: var(--signal);
+  }
+  [data-theme='dark'] a:hover {
+    color: #7cebb8;
+  }
 }
 
 /* uPlot tooltip-free cursor styling for the dark theme */
