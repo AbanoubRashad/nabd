@@ -79,7 +79,7 @@ they were built with.
 
 ### Rollback
 
-Automatic rollback needs the bootloader option `CONFIG_BOOTLOADER_APP_ROLLBACK_ENABLE`. To check a build:
+Automatic rollback needs the bootloader option `CONFIG_BOOTLOADER_APP_ROLLBACK_ENABLE`. It is **on** in Arduino-ESP32 core 3.3.12 (checked 2026-10-24), so no extra configuration is needed. To check a newer core:
 
 ```bash
 grep ROLLBACK ~/.platformio/packages/framework-arduinoespressif32-libs/esp32s3/sdkconfig

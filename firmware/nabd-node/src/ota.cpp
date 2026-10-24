@@ -1,6 +1,7 @@
 #include "ota.h"
 
 #include <HTTPClient.h>
+#include <WiFi.h>
 #include <Update.h>
 #include <WiFiClientSecure.h>
 #include <esp_ota_ops.h>
@@ -51,7 +52,7 @@ const char* apply(const nabd::OtaOffer& offer, const char* currentVersion) {
   mbedtls_sha256_context sha;
   mbedtls_sha256_init(&sha);
   mbedtls_sha256_starts(&sha, 0);
-  WiFiClient* stream = http.getStreamPtr();
+  auto* stream = http.getStreamPtr();  // NetworkClient in Arduino core 3
   uint8_t buf[2048];
   int remaining = total;
   uint32_t lastData = millis();

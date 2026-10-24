@@ -1,6 +1,7 @@
 // Nabd node: sample, publish, buffer offline, obey commands, update itself safely.
 #include <Arduino.h>
 #include <WiFi.h>
+#include <Wire.h>
 #include <esp_task_wdt.h>
 #include <freertos/queue.h>
 #include <mqtt_client.h>

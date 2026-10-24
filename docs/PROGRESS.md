@@ -12,7 +12,7 @@ Status key: ✅ done · 🔶 in progress · ⏳ not started · ⛔ blocked (need
 | 2 | API, WebSocket, `/fleet`, `/sites`, `/devices/[id]` | 🔶 code and tests done; live check waits for Docker |
 | 3 | Commands (relay flow) | 🔶 code and tests done; live check waits for Docker |
 | 4 | Rules engine and notifications | 🔶 code and tests done; WhatsApp needs your Meta account |
-| 5 | Real hardware (ESP32-S3 firmware) | ⛔ code and native tests done; needs the board |
+| 5 | Real hardware (ESP32-S3 firmware) | ⛔ builds for the ESP32-S3, native tests pass; needs the board |
 | 6 | Signed OTA with rollback | ⛔ code and signing done; needs the board |
 | 7 | Landing, products, mega-menus, Arabic, mobile, polish | ✅ built and checked in the browser; Lighthouse after deploy |
 | 8 | Hardening, load test, deploy | 🔶 security, CSP, e2e, deploy guide and load test written; deploy needs accounts |
@@ -337,5 +337,19 @@ then start Phase 2.
 
 - anything against the real TimescaleDB and EMQX: migrations, the ACL, the end-to-end pipeline, the 4
   live Playwright tests, the load test
-- the firmware build for the ESP32-S3 (in progress on this PC) and every on-board acceptance test
+- every on-board acceptance test (the firmware itself builds; see the next entry)
 - Lighthouse, the 24-hour unattended run, and Sentry receiving an error (all after deploy)
+
+### 2026-10-24: firmware builds for the ESP32-S3
+
+- `pio run -e esp32s3` succeeds: RAM 17.4 % (56,920 of 327,680 bytes), flash 43.3 % (1,363,529 of
+  3,145,728 bytes in one OTA slot), so a new image fits the spare slot with room to grow.
+- Fixed on the way:
+  - the partition table overlapped the coredump partition by 4 KB
+  - two missing includes
+  - `WiFiClient` is `NetworkClient` in Arduino core 3
+- `CONFIG_BOOTLOADER_APP_ROLLBACK_ENABLE=y` in core 3.3.12, so automatic rollback works without a custom
+  sdkconfig. That removes the Phase 6 risk noted in the plan.
+- Windows notes (now in FLASHING.md): build from PowerShell (Espressif's installer refuses Git Bash), and
+  use a short PlatformIO home (`I:\pio` here) because of the 260-character path limit.
+- WSL: the PC has not restarted since the install (last boot 2026-10-16), so Docker still cannot start.

@@ -43,5 +43,5 @@ ESP32-S3, GPIO 26–32 are connected to the module's SPI flash, so the relays us
   seconds (60 by default). Equipment never stays on because of a dashboard nobody can reach.
 - **Offline buffer:** 5,000 readings in LittleFS (about 2.8 hours at 2 s). When full, the oldest is
   dropped and counted.
-- **Rollback** needs `CONFIG_BOOTLOADER_APP_ROLLBACK_ENABLE` in the bootloader. See
-  [FLASHING.md](FLASHING.md#rollback) for how to check it on your build.
+- **Rollback** needs `CONFIG_BOOTLOADER_APP_ROLLBACK_ENABLE` in the bootloader. It is on in Arduino core
+  3.3.12 (see [FLASHING.md](FLASHING.md#rollback)).
