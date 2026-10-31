@@ -23,6 +23,9 @@ services:
   emqx:
     image: emqx/emqx:6.1.5
     restart: unless-stopped
+    # The node name's host part must resolve inside the container, or `emqx ctl` (the healthcheck) cannot
+    # reach the node.
+    hostname: node1.nabd
     environment:
       EMQX_NODE__NAME: emqx@node1.nabd
       EMQX_DASHBOARD__DEFAULT_PASSWORD: ${EMQX_DASHBOARD_PASSWORD:?set EMQX_DASHBOARD_PASSWORD in .env}
