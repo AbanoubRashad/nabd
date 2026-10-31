@@ -74,7 +74,7 @@ services:
       NABD_CREDENTIALS_FILE: /run/secrets/nabd-credentials.json
       NODE_ENV: production
     command:
-      ['sh', '-c', 'npx node-pg-migrate up --migrations-dir migrations --use-glob && node dist/cli/seed.js']
+      ['sh', '-c', 'npx node-pg-migrate up --migrations-dir migrations && node dist/cli/seed.js']
     volumes:
       - ../secrets:/run/secrets:ro
     depends_on: { timescaledb: { condition: service_healthy } }

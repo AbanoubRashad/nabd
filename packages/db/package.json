@@ -24,7 +24,7 @@
     "lint": "eslint src",
     "typecheck": "tsc --noEmit",
     "test": "vitest run --passWithNoTests",
-    "migrate": "node-pg-migrate --migrations-dir migrations --use-glob --migration-file-language sql --envPath ../../.env",
+    "migrate": "node-pg-migrate --migrations-dir migrations --migration-file-language sql --envPath ../../.env",
     "migrate:up": "pnpm migrate up",
     "migrate:down": "pnpm migrate down",
     "credentials": "tsx src/cli/credentials.ts",
