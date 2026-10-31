@@ -3,6 +3,17 @@ import { expect, test } from '@playwright/test';
 
 const API = process.env.API_URL ?? 'http://localhost:4000';
 
+// The API allows one demo command per IP every 3 s, so the tests that send one run in order and wait out
+// the window instead of racing each other into a 429.
+test.describe.configure({ mode: 'serial' });
+const COMMAND_WINDOW_MS = 3200;
+let lastCommandAt = 0;
+async function commandSlot() {
+  const wait = lastCommandAt + COMMAND_WINDOW_MS - Date.now();
+  if (wait > 0) await new Promise((r) => setTimeout(r, wait));
+  lastCommandAt = Date.now();
+}
+
 test.beforeAll(async ({ request }) => {
   const ok = await request
     .get(`${API}/healthz`, { timeout: 2000 })
@@ -27,6 +38,7 @@ test('the relay reaches "Device confirmed" on a simulated device', async ({ page
   const relay = page.getByRole('button', { name: 'Irrigation pump relay' });
   await expect(relay).toBeEnabled({ timeout: 6000 });
   const before = await relay.getAttribute('aria-pressed');
+  await commandSlot();
   await relay.click();
   const steps = page.getByRole('list', { name: 'Command progress' });
   await expect(steps.getByText('Device confirmed')).toBeVisible();
@@ -41,11 +53,13 @@ test('the relay can be toggled with the keyboard only', async ({ page }) => {
   await expect(relay).toBeEnabled({ timeout: 6000 });
   const before = await relay.getAttribute('aria-pressed');
   await relay.focus();
+  await commandSlot();
   await page.keyboard.press('Space');
   await expect(relay).not.toHaveAttribute('aria-pressed', before ?? '', { timeout: 8000 });
 });
 
 test('anonymous visitors cannot switch the real board', async ({ request }) => {
+  await commandSlot();
   const res = await request.post(`${API}/devices/nabd-01/commands`, {
     headers: { 'x-nabd-csrf': '1' },
     data: { op: 'relay.set', args: { ch: 1, on: true } },
