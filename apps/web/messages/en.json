@@ -27,6 +27,10 @@
       "title": "Can't reach the Nabd API",
       "body": "The dashboard needs the API, the broker and the database. Start them with pnpm infra:up and pnpm dev, then reload."
     },
+    "backendOffline": {
+      "title": "The live backend is offline",
+      "body": "This hosted version is the website only. The live dashboard needs the broker, the database and the 12-device simulator, which are not hosted yet. To see it live, clone github.com/AbanoubRashad/nabd and run pnpm infra:up and pnpm dev."
+    },
     "status": {
       "ok": "Online",
       "normal": "Normal",

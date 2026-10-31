@@ -1,8 +1,12 @@
 import { useTranslations } from 'next-intl';
+import { API_ENABLED } from '@/lib/api';
 
-/** Shown instead of live data when the API can't be reached (for example, before the stack is started). */
+/**
+ * Shown instead of live data when the API can't be reached (for example, before the stack is started), or on
+ * a website-only deployment that has no backend at all.
+ */
 export function ApiDown() {
-  const t = useTranslations('app.apiDown');
+  const t = useTranslations(API_ENABLED ? 'app.apiDown' : 'app.backendOffline');
   return (
     <div
       role="alert"

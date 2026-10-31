@@ -103,7 +103,8 @@ export class LiveClient {
   }
 
   private open() {
-    if (this.closed) return;
+    // A website-only deployment has no WebSocket to connect to.
+    if (this.closed || !this.url) return;
     const ws = new WebSocket(this.url);
     this.ws = ws;
     ws.onopen = () => {

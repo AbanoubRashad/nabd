@@ -5,6 +5,11 @@
  */
 export const PUBLIC_API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000';
 export const WS_URL = process.env.NEXT_PUBLIC_WS_URL ?? 'ws://localhost:4000/ws';
+/**
+ * Set NEXT_PUBLIC_API_URL to an empty string for a website-only deployment (no backend): nothing is
+ * fetched, no WebSocket is opened, and the dashboard pages explain that the live backend is offline.
+ */
+export const API_ENABLED = PUBLIC_API_URL !== '';
 
 function baseUrl(): string {
   return typeof window === 'undefined' ? (process.env.API_URL_INTERNAL ?? PUBLIC_API_URL) : PUBLIC_API_URL;
@@ -18,6 +23,7 @@ export async function apiGet<T>(
   path: string,
   opts: { timeoutMs?: number; revalidate?: number } = {},
 ): Promise<T | null> {
+  if (!API_ENABLED) return null;
   try {
     const res = await fetch(`${baseUrl()}${path}`, {
       ...(opts.revalidate === undefined
@@ -49,6 +55,7 @@ export async function apiSend<T>(
   path: string,
   body?: unknown,
 ): Promise<T> {
+  if (!API_ENABLED) throw new ApiError(503, 'offline', 'The live backend for this demo is offline.');
   const res = await fetch(`${PUBLIC_API_URL}${path}`, {
     method,
     credentials: 'include',
