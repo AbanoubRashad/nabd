@@ -49,10 +49,10 @@ pnpm install
 pnpm credentials                 # per-device MQTT passwords (gitignored)
 pnpm infra:up                    # EMQX + TimescaleDB
 pnpm db:migrate && pnpm db:seed
-pnpm dev                         # web :3000, api :4000, ingest :4100, simulator :4200
+pnpm dev                         # web :3001, api :4000, ingest :4100, simulator :4200
 ```
 
-Then open http://localhost:3000/fleet. The medicine fridge's door is left open every 20 minutes, so an
+Then open http://localhost:3001/fleet. The medicine fridge's door is left open every 20 minutes, so an
 alert opens within about 25 minutes of starting.
 
 | Command | What |
