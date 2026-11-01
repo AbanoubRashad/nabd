@@ -98,9 +98,13 @@ export function DeviceView({
   const state = useLive({ devices: [device.id], raw: true }, onEvent);
 
   const seed = SEED_DEVICES.find((d) => d.id === device.id);
-  const metrics = (seed?.metrics ?? Object.keys(device.latest)).filter((m) => !m.startsWith('relay'));
+  const reported: readonly string[] = seed?.metrics ?? Object.keys(device.latest);
+  const metrics = reported.filter((m) => !m.startsWith('relay'));
   const relays = (seed?.relays ?? []) as readonly (1 | 2)[];
-  const chartMetric = CHART_METRIC[device.kind] ?? metrics[0] ?? 'relay1';
+  // The profile's metric only if this device reports it: nabd-05 is a climate node that measures soil.
+  const profileMetric = CHART_METRIC[device.kind];
+  const chartMetric =
+    profileMetric && reported.includes(profileMetric) ? profileMetric : (metrics[0] ?? 'relay1');
   const chartLabel = isMetricKey(chartMetric) ? METRICS[chartMetric].label[ar ? 'ar' : 'en'] : chartMetric;
   const chartSeries: ChartSeries[] = [{ metric: chartMetric, label: chartLabel, color: '#F5B13D' }];
   const release = firmware.find((f) => device.fwVersion && newer(f.version, device.fwVersion));
@@ -164,7 +168,7 @@ export function DeviceView({
         </div>
         <span className="font-mono text-[13px] text-text-muted" aria-live="off">
           {seq
-            ? t('seq', { seq: seq.seq, age: `${((now - seq.at) / 1000).toFixed(1)} s ago` })
+            ? t('seq', { seq: seq.seq, age: `${(Math.max(0, now - seq.at) / 1000).toFixed(1)} s ago` })
             : device.lastSeenAt
               ? ago(device.lastSeenAt, now, ar ? 'ar' : 'en')
               : t('waiting')}
