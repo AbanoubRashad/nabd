@@ -115,6 +115,37 @@ importers:
         specifier: 8.22.0
         version: 8.22.0
 
+  apps/demo:
+    dependencies:
+      '@nabd/api':
+        specifier: workspace:*
+        version: link:../api
+      '@nabd/ingest':
+        specifier: workspace:*
+        version: link:../ingest
+      '@nabd/notify':
+        specifier: workspace:*
+        version: link:../../packages/notify
+      '@nabd/shared':
+        specifier: workspace:*
+        version: link:../../packages/shared
+      '@nabd/simulator':
+        specifier: workspace:*
+        version: link:../simulator
+      aedes:
+        specifier: 1.2.0
+        version: 1.2.0
+      mqtt:
+        specifier: 5.16.0
+        version: 5.16.0
+      pino:
+        specifier: 10.4.0
+        version: 10.4.0
+    devDependencies:
+      tsx:
+        specifier: 4.23.15
+        version: 4.23.15
+
   apps/ingest:
     dependencies:
       '@nabd/db':

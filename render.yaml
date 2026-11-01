@@ -1,0 +1,36 @@
+# Render Blueprint for the public live demo: apps/demo, one Node process with the in-memory broker, the 12
+# simulated devices, ingest, rules and the API. Free plan: it sleeps after 15 idle minutes and the web app
+# shows "Starting the live demo…" while it wakes (about a minute). The full production stack (TimescaleDB,
+# EMQX with TLS, Caddy) is described in docs/DEPLOY.md instead.
+services:
+  - type: web
+    name: nabd-demo
+    runtime: node
+    plan: free
+    region: frankfurt
+    branch: main
+    autoDeploy: true
+    # NODE_ENV=development for the install only: the build needs devDependencies (TypeScript, Turbo), and the
+    # root package (`.`) owns Turbo.
+    buildCommand: corepack enable pnpm && NODE_ENV=development pnpm install --frozen-lockfile --filter . --filter @nabd/demo... && pnpm turbo run build --filter=@nabd/demo...
+    startCommand: node apps/demo/dist/main.js
+    healthCheckPath: /healthz
+    # Redeploy only when the demo or something it runs changes, not for website-only commits.
+    buildFilter:
+      paths:
+        - apps/demo/**
+        - apps/api/**
+        - apps/ingest/**
+        - apps/simulator/**
+        - packages/**
+        - pnpm-lock.yaml
+        - render.yaml
+    envVars:
+      - key: NODE_VERSION
+        value: '24'
+      - key: NODE_ENV
+        value: production
+      - key: WEB_ORIGIN
+        value: https://nabd-iot.vercel.app
+      - key: JWT_SECRET
+        generateValue: true
