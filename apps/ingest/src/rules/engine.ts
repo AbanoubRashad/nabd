@@ -39,6 +39,8 @@ export class RulesEngine {
     private readonly store: RulesStore,
     private readonly providers: Providers,
     private readonly log: Log,
+    /** The wall clock for the replay check. The demo's back-fill runs the engine on simulated time. */
+    private readonly now: () => number = Date.now,
   ) {}
 
   private key(ruleId: number, deviceId: string) {
@@ -85,7 +87,7 @@ export class RulesEngine {
       const latest = this.latest.get(deviceId) ?? new Map<string, number>();
       for (const [m, v] of Object.entries(metrics)) if (typeof v === 'number') latest.set(m, v);
       this.latest.set(deviceId, latest);
-      if (Date.now() - t > 60_000) return;
+      if (this.now() - t > 60_000) return;
 
       for (const rule of this.rules) {
         if (!this.appliesTo(rule, device)) continue;

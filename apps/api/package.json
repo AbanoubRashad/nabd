@@ -4,6 +4,12 @@
   "private": true,
   "description": "REST + WebSocket gateway: auth, live fan-out, command dispatch, alert rules, OTA.",
   "type": "module",
+  "exports": {
+    "./*": {
+      "types": "./dist/*.d.ts",
+      "default": "./dist/*.js"
+    }
+  },
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "dev": "tsx watch --env-file-if-exists=../../.env src/main.ts",

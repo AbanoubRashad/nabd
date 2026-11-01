@@ -4,6 +4,12 @@
   "private": true,
   "description": "MQTT consumer: validate, batch insert into TimescaleDB, run the rules engine, send notifications.",
   "type": "module",
+  "exports": {
+    "./*": {
+      "types": "./dist/*.d.ts",
+      "default": "./dist/*.js"
+    }
+  },
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "dev": "tsx watch --env-file-if-exists=../../.env src/main.ts",

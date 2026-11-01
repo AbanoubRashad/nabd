@@ -4,6 +4,12 @@
   "private": true,
   "description": "12 virtual devices that speak the same MQTT protocol as the firmware.",
   "type": "module",
+  "exports": {
+    "./*": {
+      "types": "./dist/*.d.ts",
+      "default": "./dist/*.js"
+    }
+  },
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "dev": "tsx watch --env-file-if-exists=../../.env src/main.ts",
