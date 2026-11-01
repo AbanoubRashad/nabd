@@ -73,8 +73,7 @@ services:
       DATABASE_URL: postgres://${POSTGRES_USER:-nabd}:${POSTGRES_PASSWORD}@timescaledb:5432/nabd
       NABD_CREDENTIALS_FILE: /run/secrets/nabd-credentials.json
       NODE_ENV: production
-    command:
-      ['sh', '-c', 'npx node-pg-migrate up --migrations-dir migrations && node dist/cli/seed.js']
+    command: ['sh', '-c', 'npx node-pg-migrate up --migrations-dir migrations && node dist/cli/seed.js']
     volumes:
       - ../secrets:/run/secrets:ro
     depends_on: { timescaledb: { condition: service_healthy } }
