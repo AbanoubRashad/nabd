@@ -91,7 +91,6 @@ export function SiteHeader({ variant }: { variant: 'overlay' | 'solid' }) {
         <Link
           href="/"
           className={`flex items-center gap-3 no-underline ${dark ? 'text-[#F2F5F8]' : 'text-ink'}`}
-          aria-label={t('home')}
         >
           <Logo className="size-9" />
           <span className="font-display text-[22px]">Nabd</span>

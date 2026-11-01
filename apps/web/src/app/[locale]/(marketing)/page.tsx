@@ -52,6 +52,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
           alt=""
           fill
           priority
+          fetchPriority="high"
           sizes="100vw"
           className="object-cover"
           style={{ objectPosition: 'center 40%' }}
