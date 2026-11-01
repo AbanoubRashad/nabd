@@ -111,10 +111,17 @@ export function greenhouseClimate(at: Date, rng: Rng): { airC: number; rh: numbe
   return { airC: round(airC, 1), rh: Math.round(rh) };
 }
 
-/** Soil moisture rises while the pump runs and dries slowly otherwise, within 25–60 %. */
-export function stepSoil(soil: number, pumpOn: boolean, rng: Rng): number {
-  const delta = pumpOn ? 0.04 : -0.006;
-  return clamp(soil + delta + noise(rng, 0.004), 25, 60);
+/**
+ * Soil moisture: the pump's inflow shrinks as the soil nears saturation (62 %), and evaporation follows the
+ * sun (about 0.5 %/h at night, 2 %/h at noon). With the pump running it levels off near 55–60 % with a
+ * daily wave; with the pump off it dries, fastest at midday. Rates are per 2-second tick.
+ */
+export function stepSoil(soil: number, pumpOn: boolean, at: Date, rng: Rng): number {
+  const hour = cairoHour(at);
+  const sun = hour > 6 && hour < 18 ? Math.sin((Math.PI * (hour - 6)) / 12) : 0;
+  const evaporation = 0.0003 + 0.0008 * sun;
+  const inflow = pumpOn ? 0.01 * Math.max(0, 1 - soil / 62) : 0;
+  return clamp(soil + inflow - evaporation + noise(rng, 0.004), 25, 62);
 }
 
 // ---- Heliopolis: clinic medicine fridge (nabd-07) -----------------------------------------------------------

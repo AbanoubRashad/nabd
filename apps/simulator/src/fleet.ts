@@ -43,7 +43,7 @@ export class Fleet {
   tick(at: Date): void {
     this.villa = stepVilla({ ...this.villa, heater: this.relay('nabd-01', 1) }, at, this.rng);
     this.fridge = stepFridge(this.fridge, at, this.rng);
-    this.soil = stepSoil(this.soil, this.relay('nabd-05', 1), this.rng);
+    this.soil = stepSoil(this.soil, this.relay('nabd-05', 1), at, this.rng);
     const greenhouse = greenhouseClimate(at, this.rng);
     const cold = coldRoom(at, this.rng);
 

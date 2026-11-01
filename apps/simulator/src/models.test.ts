@@ -10,6 +10,7 @@ import {
   initialFridge,
   solarW,
   stepFridge,
+  stepSoil,
   stepVilla,
   villaMetrics,
 } from './models.js';
@@ -139,6 +140,28 @@ describe('other sites', () => {
       expect(c.dutyPct).toBeGreaterThanOrEqual(50);
       expect(c.dutyPct).toBeLessThanOrEqual(75);
     }
+  });
+
+  it('levels soil off below saturation with the pump on, with a daily wave, and dries it with the pump off', () => {
+    // From 00:00 Cairo (22:00 UTC the day before) for `days` days; returns the last day, hour by hour.
+    const run = (pumpOn: boolean, start: number, days: number) => {
+      let soil = start;
+      const hourly: number[] = [];
+      for (let t = 0; t < days * 86_400_000; t += TICK_MS) {
+        soil = stepSoil(soil, pumpOn, new Date(Date.UTC(2026, 9, 13, 22) + t), rng);
+        if (t >= (days - 1) * 86_400_000 && t % 3_600_000 === 0) hourly.push(soil);
+      }
+      return hourly;
+    };
+    const on = run(true, 38, 2);
+    expect(Math.min(...on)).toBeGreaterThan(53);
+    expect(Math.max(...on)).toBeLessThan(62);
+    expect(Math.max(...on) - Math.min(...on)).toBeGreaterThan(2); // drier in the afternoon
+    expect(on[14]!).toBeLessThan(on[4]!);
+
+    const off = run(false, 55, 1);
+    expect(off.at(-1)!).toBeLessThan(off[0]!);
+    expect(off[0]! - off.at(-1)!).toBeGreaterThan(8); // about 25 %/day of drying at most
   });
 
   it('takes nabd-11 offline for 15 minutes every hour', () => {
