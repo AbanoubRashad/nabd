@@ -16,7 +16,10 @@ while it wakes.
 
 ![City buildings with connected sensors (AI-generated illustration)](apps/web/public/images/ind-buildings.jpg)
 
-<!-- Relay-flow and live-chart GIF: recorded with Playwright once the stack runs (docs/PROGRESS.md). -->
+![Switching the irrigation pump from the dashboard: sent to the broker, delivered to the device, confirmed by the device with real timings](docs/images/relay-flow.gif)
+
+_Recorded with Playwright against the demo backend: the pump relay goes sent → delivered → confirmed by
+the device, next to a day of soil-moisture readings._
 
 ## How a reading moves
 
