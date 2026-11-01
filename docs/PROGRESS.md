@@ -9,13 +9,13 @@ Status key: ✅ done · 🔶 in progress · ⏳ not started · ⛔ blocked (need
 | --- | --- | --- |
 | 0 | Monorepo, tooling, docker-compose, ADRs, this plan | ✅ done; CI green on GitHub (all 5 jobs) |
 | 1 | Contract, simulator, ingest, database | ✅ done; integration tests pass on CI against a real TimescaleDB |
-| 2 | API, WebSocket, `/fleet`, `/sites`, `/devices/[id]` | 🔶 code and tests done; live check waits for Docker |
-| 3 | Commands (relay flow) | 🔶 code and tests done; live check waits for Docker |
-| 4 | Rules engine and notifications | 🔶 code and tests done; WhatsApp needs your Meta account |
+| 2 | API, WebSocket, `/fleet`, `/sites`, `/devices/[id]` | ✅ done; live Playwright tests pass on CI against the demo |
+| 3 | Commands (relay flow) | ✅ done; "Device confirmed" and keyboard tests pass on CI |
+| 4 | Rules engine and notifications | ✅ done; alerts fire in the demo (console provider); real WhatsApp needs your Meta account |
 | 5 | Real hardware (ESP32-S3 firmware) | ⛔ builds for the ESP32-S3, native tests pass; needs the board |
 | 6 | Signed OTA with rollback | ⛔ code and signing done; needs the board |
-| 7 | Landing, products, mega-menus, Arabic, mobile, polish | ✅ built and checked in the browser; Lighthouse after deploy |
-| 8 | Hardening, load test, deploy | 🔶 website live on Vercel (website-only mode); backend VPS and load test need a server |
+| 7 | Landing, products, mega-menus, Arabic, mobile, polish | ✅ done; Lighthouse a11y/best practices/SEO 100 |
+| 8 | Hardening, load test, deploy | 🔶 web on Vercel; free demo backend ready for Render (one sign-in by the owner); 500-device load test needs the VPS |
 | 9 | README, case study, portfolio card, launch post | ✅ done; portfolio card live at abanoub--rashad.web.app |
 ---
 
@@ -41,11 +41,12 @@ Status key: ✅ done · 🔶 in progress · ⏳ not started · ⛔ blocked (need
 
 - ✅ WSL2 and Docker work (2026-10-31), and the GitHub repo `AbanoubRashad/nabd` is public with CI green.
 - ⛔ **The ESP32-S3 board and sensors** for Phases 5–6 ([BOM](hardware/BOM.md)).
-- 💳 **A VPS for the live backend** (about $5–7/month, [DEPLOY.md](DEPLOY.md)). Until then the public site
-  runs in website-only mode: the dashboard pages say the live backend is offline.
-- 🔑 **Back up the OTA signing key** at `%LOCALAPPDATA%
-abd-toolsota-signing-key.pem`. It is outside
-  the repo on purpose. Nodes only accept firmware signed with it.
+- 🔑 **Render sign-in for the free demo backend** ([DEPLOY.md § 0](DEPLOY.md)): apply `render.yaml` from your
+  GitHub account, then send me the service URL to connect the Vercel site.
+- 💳 **Optional: a VPS for the full stack** (about $5–7/month, [DEPLOY.md](DEPLOY.md)), for TimescaleDB, EMQX
+  with TLS and the 500-device load test.
+- 🔑 **Back up the OTA signing key** at `%LOCALAPPDATA%\nabd-tools\ota-signing-key.pem`. It is outside the
+  repo on purpose. Nodes only accept firmware signed with it.
 - Deployment accounts, each step marked in [DEPLOY.md](DEPLOY.md): domain, VPS, Vercel, Meta WhatsApp,
   Resend, Sentry, object storage for backups.
 
@@ -396,3 +397,34 @@ used up):**
 
 **Next:** PageSpeed Insights for the reportable score, then the backend VPS (needs the owner's approval for
 the cost), the 4 live Playwright tests and the 500-device load test. Phases 5–6 wait for the board.
+
+### 2026-11-01: free live demo backend
+
+**Built:**
+
+- `apps/demo` ([ADR 0008](adr/0008-one-process-demo.md)): the real broker rules (aedes with per-device
+  passwords and EMQX's ACL), the simulator's 12 devices, ingest's router and rules engine and the API in one
+  process, on an in-memory store with the Postgres stores' semantics. On boot it back-fills 24 hours
+  through the rules engine on simulated time (507,600 messages in about 2–4 s).
+- `render.yaml` for Render's free plan; the web app says "Starting the live demo…" while it wakes and
+  reloads itself (EN + AR).
+- CI's e2e job now starts the demo, so the 4 live Playwright tests run on every push.
+- README GIF of the relay flow, recorded with Playwright against the demo.
+
+**Bugs found on the way:**
+
+- nabd-05's page charted air temperature, which it does not measure, so the chart was empty
+- the message age could read "-0.1 s ago"
+- the soil model hit its 60 % clamp within minutes with the pump on and drew a flat line; it now levels
+  off below saturation and follows the sun
+- the live tests timed the 3 s command window from before the click, so a test could hit a 429
+- a denied MQTT subscribe should answer SUBACK 0x80 and keep the client connected, as EMQX does
+
+**Verified:**
+
+- 136 unit tests (14 new in the demo); Playwright 15/15 twice locally against the demo, then on CI
+- Render's build and start commands from `render.yaml`, run on clean Linux (Node 24): build 57 s, ready
+  in about 8 s, 171 MB RSS (the free plan allows 512 MB)
+
+**Next:** the owner applies the Render Blueprint; then point Vercel at it (`NEXT_PUBLIC_API_URL`,
+`NEXT_PUBLIC_WS_URL`, `NEXT_PUBLIC_API_SLEEPS=1`) and check the public dashboard.
