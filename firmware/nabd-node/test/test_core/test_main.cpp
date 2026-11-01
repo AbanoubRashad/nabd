@@ -1,5 +1,6 @@
 // Host-side tests for the pure firmware logic: `pio test -e native`.
 #include <math.h>
+#include <stdio.h>
 #include <string.h>
 #include <unity.h>
 
