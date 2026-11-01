@@ -3,12 +3,16 @@
 **Real-time IoT monitoring with real hardware.** ESP32-S3 sensor nodes on rooftops, farms, clinics and cold
 rooms stream readings over MQTT and TLS into TimescaleDB and onto a live dashboard in English and Arabic.
 From the browser you can switch a relay and watch the device confirm it, get a WhatsApp message when a
-medicine fridge warms past 8 °C, and push signed firmware that rolls itself back if it misbehaves. The
-public demo runs a simulated fleet of 12 devices on 4 sites, speaking exactly the firmware's protocol, next
-to one real board.
+medicine fridge warms past 8 °C, and push signed firmware that rolls itself back if it misbehaves.
 
-> Status: code complete for every phase. Waiting on hardware tests with the board, a run of the full
-> stack in Docker, and deployment. See [docs/PROGRESS.md](docs/PROGRESS.md).
+**Live demo: https://nabd-iot.vercel.app** ([fleet dashboard](https://nabd-iot.vercel.app/fleet)). A
+simulated fleet of 12 devices on 4 sites speaks exactly the firmware's protocol; relays there are safe to
+flip. The demo server runs on free hosting, so the first visit after a quiet spell waits about a minute
+while it wakes.
+
+> Status: software complete, CI green (unit, firmware, integration on TimescaleDB, Playwright including the
+> live tests). Waiting on the ESP32-S3 board for the hardware and signed-OTA tests. See
+> [docs/PROGRESS.md](docs/PROGRESS.md).
 
 ![City buildings with connected sensors (AI-generated illustration)](apps/web/public/images/ind-buildings.jpg)
 
@@ -59,7 +63,8 @@ alert opens within about 25 minutes of starting.
 | --- | --- |
 | `pnpm test` | unit tests (Vitest) for every package |
 | `pnpm test:int` | integration tests on a real TimescaleDB (Testcontainers, needs Docker) |
-| `pnpm --filter @nabd/web e2e` | Playwright against a running web app; live tests need the stack |
+| `pnpm --filter @nabd/web e2e` | Playwright against a running web app; live tests need the stack or the demo |
+| `pnpm --filter @nabd/demo dev` | the whole live backend in one process, no Docker ([ADR 0008](docs/adr/0008-one-process-demo.md)) |
 | `pnpm load run --devices 500` | load test ([docs/PERFORMANCE.md](docs/PERFORMANCE.md)) |
 | `cd firmware/nabd-node && pio test -e native` | firmware unit tests on the host |
 
@@ -71,6 +76,7 @@ alert opens within about 25 minutes of starting.
 | `apps/api` | Fastify REST + WebSocket gateway: auth, commands, alert rules, OTA, WhatsApp webhook |
 | `apps/ingest` | MQTT → TimescaleDB writer, rules engine, notifications |
 | `apps/simulator` | 12 virtual devices on 4 sites |
+| `apps/demo` | the public demo: broker, simulator, ingest, rules and API in one process, in memory |
 | `packages/shared` | MQTT contract, API types, metric registry, product catalogue, rules state machine |
 | `packages/db` | SQL migrations, seed, query helpers |
 | `packages/notify` | WhatsApp Cloud API, Resend and console providers |

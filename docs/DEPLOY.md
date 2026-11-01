@@ -13,6 +13,24 @@ ESP32 ────MQTTS 8883──► mqtt.<domain> ├── VPS: Caddy → api
 ESP32 ────HTTPS──► fw.<domain> ──────┘
 ```
 
+## 0. Free live demo (no VPS)
+
+The public demo can run without the VPS: `apps/demo` is the broker, the 12 simulated devices, ingest, rules
+and the API in one Node process with in-memory storage ([ADR 0008](adr/0008-one-process-demo.md)). It is
+what https://nabd-iot.vercel.app talks to.
+
+1. 🔑 **Render:** sign in at https://render.com with GitHub, then open
+   https://render.com/deploy?repo=https://github.com/AbanoubRashad/nabd and apply the Blueprint
+   (`render.yaml`). It creates the free web service `nabd-demo`; note its URL, for example
+   `https://nabd-demo.onrender.com`.
+2. **Vercel** (project `nabd`): set `NEXT_PUBLIC_API_URL` to that URL, `NEXT_PUBLIC_WS_URL` to the same
+   host with `wss://` and `/ws`, and `NEXT_PUBLIC_API_SLEEPS=1`; the build command is
+   `cd ../.. && pnpm turbo run build --filter=@nabd/web`. Redeploy.
+3. Check: `/fleet` shows "Starting the live demo…" for about a minute after an idle spell, then live data.
+
+The free instance sleeps after 15 idle minutes and forgets everything on restart; the back-fill rebuilds
+the last 24 hours in a few seconds. The steps below are the full production stack.
+
 ## 1. Domain 💳🔑
 
 Buy or choose a domain, say `nabd.example.com`. Create three A records pointing at the VPS IP:
