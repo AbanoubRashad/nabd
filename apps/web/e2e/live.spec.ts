@@ -4,13 +4,16 @@ import { expect, test } from '@playwright/test';
 const API = process.env.API_URL ?? 'http://localhost:4000';
 
 // The API allows one demo command per IP every 3 s, so the tests that send one run in order and wait out
-// the window instead of racing each other into a 429.
+// the window instead of racing each other into a 429. The window counts from when the command was sent,
+// so each test calls `commandSent()` right after its click, key press or request.
 test.describe.configure({ mode: 'serial' });
 const COMMAND_WINDOW_MS = 3200;
 let lastCommandAt = 0;
 async function commandSlot() {
   const wait = lastCommandAt + COMMAND_WINDOW_MS - Date.now();
   if (wait > 0) await new Promise((r) => setTimeout(r, wait));
+}
+function commandSent() {
   lastCommandAt = Date.now();
 }
 
@@ -40,6 +43,7 @@ test('the relay reaches "Device confirmed" on a simulated device', async ({ page
   const before = await relay.getAttribute('aria-pressed');
   await commandSlot();
   await relay.click();
+  commandSent();
   const steps = page.getByRole('list', { name: 'Command progress' });
   await expect(steps.getByText('Device confirmed')).toBeVisible();
   await expect(steps.locator('li').nth(2)).toContainText('ms', { timeout: 8000 });
@@ -55,6 +59,7 @@ test('the relay can be toggled with the keyboard only', async ({ page }) => {
   await relay.focus();
   await commandSlot();
   await page.keyboard.press('Space');
+  commandSent();
   await expect(relay).not.toHaveAttribute('aria-pressed', before ?? '', { timeout: 8000 });
 });
 
@@ -64,6 +69,7 @@ test('anonymous visitors cannot switch the real board', async ({ request }) => {
     headers: { 'x-nabd-csrf': '1' },
     data: { op: 'relay.set', args: { ch: 1, on: true } },
   });
+  commandSent();
   // 403 when nabd-01 is the real board (NABD_REAL_DEVICE); in development it is simulated.
   expect([202, 403]).toContain(res.status());
 });

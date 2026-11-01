@@ -57,12 +57,14 @@ jobs:
           node-version-file: .nvmrc
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm turbo run build --filter=@nabd/web...
+      - run: pnpm turbo run build --filter=@nabd/web... --filter=@nabd/demo...
       - run: pnpm --filter @nabd/web exec playwright install --with-deps chromium
-      # The live tests skip without the API; the site, RTL, keyboard and axe tests always run.
+      # The one-process demo (in-memory broker, simulator, ingest, rules and API) serves the live tests:
+      # live updates, the relay reaching "Device confirmed", keyboard control and the demo command rules.
       - run: |
+          PORT=4000 DEMO_BACKFILL_HOURS=1 node apps/demo/dist/main.js &
           pnpm --filter @nabd/web start &
-          npx wait-on http://localhost:3001 --timeout 60000
+          npx wait-on http://localhost:4000/healthz http://localhost:3001 --timeout 90000
           pnpm --filter @nabd/web e2e
       - uses: actions/upload-artifact@v4
         if: always()
