@@ -380,5 +380,19 @@ The first runs on GitHub failed. Fixed:
 ESP32-S3 build, secret scan, integration against TimescaleDB, and Playwright (11 pass, 4 live tests skip
 without the API).
 
-**Next:** the backend VPS (needs the owner's approval for the cost), then the 4 live Playwright tests, the
-500-device load test and Lighthouse on the deployed site. Phases 5–6 wait for the board.
+**Lighthouse on https://nabd-iot.vercel.app (mobile, run from this PC; PageSpeed Insights' free quota was
+used up):**
+
+- Accessibility 100, Best Practices 100 (was 96), SEO 100 in every run.
+- Performance 59–66 over three runs, LCP 3.9–4.3 s. Blocking time swings with this PC's CPU (550–1,740 ms
+  before the fixes), so this is not the score to report; re-measure on PageSpeed Insights.
+- Fixed from the audit:
+  - ~25 KiB of zod shipped on every page and its `Function("")` probe tripped the CSP. No client code
+    validates, so `@nabd/shared` is now `"sideEffects": false` and zod is out of every client chunk.
+  - the hero photo (the LCP element) now has `fetchpriority="high"`
+  - the logo link's `aria-label` hid its visible text (WCAG 2.5.3); the visible "Nabd نبض" is now its name
+- Left: `NextIntlClientProvider` sends all messages (≈27 KB EN, 35 KB AR) inline. Picking client namespaces
+  would save a few KB but breaks silently when a client component uses a new namespace.
+
+**Next:** PageSpeed Insights for the reportable score, then the backend VPS (needs the owner's approval for
+the cost), the 4 live Playwright tests and the 500-device load test. Phases 5–6 wait for the board.
