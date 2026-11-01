@@ -10,6 +10,11 @@ export const WS_URL = process.env.NEXT_PUBLIC_WS_URL ?? 'ws://localhost:4000/ws'
  * fetched, no WebSocket is opened, and the dashboard pages explain that the live backend is offline.
  */
 export const API_ENABLED = PUBLIC_API_URL !== '';
+/**
+ * Set NEXT_PUBLIC_API_SLEEPS=1 when the API runs on free hosting that sleeps when idle (the demo server on
+ * Render): a page that can't reach it says it is waking up and reloads itself once it answers.
+ */
+export const API_SLEEPS = API_ENABLED && process.env.NEXT_PUBLIC_API_SLEEPS === '1';
 
 function baseUrl(): string {
   return typeof window === 'undefined' ? (process.env.API_URL_INTERNAL ?? PUBLIC_API_URL) : PUBLIC_API_URL;

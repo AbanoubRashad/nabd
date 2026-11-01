@@ -16,12 +16,16 @@
     },
     "demo": {
       "title": "Demo mode",
-      "body": "12 simulated nodes and 1 real board. Relays here are safe to flip."
+      "body": "All 12 nodes are simulated until the real board is installed. Relays here are safe to flip."
     },
     "live": {
       "live": "LIVE · WebSocket",
       "connecting": "Connecting…",
       "reconnecting": "Reconnecting…"
+    },
+    "waking": {
+      "title": "Starting the live demo…",
+      "body": "The demo server sleeps when nobody is using it, because it runs on free hosting. Waking it takes about a minute; this page reloads by itself when it is ready."
     },
     "apiDown": {
       "title": "Can't reach the Nabd API",
