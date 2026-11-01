@@ -61,7 +61,7 @@ jobs:
       - run: pnpm --filter @nabd/web exec playwright install --with-deps chromium
       # The live tests skip without the API; the site, RTL, keyboard and axe tests always run.
       - run: |
-          pnpm --filter @nabd/web start -- --port 3001 &
+          pnpm --filter @nabd/web start &
           npx wait-on http://localhost:3001 --timeout 60000
           pnpm --filter @nabd/web e2e
       - uses: actions/upload-artifact@v4
