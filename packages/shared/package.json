@@ -4,6 +4,7 @@
   "private": true,
   "description": "MQTT contract, zod schemas, metric registry, product catalogue and the rules state machine.",
   "type": "module",
+  "sideEffects": false,
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
