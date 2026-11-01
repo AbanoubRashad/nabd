@@ -7,16 +7,16 @@ Status key: ✅ done · 🔶 in progress · ⏳ not started · ⛔ blocked (need
 
 | Phase | Scope | Status |
 | --- | --- | --- |
-| 0 | Monorepo, tooling, docker-compose, ADRs, this plan | 🔶 done; CI on GitHub waits for the repo |
-| 1 | Contract, simulator, ingest, database | 🔶 code and tests done; real DB and broker run waits for Docker |
+| 0 | Monorepo, tooling, docker-compose, ADRs, this plan | ✅ done; CI green on GitHub (all 5 jobs) |
+| 1 | Contract, simulator, ingest, database | ✅ done; integration tests pass on CI against a real TimescaleDB |
 | 2 | API, WebSocket, `/fleet`, `/sites`, `/devices/[id]` | 🔶 code and tests done; live check waits for Docker |
 | 3 | Commands (relay flow) | 🔶 code and tests done; live check waits for Docker |
 | 4 | Rules engine and notifications | 🔶 code and tests done; WhatsApp needs your Meta account |
 | 5 | Real hardware (ESP32-S3 firmware) | ⛔ builds for the ESP32-S3, native tests pass; needs the board |
 | 6 | Signed OTA with rollback | ⛔ code and signing done; needs the board |
 | 7 | Landing, products, mega-menus, Arabic, mobile, polish | ✅ built and checked in the browser; Lighthouse after deploy |
-| 8 | Hardening, load test, deploy | 🔶 security, CSP, e2e, deploy guide and load test written; deploy needs accounts |
-| 9 | README, case study, portfolio card, launch post | ✅ written; portfolio change left uncommitted for review |
+| 8 | Hardening, load test, deploy | 🔶 website live on Vercel (website-only mode); backend VPS and load test need a server |
+| 9 | README, case study, portfolio card, launch post | ✅ done; portfolio card live at abanoub--rashad.web.app |
 ---
 
 ## Proposed changes to the brief (confirmed by the owner, 2026-10-19)
@@ -39,12 +39,10 @@ Status key: ✅ done · 🔶 in progress · ⏳ not started · ⛔ blocked (need
 
 ## Decisions and blockers for the owner
 
-- ⛔ **Reboot the PC to finish WSL.** `wsl --install` ran on 2026-10-19, but WSL2 cannot start until
-  Windows restarts with "Virtual Machine Platform" enabled. If it still fails after the reboot, turn on
-  virtualization (Intel VT-x or AMD SVM) in the BIOS. Then start Docker Desktop. Everything that touches
-  the real database and broker is waiting on this.
-- ⛔ **GitHub repo `AbanoubRashad/nabd`** (public, MIT): create it, or tell me to, and push.
+- ✅ WSL2 and Docker work (2026-10-31), and the GitHub repo `AbanoubRashad/nabd` is public with CI green.
 - ⛔ **The ESP32-S3 board and sensors** for Phases 5–6 ([BOM](hardware/BOM.md)).
+- 💳 **A VPS for the live backend** (about $5–7/month, [DEPLOY.md](DEPLOY.md)). Until then the public site
+  runs in website-only mode: the dashboard pages say the live backend is offline.
 - 🔑 **Back up the OTA signing key** at `%LOCALAPPDATA%
 abd-toolsota-signing-key.pem`. It is outside
   the repo on purpose. Nodes only accept firmware signed with it.
@@ -74,8 +72,8 @@ abd-toolsota-signing-key.pem`. It is outside
   - WebSocket fan-out path
   - OTA signing
 - [x] 15 design images copied to `apps/web/public/images/`
-- [ ] `pnpm infra:up` healthy (blocked on Docker/WSL)
-- [ ] CI green on GitHub (blocked on the repo)
+- [x] `pnpm infra:up` healthy
+- [x] CI green on GitHub
 
 ### Phase 1: Contract, simulator, ingest, database
 
@@ -353,3 +351,34 @@ then start Phase 2.
 - Windows notes (now in FLASHING.md): build from PowerShell (Espressif's installer refuses Git Bash), and
   use a short PlatformIO home (`I:\pio` here) because of the 260-character path limit.
 - WSL: the PC has not restarted since the install (last boot 2026-10-16), so Docker still cannot start.
+
+### 2026-10-31: real Docker stack, website deployed
+
+- WSL2 and Docker started after the reboot. Running against real containers found three bugs, all fixed:
+  - the EMQX healthcheck could not reach the node until the container got its node hostname
+  - migrations ran from a glob that matched nothing; they now run from the directory
+  - the web app served on 3000 while `WEB_ORIGIN`, Playwright and CI expected 3001
+- The live Playwright specs now run serially and wait out the 3 s demo command limit.
+- Website-only mode: an empty `NEXT_PUBLIC_API_URL` turns off every API call and the WebSocket, and the
+  dashboard pages say the live backend is offline (EN + AR).
+- Deployed to Vercel at https://nabd-iot.vercel.app (Hobby plan, redeploys on every push to `main`).
+  Canonical URL, sitemap and Open Graph image use that domain; no `localhost` reaches visitors.
+- Portfolio card committed, pushed and deployed to Firebase Hosting.
+
+### 2026-11-01: CI green
+
+The first runs on GitHub failed. Fixed:
+
+- `pio test -e native` did not compile on Linux: the test used `snprintf` without `<stdio.h>`. Zig's
+  clang pulled it in through other headers; gcc's libstdc++ does not. Reproduced with PlatformIO on WSL
+  Ubuntu, then fixed.
+- `format:check` flagged two files (whitespace only).
+- The e2e job passed `-- --port 3001` on top of the start script's own `--port 3001`, so `next start`
+  read `--port` as a project directory and never came up.
+
+**Verified:** all five CI jobs pass on `d4cb7ea`: lint/typecheck/test/build, firmware native tests and
+ESP32-S3 build, secret scan, integration against TimescaleDB, and Playwright (11 pass, 4 live tests skip
+without the API).
+
+**Next:** the backend VPS (needs the owner's approval for the cost), then the 4 live Playwright tests, the
+500-device load test and Lighthouse on the deployed site. Phases 5–6 wait for the board.
