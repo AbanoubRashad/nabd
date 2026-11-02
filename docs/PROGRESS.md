@@ -428,3 +428,17 @@ the cost), the 4 live Playwright tests and the 500-device load test. Phases 5–
 
 **Next:** the owner applies the Render Blueprint; then point Vercel at it (`NEXT_PUBLIC_API_URL`,
 `NEXT_PUBLIC_WS_URL`, `NEXT_PUBLIC_API_SLEEPS=1`) and check the public dashboard.
+
+### 2026-11-02: PageSpeed Insights on the live site
+
+Official run on https://pagespeed.web.dev for https://nabd-iot.vercel.app/ (Lighthouse 13.6):
+
+| | Performance | Accessibility | Best Practices | SEO | LCP | TBT | CLS |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| Mobile (Moto G Power, slow 4G) | 88 | 100 | 100 | 100 | 3.8 s | 10 ms | 0 |
+| Desktop | 99 | 100 | 100 | 100 | 0.7 s | 0 ms | 0.013 |
+
+Mobile misses the brief's 95 on LCP alone. The hero photo is already small (about 19 KB AVIF at phone
+width), discovered in the HTML and fetched with high priority; Lighthouse's breakdown puts about 1.5 s in
+"element render delay" (simulated slow-CPU work before the first full paint), not in the download.
+Next step if it matters: profile that delay (CSS size, hydration order) on a throttled trace.
